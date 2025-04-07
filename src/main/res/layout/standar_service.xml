@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="5dp"
+
+    android:layout_marginStart="5dp"
+
+    android:layout_marginEnd="5dp"
+    android:background="@drawable/borderblanco2"
+    android:backgroundTint="@color/gris"
+    android:padding="4dp"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+       <LinearLayout
+           android:id="@+id/linearañadir"
+           android:layout_width="match_parent"
+           android:visibility="visible"
+           android:layout_height="match_parent"
+           android:background="@drawable/borderradius"
+           android:backgroundTint="@color/gris"
+           android:orientation="vertical"
+
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent">
+
+              <com.google.android.material.tabs.TabLayout
+                  android:id="@+id/tablayout"
+                  android:layout_width="match_parent"
+                  android:layout_height="60dp"
+                  android:layout_marginBottom="2dp"
+                  android:layout_gravity="start"
+                  app:tabTextColor="@color/gris"
+                  app:tabSelectedTextColor="@color/blanco"
+                  android:background="@drawable/stylekeycor7"
+                  android:backgroundTint="@color/grisoscuro"
+                  app:tabIndicatorColor="@color/transparente"
+                  app:tabTextAppearance="@style/TabTextAppearance"
+                  app:tabMode="scrollable">
+                  <com.google.android.material.tabs.TabItem
+                      android:layout_width="wrap_content"
+                      android:visibility="visible"
+                      android:layout_height="wrap_content"
+                      android:text="V.Previa" />
+                  <com.google.android.material.tabs.TabItem
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+
+                                     android:text="Balanzas" />
+                                 <com.google.android.material.tabs.TabItem
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:visibility="visible"
+                                     android:text="Impresoras" />
+
+                  <com.google.android.material.tabs.TabItem
+                      android:layout_width="wrap_content"
+                      android:visibility="visible"
+                      android:layout_height="wrap_content"
+                      android:text="Expansion" />
+                                 <com.google.android.material.tabs.TabItem
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:visibility="visible"
+                                     android:text="Escaneres" />
+                                 <com.google.android.material.tabs.TabItem
+                                     android:layout_width="wrap_content"
+                                     android:visibility="visible"
+                                     android:layout_height="wrap_content"
+                                     android:text="Dispositivos" />
+
+
+              </com.google.android.material.tabs.TabLayout>
+
+              <LinearLayout
+                  android:id="@+id/ln17"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/grisoscuro"
+                  android:paddingBottom="3dp"
+
+                  android:orientation="vertical"
+                  android:visibility="visible">
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="7dp"
+                      android:layout_marginBottom="5dp"
+                      android:layout_marginStart="10dp"
+                      android:gravity="center">
+                      <LinearLayout
+                          android:id="@+id/lna"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="17dp"
+                            android:layout_marginBottom="2dp"
+                          android:layout_weight="1"
+                          android:orientation="horizontal">
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="55dp"
+                              android:gravity="center"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+
+                              <TextView
+                                  android:id="@+id/textView3"
+                                  android:layout_width="300dp"
+                                  android:layout_height="wrap_content"
+                                  android:layout_weight="1"
+                                  android:fontFamily="sans-serif-black"
+                                  android:text="Puertos"
+                                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                  android:textColor="@color/blanco"
+                                  android:textSize="20dp" />
+
+                              <RelativeLayout
+                                  android:layout_width="match_parent"
+                                  android:layout_height="match_parent"
+                                  android:layout_weight="1"
+                                  android:layout_marginEnd="5dp"
+                                  android:orientation="horizontal">
+
+                                  <Spinner
+                                      android:id="@+id/sp_tipopuerto"
+                                      android:layout_margin="4dp"
+                                      android:layout_width="match_parent"
+                                      android:layout_height="match_parent"
+
+                                      android:background="@drawable/spinnerbackground"
+                                      android:entries="@array/tipoBalanzasxx"
+                                      android:textAlignment="center" />
+
+                                  <ImageView
+                                      android:layout_width="54dp"
+                                      android:layout_height="42dp"
+                                      android:layout_alignParentTop="true"
+                                      android:layout_alignParentRight="true"
+                                      android:layout_alignParentBottom="true"
+                                      android:layout_gravity="center"
+                                      android:layout_marginTop="10dp"
+                                      android:layout_marginRight="23dp"
+                                      android:layout_marginBottom="10dp"
+                                      android:src="@drawable/flecha_arriba" />
+
+                              </RelativeLayout>
+
+                          </LinearLayout></LinearLayout>
+                  </LinearLayout>
+
+              </LinearLayout>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:backgroundTint="@color/blanco"
+                  android:layout_height="match_parent" android:background="@drawable/borderradiusmiddle">
+                  <androidx.recyclerview.widget.RecyclerView
+                      android:id="@+id/recyclerview"
+                      android:layout_margin="5dp"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      >
+
+                  </androidx.recyclerview.widget.RecyclerView>
+
+              </LinearLayout>
+          </LinearLayout>
+       <LinearLayout
+           android:id="@+id/linearCalib"
+           android:visibility="visible"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:background="@color/gris"
+           android:orientation="vertical"
+           app:layout_constraintBottom_toBottomOf="parent"
+           app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintStart_toStartOf="parent"
+           app:layout_constraintTop_toTopOf="parent">
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_marginBottom="20dp"
+               android:layout_weight="1"
+               android:orientation="horizontal">
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:layout_marginStart="16dp"
+                   android:layout_weight="1"
+                   android:orientation="vertical"
+                   android:splitMotionEvents="false">
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="618dp"
+                       android:layout_weight="1"
+                       android:background="@drawable/banner_menu_"
+                       android:orientation="vertical"
+                       android:splitMotionEvents="false">
+
+                       <androidx.recyclerview.widget.RecyclerView
+                           android:id="@+id/listview"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:layout_weight="1" />
+                   </LinearLayout>
+<!--<LinearLayout-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:gravity="right"><Button-->
+<!--    android:id="@+id/btadd"-->
+<!--    android:gravity="bottom"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:background="@drawable/add_icon"-->
+<!--    ></Button></LinearLayout>-->
+
+                   </LinearLayout>
+
+
+               </LinearLayout>
+
+
+
+           </LinearLayout>
+
+</LinearLayout>

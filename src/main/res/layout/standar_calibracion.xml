@@ -1,0 +1,366 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gris"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+
+                <LinearLayout
+                    android:id="@+id/Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="40dp"
+
+                    android:layout_weight="1"
+                    android:background="@drawable/banner_menu_"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="16dp"
+                                android:orientation="vertical"></LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="371dp"
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:orientation="horizontal">
+
+                                <TableLayout
+                                    android:id="@+id/TableParametrosprincipales"
+                                    android:layout_width="458dp"
+                                    android:layout_height="wrap_content">
+
+                                    <TableRow
+                                        android:layout_width="match_parent"
+                                        android:layout_height="864dp"
+                                        android:layout_marginTop="50dp">
+
+                                        <TextView
+                                            android:id="@+id/DecimapCCCCCositasdion"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="65dp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="  Division minima"
+                                            android:textColor="#000000"
+                                            android:textSize="20sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView14"
+                                            android:layout_width="84dp"
+                                            android:layout_height="8dp" />
+
+                                        <RelativeLayout
+                                            android:layout_width="175dp"
+                                            android:layout_height="match_parent"
+                                            android:orientation="horizontal">
+
+                                            <Spinner
+                                                android:id="@+id/spDivisionMinima"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="48dp"
+                                                android:background="@drawable/boton"
+                                                android:entries="@array/DivisionMinima"
+                                                android:textAlignment="center" />
+
+                                            <ImageView
+                                                android:layout_width="27dp"
+                                                android:layout_height="18dp"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_alignParentRight="true"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="17dp"
+                                                android:layout_marginRight="16dp"
+                                                android:src="@drawable/flecha_arriba" />
+
+                                        </RelativeLayout>
+                                    </TableRow>
+
+                                    <TableRow
+                                        android:layout_width="match_parent"
+                                        android:layout_height="59dp"
+                                        android:layout_marginTop="15dp">
+
+                                        <TextView
+                                            android:id="@+id/UnCCCCidsad"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="65dp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="  Punto Decimal"
+                                            android:textColor="#000000"
+                                            android:textSize="20sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView15"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content" />
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="horizontal">
+
+                                            <Spinner
+                                                android:id="@+id/spPuntoDecimal"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="48dp"
+                                                android:background="@drawable/boton"
+                                                android:entries="@array/PositionDecimal"
+                                                android:textAlignment="center" />
+
+
+                                            <ImageView
+                                                android:layout_width="27dp"
+                                                android:layout_height="18dp"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_alignParentRight="true"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="17dp"
+                                                android:layout_marginRight="16dp"
+                                                android:src="@drawable/flecha_arriba" />
+
+                                        </RelativeLayout>
+
+                                    </TableRow>
+
+                                    <TableRow
+                                        android:layout_width="match_parent"
+                                        android:layout_height="59dp"
+                                        android:layout_marginTop="15dp">
+
+                                        <TextView
+                                            android:id="@+id/StopCZXCXsZCbit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="65dp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="  Capacidad"
+                                            android:textColor="#000000"
+                                            android:textSize="20sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView17"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content" />
+
+                                        <TextView
+                                            android:id="@+id/tvCapacidad"
+                                            android:layout_width="4dp"
+                                            android:layout_height="52dp"
+                                            android:background="@drawable/campollenarclickeable"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:textAlignment="center"
+                                            android:textColor="#000000"
+                                            android:textSize="17sp" />
+
+
+                                    </TableRow>
+
+
+                                </TableLayout>
+
+                                <LinearLayout
+                                    android:layout_width="6dp"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/gris"
+                                    android:orientation="horizontal"></LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TableRow
+                                        android:layout_width="match_parent"
+                                        android:layout_height="59dp"
+                                        android:layout_marginTop="50dp">
+
+                                        <TextView
+                                            android:id="@+id/StopCZXCXsZCbit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="65dp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="  Peso Conocido"
+                                            android:textColor="#000000"
+                                            android:textSize="20sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView17"
+                                            android:layout_width="151dp"
+                                            android:layout_height="3dp" />
+
+                                        <TextView
+                                            android:id="@+id/tvPesoconocido"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="52dp"
+                                            android:background="@drawable/campollenarclickeable"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:textAlignment="center"
+                                            android:textColor="#000000"
+                                            android:textSize="17sp" />
+
+
+                                    </TableRow>
+
+                                    <TableRow
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp">
+
+                                        <TextView
+                                            android:id="@+id/StopCZXCXsZCbit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="65dp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="  Unidad"
+                                            android:textColor="#000000"
+                                            android:textSize="20sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView17"
+                                            android:layout_width="222dp"
+                                            android:layout_height="7dp" />
+
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:gravity="end"
+                                            android:orientation="horizontal">
+
+                                            <Spinner
+                                                android:id="@+id/spUnidad"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="48dp"
+                                                android:background="@drawable/boton"
+                                                android:entries="@array/Unidad"
+                                                android:textAlignment="center" />
+
+
+                                            <ImageView
+                                                android:layout_width="27dp"
+                                                android:layout_height="18dp"
+                                                android:layout_alignParentTop="true"
+                                                android:layout_alignParentRight="true"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="17dp"
+                                                android:layout_marginRight="16dp"
+                                                android:src="@drawable/flecha_arriba" />
+
+                                        </RelativeLayout>
+
+
+                                    </TableRow>
+
+                                    <TableRow
+                                        android:layout_width="match_parent"
+                                        android:layout_height="54dp"
+                                        android:layout_marginTop="5dp">
+
+                                        <TextView
+                                            android:id="@+id/StopCZXCXsZCbit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="65dp"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:text="  Ultima Calibracion"
+                                            android:textColor="#000000"
+                                            android:textSize="20sp" />
+
+                                        <TextView
+                                            android:id="@+id/textView17"
+                                            android:layout_width="39dp"
+                                            android:layout_height="3dp" />
+
+                                        <TextView
+                                            android:id="@+id/tvUltimaCalibracion"
+                                            android:layout_width="258dp"
+                                            android:layout_height="42dp"
+                                            android:background="@drawable/fondolineainferiornegratranslucido"
+                                            android:fontFamily="sans-serif-medium"
+                                            android:textAlignment="center"
+                                            android:textColor="#000000"
+                                            android:textSize="17sp" />
+
+
+                                    </TableRow>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="68dp"
+                                        android:layout_marginStart="35dp"
+                                        android:layout_marginEnd="15dp"
+                                        android:orientation="horizontal">
+
+                                        <Button
+                                            android:id="@+id/btIniciarCalibracion"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:layout_marginEnd="5dp"
+                                            android:background="@drawable/botoneraprincipalgrisoscuro"
+                                            android:fontFamily="sans-serif-black"
+                                            android:gravity="center"
+                                            android:text="Iniciar Calibracion"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="22sp" />
+
+                                        <Button
+                                            android:id="@+id/btReajusteCero"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:layout_marginStart="5dp"
+                                            android:background="@drawable/botoneraprincipalgrisoscuro"
+                                            android:fontFamily="sans-serif-black"
+                                            android:gravity="center"
+                                            android:text="Re Ajuste Cero"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="22sp" />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

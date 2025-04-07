@@ -1,0 +1,120 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"
+        >
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="principal_fondo">#FAF4E5</item>
+        <item name="info_principal_fondo">#B6B6B6</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="gregorutti_color">#9F0000</item>
+        <item name="gregorutti_color_claro">#FF0000</item>
+        <item name="gregorutti_color_oscuro">#5C0000</item>
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
+        <item name="colorSurface">#FFEB3B</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/fast_scrollbar_track</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/fast_scrollbar</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar</item>
+        <item name="android:scrollbarTrackHorizontal">@drawable/scrollbar_trackhorizontal</item>
+        <item name="android:scrollbarThumbHorizontal">@drawable/scrollbarhorizontal</item>
+        <item name="recyclerViewStyle">@style/RecyclerViewStyle</item>
+        <!-- Customize your theme here. -->
+
+
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">35sp</item> <!-- Tamaño del texto en sp -->
+        <!-- Otros atributos de texto según sea necesario -->
+    </style>
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fadein2</item>
+        <item name="android:windowExitAnimation">@anim/fadeout2</item>
+    </style>
+
+
+    <style name="AppTheme2.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"
+        >
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="gregorutti_color">#002F77</item>
+        <item name="gregorutti_color_oscuro">#001D49</item>
+        <item name="gregorutti_color_claro">#004FC6</item>
+        <item name="info_principal_fondo">#959595</item>
+        <item name="principal_fondo">@color/gris2</item>
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
+        <item name="colorSurface">#FFEB3B</item>
+        <item name="android:fastScrollTrackDrawable">@drawable/fast_scrollbar_track</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/fast_scrollbar</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar</item>
+        <!-- Customize your theme here. -->
+        <item name="recyclerViewStyle">@style/RecyclerViewStyle</item>
+
+
+    </style>
+
+
+    <style name="MyDatePicker" parent="android:Widget.Material.Light.DatePicker">
+        <item name="android:textColorPrimary">#FFFFFF</item>
+    </style>
+
+    <style name="AppTheme4.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar"
+        >
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="gregorutti_color">#000000</item>
+        <item name="gregorutti_color_oscuro">#393939</item>
+        <item name="info_principal_fondo">#959595</item>
+        <item name="principal_fondo">@color/gris2</item>
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
+        <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
+        <item name="colorSurface">#FFEB3B</item>
+        <!-- Customize your theme here. -->
+        <item name="android:fastScrollTrackDrawable">@drawable/fast_scrollbar_track</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/fast_scrollbar</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarTrackVertical">@drawable/scrollbar_track</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scrollbar</item>
+        <item name="recyclerViewStyle">@style/RecyclerViewStyle</item>
+
+
+    </style>
+
+
+    <style name="splashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_image</item>
+        <item name="android:statusBarColor">@color/blanco</item>
+    </style>
+
+
+    <style name="checkbox" parent="android:Theme.Holo">
+        <item name="android:textColor">@color/blanco</item>
+    </style>
+
+    <style name="RecyclerViewStyle">
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+    </style>
+
+
+
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_printers"
+        android:title="Impresora" />
+    <item
+        android:id="@+id/nav_bzas"
+        android:title="Balanzas" />
+    <item
+        android:id="@+id/nav_io"
+        android:title="I/O" />
+    <item
+        android:id="@+id/nav_scan"
+        android:title="Escaneres" />
+
+</menu>

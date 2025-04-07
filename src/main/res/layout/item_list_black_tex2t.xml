@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/blanco"
+    app:cardCornerRadius="30dp"
+    app:cardElevation="0dp"
+    app:cardMaxElevation="0dp"
+    android:dividerHeight="0px"
+    android:divider="#FFFFFF"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <!--
+    In the above cardview widget
+    cardelevation property will give elevation to your card view
+    card corner radius will provide radius to your card view
+    card background color will give background color to your card view
+    card max elevation will give the cardview maximum elevation
+    card prevent corner overlap will add padding to CardView on v20 and
+    before to prevent intersections between the Card content and rounded corners.
+    card use compact padding will add padding in API v21+ as well to have the same
+    measurements with previous versions.
+-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <!--ImageVIew to display our Course Image-->
+
+        <!--Text View to display Course Name-->
+        <TextView
+            android:id="@+id/tvAnimalName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="hola como anda"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

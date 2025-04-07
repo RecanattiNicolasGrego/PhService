@@ -1,0 +1,8 @@
+<resources>
+    <attr name="gregorutti_color" format="reference|color" />
+    <attr name="gregorutti_color_claro" format="reference|color" />
+    <attr name="gregorutti_color_oscuro" format="reference|color" />
+    <attr name="principal_fondo" format="reference|color" />
+    <attr name="info_principal_fondo" format="reference|color" />
+    <!-- Otros atributos personalizados -->
+</resources>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="384bd94a-386a-474f-96d9-f2f0ffa53c8a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../../../../.idea/deploymentTargetSelector.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../../../../.idea/migrations.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/ImprimirEstandar.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapterdispositivo.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapterescaner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapterio.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapterprinter.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapterpuerto.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adaptersalidaentrada.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dialogio.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dialogo_dosopciones_i.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dialogobalanza.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dialogolistaimpresoras.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dialogoprinter.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/impresorasrecycler2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/item_spinner_doubletext.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/standar_calibracion_v2_410.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/standar_service3.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/debug/app-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/debug/app-debug.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/libs/ZSDK_ANDROID_API.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/libs/ZSDK_ANDROID_BTLE.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/containers/ContainerFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/containers/ContainerFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/activities/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/fragments/ImpresorasFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/fragments/MenuFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/fragments/MenuFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/fragments/WifiFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/base/ui/fragments/WifiFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/httpserver/HttpServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/httpserver/HttpServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/ImprimirEstandar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/clases/Printer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/clases/Printer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/clases/PrinterObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/clases/PrinterObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/preferences/PreferencesPrinterManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/ImprimirPDFRed.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/ImprimirRS232.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/ImprimirRed.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/ImprimirUSB.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/usb/Bluetooth.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/usb/more/DiscoveredPrinterListAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/jws/jwsapi/common/impresora/tipos/usb/more/DiscoveredPrinterListAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/impresora/tipos/usb/more/SelectedPrinterManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/jws/jwsapi/common/impresora/tipos/usb/more/SelectedPrinterManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/socket/SocketSearch.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/socket/SocketSearch.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/storage/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/common/storage/Storage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/MainFormClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/MainFormClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/data/sql/FormSqlUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/data/sql/FormSqlUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/di/LabelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/di/LabelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/fragment/FormFragmentConfiguracionBalanza.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/fragment/FormFragmentConfiguracionBalanza.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/fragment/FormFragmentIngredientes.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/fragment/FormFragmentIngredientes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/fragment/FormPrincipal.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/fragment/FormPrincipal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/viewmodel/FormPrincipalViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../app/src/main/java/com/jws/jwsapi/feature/formulador/ui/viewmodel/FormPrincipalViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../.idea/other.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.idea/other.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/BalanzaService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/ANDGF3000.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/ANDGF3000.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/ITW410.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/ITW410_FORM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/MINIMA_I.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/MINIMA_I.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/OPTIMA_I.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/OPTIMA_I.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/R31P30_I.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/R31P30_I.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/SPIDER3.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Balanzas/Clases/SPIDER3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Fragments/CalibracionMinimaFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Fragments/CalibracionOptimaFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Fragments/ServiceFragment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Interfaz/Balanza.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Interfaz/conjuntobalanza.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Balanzas/Interfaz/modbus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Comunicacion/ButtonProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/ButtonProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Comunicacion/HorizontalScrollViewScroll.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Comunicacion/MyRecyclerViewAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Comunicacion/RecyclerViewScroll.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Comunicacion/ScrollViewScroll.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Impresora/ImprimirEstandar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Impresora/Tipos/ImprimirBluetooth.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/Tipos/ImprimirBluetooth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Impresora/Tipos/ImprimirPDFRed.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/Tipos/ImprimirPDFRed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Impresora/Tipos/ImprimirRS232.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/Tipos/ImprimirRS232.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Impresora/Tipos/ImprimirRed.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Comunicacion/Impresora/Tipos/ImprimirRed.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/JSerialCommWrapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/ModbusMasterRtu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/ModbusMasterTCP.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/ModbusSlaveTCP.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/Req/BasicProcessImage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/Req/ModbusReqRtuMaster.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/Req/ModbusReqRtuSlave.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/Req/ModbusReqTCPslave.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Modbus/Req/ProcessImage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/PuertosSerie/PuertosSerie.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/PuertosSerie/PuertosSerie2.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Recyclers/recyclerImpresora.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Recyclers/recyclerModbus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/service/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/service/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../drawable-hdpi/botoneraprincipal2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../drawable-hdpi/botoneraprincipal2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dialogconfigmodbus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dialogconfigmodbus.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dialogo_calibracion_optima.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dialogo_calibracion_optima.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modbusconfigadapter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/modbusconfigadapter.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/standar_service.xml" beforeDir="false" afterPath="$PROJECT_DIR$/standar_service.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/standar_service2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/standar_service2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../values/styles.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2nRGBj0S9kPE3e1hY7BSV14SZXh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/usuario/Desktop/app 1.01 desarrollo"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="384bd94a-386a-474f-96d9-f2f0ffa53c8a" name="Changes" comment="" />
+      <created>1728928341036</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728928341036</updated>
+    </task>
+    <servers />
+  </component>
+</project>
