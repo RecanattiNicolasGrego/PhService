@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFCC0000</color>
+    <color name="colorPrimaryDark">#FFCC0000</color>
+    <color name="colorAccent">#FFCC0000</color>
+    <color name="grisbarrasuperior">#B8B8B8</color>
+    <color name="gris">#bfbfbf</color>
+    <color name="gris2">#D3D3D3</color>
+    <color name="rojobrillante">#554545</color>
+    <color name="rojo">#D1AAAA</color>
+    <color name="azul">#002AFF</color>
+    <color name="amarillo">#F9FF41</color>
+    <color name="rojobrillante2">#FD5151</color>
+    <color name="celeste">#1497FF</color>
+    <color name="rojooscuro">#7E0101</color>
+    <color name="verdeoscuro">#057700</color>
+    <color name="amarillooscuro">#8E8700</color>
+    <color name="traslucidoclaro">#41FFFFFF</color>
+    <color name="naranja">#FF6F00</color>
+    <color name="verde">#7AFF33</color>
+    <color name="blanco">#FFFFFF</color>
+    <color name="grisoscuro">#4E4E4E</color>
+    <color name="grisoscuromasclaro">#606060</color>
+    <color name="negro">#000000</color>
+    <color name="azuloscuro">#000C2E</color>
+    <color name="traslucido">#3C000000</color>
+    <color name="traslucido2">#A8000000</color>
+    <color name="transparente">#00FFFFFF</color>
+    <color name="traslucidoblanco">#7CFFFFFF</color>
+    <color name="gregorutti_color">#940000</color>
+    <color name="gregorutti_color_claro">#FF0000</color>
+    <color name="gregorutti_color_oscuro">#5C0000</color>
+    <color name="principal_fondo">#FAF4E5</color>
+    <color name="info_principal_fondo">#B6B6B6</color>
+
+</resources>

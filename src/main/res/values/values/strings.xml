@@ -1,0 +1,323 @@
+<resources>
+    <string name="app_name">Gregorutti</string>
+
+    <string name="open">open</string>
+
+    <string name="close">close</string>
+
+    <string-array name="uart_baudrate">
+        <item>50</item>
+        <item>75</item>
+        <item>110</item>
+        <item>150</item>
+        <item>200</item>
+        <item>300</item>
+        <item>600</item>
+        <item>1200</item>
+        <item>1800</item>
+        <item>2400</item>
+        <item>4800</item>
+        <item>9600</item>
+        <item>19200</item>
+        <item>38400</item>
+        <item>57600</item>
+        <item>115200</item>
+        <item>230400</item>
+        <item>460800</item>
+        <item>500000</item>
+        <item>576000</item>
+        <item>1000000</item>
+        <item>1152000</item>
+        <item>1500000</item>
+        <item>2000000</item>
+        <item>2500000</item>
+        <item>3000000</item>
+        <item>3500000</item>
+        <item>4000000</item>
+    </string-array>
+
+    <string-array name="Unitsino">
+        <item>SI</item>
+        <item>NO</item>
+    </string-array>
+
+    <string-array name="Freefall">
+        <item>NO</item>
+        <item>SI</item>
+    </string-array>
+
+    <string-array name="Receta">
+        <item>Kilos</item>
+        <item>Porcentaje</item>
+    </string-array>
+
+    <string-array name="Vencimiento">
+        <item>Editable</item>
+        <item>Por dias</item>
+    </string-array>
+
+    <string-array name="Lote">
+        <item>Libre</item>
+        <item>Por fecha</item>
+        <item>Correlativo</item>
+    </string-array>
+
+    <string-array name="balanzas">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="Puertos">
+        <item>Puerto 1 (inferior)</item>
+        <item>Puerto 2 (superior)</item>
+    </string-array>
+
+    <string-array name="Entradas">
+        <item>Libre</item>
+        <item>Trigger</item>
+        <item>Descartador</item>
+        <item>Enclavamiento</item>
+    </string-array>
+
+    <string-array name="Salidas1">
+        <item>Libre</item>
+        <item>Descartador unico</item>
+        <item>Descartador alto</item>
+        <item>Descartador bajo</item>
+        <item>Descartador acepto</item>
+        <item>Luz bajo</item>
+        <item>Luz alto</item>
+        <item>Luz acepto</item>
+        <item>Caja vacia</item>
+        <item>Tendencia</item>
+        <item>Motor</item>
+    </string-array>
+
+    <string-array name="Salidas2">
+        <item>Libre</item>
+        <item>Descartador unico</item>
+        <item>Descartador alto</item>
+        <item>Descartador bajo</item>
+        <item>Descartador acepto</item>
+        <item>Luz bajo</item>
+        <item>Luz alto</item>
+        <item>Luz acepto</item>
+        <item>Caja vacia</item>
+        <item>Tendencia</item>
+    </string-array>
+
+    <string-array name="BitsdeDatos">
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+
+    <string-array name="Paridad">
+        <item>NO PARIDAD</item>
+        <item>PARIDAD IMPAR</item>
+        <item>PARIDAD PAR</item>
+    </string-array>
+
+    <string-array name="tipoBalanzas">
+        <item>OPTIMA</item>
+        <item>MINIMA</item>
+        <item>OHAUS R31P30</item>
+    </string-array>
+
+    <string-array name="tipoUsuarios">
+        <item>Supervisor</item>
+        <item>Operador</item>
+    </string-array>
+
+    <string-array name="Mododeuso">
+        <item>Batch</item>
+        <item>Pedido</item>
+        <item>Editable</item>
+    </string-array>
+
+    <string-array name="BitsdeParada">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="Handshake">
+        <item>NO HANDSHAKE</item>
+        <item>RTS/CTS</item>
+        <item>XON/XOFF</item>
+    </string-array>
+
+    <string-array name="Descartador">
+        <item>PESO</item>
+        <item>SENSOR</item>
+    </string-array>
+
+    <string-array name="Peso">
+        <item>BARRERA</item>
+        <item>FLANCO ASC</item>
+        <item>FLANCO DESC</item>
+    </string-array>
+    <string-array name="Calendario">
+        <item>Total</item>
+        <item>Hoy</item>
+        <item>Fecha</item>
+    </string-array>
+
+    <string-array name="PositionDecimal">
+        <item>xxxxx</item>
+        <item>xxxx.x</item>
+        <item>xxx.xx</item>
+        <item>xx.xxx</item>
+    </string-array>
+
+    <string-array name="right2">
+        <item name="2*1">2*1</item>
+        <item name="2*2">2*2</item>
+        <item name="2*3">2*3</item>
+        <item name="2*4">2*4</item>
+        <item name="2*5">2*5</item>
+        <item name="2*6">2*6</item>
+        <item name="2*7">2*7</item>
+        <item name="2*8">2*8</item>
+        <item name="2*9">2*9</item>
+    </string-array>
+
+    <string-array name="DisplayDivision">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="Milisegundos">
+        <item>1000</item>
+        <item>2000</item>
+        <item>5000</item>
+        <item>10000</item>
+    </string-array>
+
+    <string-array name="Puntos">
+        <item>10</item>
+        <item>30</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="Usuarios">
+        <item>MODO OPERADOR</item>
+        <item>MODO SUPERVISOR</item>
+    </string-array>
+
+    <string-array name="DivisionMinima">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="PuntoDecimal">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="Unidad">
+        <item>gr</item>
+        <item>kg</item>
+        <item>ton</item>
+    </string-array>
+
+    <string-array name="TasadeMuestras">
+        <item>7</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>480</item>
+    </string-array>
+
+    <string-array name="Filtros">
+        <item>OFF</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+        <item>256</item>
+        <item>512</item>
+    </string-array>
+
+    <string-array name="Filtros2">
+        <item>OFF</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+    </string-array>
+
+    <string-array name="PromediosComunicacion">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+    </string-array>
+
+    <string-array name="Sobrecarga">
+        <item>OFF</item>
+        <item>2%</item>
+        <item>1D</item>
+        <item>9D</item>
+    </string-array>
+
+    <string-array name="Bandaacepto">
+        <item>ACEPTO</item>
+        <item>NO</item>
+    </string-array>
+
+    <string-array name="ImpresoraModo">
+        <item>USB</item>
+        <item>RED</item>
+        <item>PUERTO SERIE</item>
+        <item>BUETOOTH</item>
+    </string-array>
+
+    <string-array name="CamposEtiqueta">
+        <item>USB</item>
+    </string-array>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

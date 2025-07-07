@@ -1,0 +1,1677 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gris"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:id="@+id/Layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+
+                android:layout_weight="1"
+                android:background="@drawable/banner_menu_"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp"
+                            android:orientation="vertical"></LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="15dp"
+                            android:orientation="horizontal">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/TableParametrosprincipales"
+                                android:layout_width="258dp"
+                                android:layout_height="match_parent">
+
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:layout_marginEnd="10dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="70dp"
+                                        android:layout_margin="10dp"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <ImageView
+                                            android:id="@+id/imgCal"
+                                            android:visibility="visible"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="match_parent"
+
+                                            android:src="@drawable/baseline_arrow_right_24">
+
+                                        </ImageView>
+
+                                        <Button
+                                            android:id="@+id/btCalibracion"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="50dp"
+                                            android:layout_marginEnd="5dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/botoneraprincipalgrisoscuro"
+                                            android:fontFamily="sans-serif-black"
+                                            android:gravity="center"
+                                            android:text="Calibracion"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="22sp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="50dp"
+                                        android:layout_margin="10dp"
+                                        android:orientation="vertical">
+
+                                        <Button
+                                            android:id="@+id/btreset"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="50dp"
+                                            android:layout_marginEnd="5dp"
+                                            android:layout_weight="1"
+                                            android:visibility="gone"
+                                            android:background="@drawable/botoneraprincipalgrisoscuro"
+                                            android:fontFamily="sans-serif-black"
+                                            android:gravity="center"
+                                            android:text="Reset"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="22sp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:visibility="gone">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="2dp"
+                                        android:layout_marginStart="4dp"
+
+                                        android:layout_marginTop="15dp"
+
+                                        android:layout_marginEnd="2dp"
+                                        android:background="@color/gris"
+                                        android:orientation="horizontal"></LinearLayout>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_ts"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="ts"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle9"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON9"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF9"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON9"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_ci"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="ci"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle10"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON10"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF10"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON10"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_jp"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="jp"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle11"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON11"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF11"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON11"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_ct"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="ct"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle12"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON12"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF12"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON12"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_if"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="if"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle13"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON13"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF13"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON13"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_pb"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="pb"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle14"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON14"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF14"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON14"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_bb"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="bb"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle15"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON15"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF15"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON15"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                    <TableRow android:layout_height="59dp"
+                                        android:layout_width="wrap_content">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="70dp"
+                                            android:layout_marginTop="10dp"
+                                            android:layout_weight="1"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:id="@+id/tv_ve"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:layout_marginEnd="20dp"
+                                                android:fontFamily="sans-serif-black"
+                                                android:text="ve"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#000000"
+                                                android:textSize="30sp" />
+
+                                            <RadioGroup
+                                                android:id="@+id/toggle16"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+
+                                                android:background="@drawable/stylekey10000"
+                                                android:checkedButton="@+id/btON16"
+                                                android:orientation="horizontal">
+
+                                                <RadioButton
+                                                    android:id="@+id/btOFF16"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginLeft="1dp"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetoff"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="NO"
+                                                    android:textColor="@color/negro"
+                                                    android:textSize="24sp" />
+
+                                                <RadioButton
+                                                    android:id="@+id/btON16"
+                                                    android:layout_width="0dp"
+                                                    android:layout_height="match_parent"
+                                                    android:layout_marginTop="1dp"
+                                                    android:layout_marginRight="1dp"
+                                                    android:layout_marginBottom="1dp"
+                                                    android:layout_weight="1"
+                                                    android:background="@drawable/togglewidgetbackground"
+                                                    android:button="@null"
+                                                    android:gravity="center"
+                                                    android:text="SI"
+                                                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                    android:textColor="@color/blanco"
+                                                    android:textSize="24sp" />
+                                            </RadioGroup>
+
+                                        </LinearLayout>
+                                    </TableRow>
+                                </FrameLayout>
+
+
+
+
+
+
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout> <ImageView
+                            android:id="@+id/animbutton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_gravity="end|center_vertical"
+                            android:src="@drawable/baseline_arrow_right_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        </ImageView>
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone">
+
+
+
+                                <TableRow android:layout_height="59dp"
+                                    android:layout_width="wrap_content" >
+
+                                    <TextView
+                                        android:id="@+id/bf1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="65dp"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:text="  bf1"
+                                        android:textColor="#000000"
+                                        android:textSize="20sp" />
+
+                                    <TextView
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content" />
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="horizontal">
+
+                                        <Spinner
+                                            android:id="@+id/spbf1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="48dp"
+                                            android:background="@drawable/style_spinner"
+                                            android:textAlignment="center" />
+
+
+                                        <ImageView
+                                            android:layout_width="27dp"
+                                            android:layout_height="18dp"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="17dp"
+                                            android:layout_marginRight="16dp"
+                                            android:src="@drawable/flecha_arriba" />
+
+                                    </RelativeLayout>
+
+                                </TableRow>
+                                <TableRow android:layout_height="59dp"
+                                    android:layout_width="wrap_content" >
+
+                                    <TextView
+                                        android:id="@+id/dat"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="65dp"
+                                        android:fontFamily="sans-serif-medium"
+                                        android:text="  dat"
+                                        android:textColor="#000000"
+                                        android:textSize="20sp" />
+
+                                    <TextView
+
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content" />
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="horizontal">
+
+                                        <Spinner
+                                            android:id="@+id/spdat"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="48dp"
+                                            android:background="@drawable/style_spinner"
+                                            android:textAlignment="center" />
+
+
+                                        <ImageView
+                                            android:layout_width="27dp"
+                                            android:layout_height="18dp"
+                                            android:layout_alignParentTop="true"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="17dp"
+                                            android:layout_marginRight="16dp"
+                                            android:src="@drawable/flecha_arriba" />
+
+                                    </RelativeLayout>
+
+                                </TableRow>
+                            </FrameLayout>
+
+                            <TableRow android:layout_height="59dp"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_et"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="59dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="et"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <RadioGroup
+                                        android:id="@+id/toggle5"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+
+                                        android:background="@drawable/stylekey10000"
+                                        android:checkedButton="@+id/btON5"
+                                        android:orientation="horizontal">
+
+                                        <RadioButton
+                                            android:id="@+id/btOFF5"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="1dp"
+                                            android:layout_marginTop="1dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/togglewidgetoff"
+                                            android:button="@null"
+                                            android:gravity="center"
+                                            android:text="NO"
+                                            android:textColor="@color/negro"
+                                            android:textSize="24sp" />
+
+                                        <RadioButton
+                                            android:id="@+id/btON5"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginTop="1dp"
+                                            android:layout_marginRight="1dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/togglewidgetbackground"
+                                            android:button="@null"
+                                            android:gravity="center"
+                                            android:text="SI"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="@color/blanco"
+                                            android:textSize="24sp" />
+                                    </RadioGroup>
+
+                                </LinearLayout>
+                            </TableRow>
+                            <TableRow android:layout_height="59dp"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_tc"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="59dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="tc"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <RadioGroup
+                                        android:id="@+id/toggle6"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+
+                                        android:background="@drawable/stylekey10000"
+                                        android:checkedButton="@+id/btON6"
+                                        android:orientation="horizontal">
+
+                                        <RadioButton
+                                            android:id="@+id/btOFF6"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="1dp"
+                                            android:layout_marginTop="1dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/togglewidgetoff"
+                                            android:button="@null"
+                                            android:gravity="center"
+                                            android:text="NO"
+                                            android:textColor="@color/negro"
+                                            android:textSize="24sp" />
+
+                                        <RadioButton
+                                            android:id="@+id/btON6"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginTop="1dp"
+                                            android:layout_marginRight="1dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/togglewidgetbackground"
+                                            android:button="@null"
+                                            android:gravity="center"
+                                            android:text="SI"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="@color/blanco"
+                                            android:textSize="24sp" />
+                                    </RadioGroup>
+
+                                </LinearLayout>
+                            </TableRow>
+                            <TableRow android:layout_height="59dp"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="70dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/tv_td"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="59dp"
+                                        android:layout_marginEnd="20dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:text="td"
+                                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                        android:textColor="#000000"
+                                        android:textSize="30sp" />
+
+                                    <RadioGroup
+                                        android:id="@+id/toggle7"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+
+                                        android:background="@drawable/stylekey10000"
+                                        android:checkedButton="@+id/btON7"
+                                        android:orientation="horizontal">
+
+                                        <RadioButton
+                                            android:id="@+id/btOFF7"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="1dp"
+                                            android:layout_marginTop="1dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/togglewidgetoff"
+                                            android:button="@null"
+                                            android:gravity="center"
+                                            android:text="NO"
+                                            android:textColor="@color/negro"
+                                            android:textSize="24sp" />
+
+                                        <RadioButton
+                                            android:id="@+id/btON7"
+                                            android:layout_width="0dp"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginTop="1dp"
+                                            android:layout_marginRight="1dp"
+                                            android:layout_marginBottom="1dp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/togglewidgetbackground"
+                                            android:button="@null"
+                                            android:gravity="center"
+                                            android:text="SI"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                            android:textColor="@color/blanco"
+                                            android:textSize="24sp" />
+                                    </RadioGroup>
+
+                                </LinearLayout>
+                            </TableRow>
+
+                            <LinearLayout
+                                android:id="@+id/togglediv"
+                                android:layout_width="6dp"
+                                android:layout_height="match_parent"
+
+                                android:orientation="horizontal"></LinearLayout>
+                            <!--  android:background="@color/gris"-->
+                            <ScrollView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                >
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:id="@+id/Lcalibracion"
+                                        android:visibility="visible"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="vertical">
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_gravity="center"
+                                            android:gravity="center"
+                                            android:background="@drawable/botoneraprincipal"
+                                            android:layout_marginTop="15dp">
+                                            <TextView
+                                                android:text="Calibracion/Re-Cero"
+                                                android:gravity="center"
+                                                android:fontFamily="sans-serif-black"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#FFFFFF"
+                                                android:textSize="34sp">
+
+                                            </TextView>
+
+                                        </TableRow>
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="15dp">
+
+                                            <TextView
+                                                android:id="@+id/DecimapCCCCCositasdion"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Division minima"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:id="@+id/textView14"
+                                                android:layout_width="145dp"
+                                                android:layout_height="8dp" />
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:orientation="horizontal">
+
+                                                <Spinner
+                                                    android:id="@+id/spDivisionMinima"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="70dp"
+                                                    android:background="@drawable/style_spinner"
+                                                    android:entries="@array/DivisionMinima"
+                                                    android:textAlignment="center" />
+
+                                                <ImageView
+                                                    android:layout_width="27dp"
+                                                    android:layout_height="18dp"
+                                                    android:layout_alignParentTop="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="17dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:src="@drawable/flecha_arriba" />
+
+                                            </RelativeLayout>
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="15dp">
+
+                                            <TextView
+                                                android:id="@+id/UnCCCCidsad"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Punto Decimal"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+
+                                                android:layout_width="155dp"
+                                                android:layout_height="wrap_content" />
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:orientation="horizontal">
+
+                                                <Spinner
+                                                    android:id="@+id/spPuntoDecimal"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="70dp"
+                                                    android:background="@drawable/style_spinner"
+                                                    android:entries="@array/PositionDecimal"
+                                                    android:textAlignment="center" />
+
+
+                                                <ImageView
+                                                    android:layout_width="27dp"
+                                                    android:layout_height="18dp"
+                                                    android:layout_alignParentTop="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="17dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:src="@drawable/flecha_arriba" />
+
+                                            </RelativeLayout>
+
+                                        </TableRow>
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="10dp">
+
+                                            <TextView
+                                                android:id="@+id/StopCZXCXsZCbit8"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="Capacidad"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:layout_width="200dp"
+                                                android:layout_height="3dp" />
+
+                                            <TextView
+                                                android:id="@+id/tvCapacidad"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="52dp"
+                                                android:background="@drawable/campollenarclickeable"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:textAlignment="center"
+                                                android:textColor="#000000"
+                                                android:textSize="17sp" />
+
+
+                                        </TableRow>
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="10dp">
+
+                                            <TextView
+                                                android:id="@+id/StopCZXCXsZCbit2"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Peso Conocido"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:layout_width="151dp"
+                                                android:layout_height="3dp" />
+
+                                            <TextView
+                                                android:id="@+id/tvPesoconocido"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="52dp"
+                                                android:background="@drawable/campollenarclickeable"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:textAlignment="center"
+                                                android:textColor="#000000"
+                                                android:textSize="17sp" />
+
+
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="10dp">
+
+                                            <TextView
+                                                android:id="@+id/tv_filtro1"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Filtro 1              "
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:layout_width="151dp"
+                                                android:layout_height="3dp" />
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <Spinner
+                                                    android:id="@+id/tv_filtro1X"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:background="@drawable/spinnerbackground"
+                                                    android:textAlignment="center" />
+
+                                                <ImageView
+                                                    android:layout_width="27dp"
+                                                    android:layout_height="18dp"
+                                                    android:layout_alignParentTop="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="17dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:src="@drawable/flecha_arriba" />
+
+                                            </RelativeLayout>
+
+
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="10dp">
+
+                                            <TextView
+                                                android:id="@+id/tv_filtro2"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Filtro 2              "
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:layout_width="151dp"
+                                                android:layout_height="3dp" />
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <Spinner
+                                                    android:id="@+id/tv_filtro2X"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:background="@drawable/spinnerbackground"
+                                                    android:textAlignment="center" />
+
+                                                <ImageView
+                                                    android:layout_width="27dp"
+                                                    android:layout_height="18dp"
+                                                    android:layout_alignParentTop="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="17dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:src="@drawable/flecha_arriba" />
+
+                                            </RelativeLayout>
+
+
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="59dp"
+                                            android:layout_marginTop="10dp">
+
+                                            <TextView
+                                                android:id="@+id/tv_filtro3"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="65dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Filtro 3              "
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:layout_width="151dp"
+                                                android:layout_height="3dp" />
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_weight="1"
+                                                android:orientation="horizontal">
+
+                                                <Spinner
+                                                    android:id="@+id/tv_filtro3X"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:background="@drawable/spinnerbackground"
+                                                    android:textAlignment="center" />
+
+                                                <ImageView
+                                                    android:layout_width="27dp"
+                                                    android:layout_height="18dp"
+                                                    android:layout_alignParentTop="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="17dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:src="@drawable/flecha_arriba" />
+
+                                            </RelativeLayout>
+
+
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="5dp">
+
+                                            <TextView
+                                                android:id="@+id/StopCZXCXsZCbit3"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Unidad"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:layout_width="222dp"
+                                                android:layout_height="7dp" />
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:gravity="end"
+                                                android:orientation="horizontal">
+
+                                                <Spinner
+                                                    android:id="@+id/spUnidad"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="70dp"
+                                                    android:background="@drawable/style_spinner"
+                                                    android:entries="@array/Unidad"
+                                                    android:textAlignment="center" />
+
+
+                                                <ImageView
+                                                    android:layout_width="27dp"
+                                                    android:layout_height="18dp"
+                                                    android:layout_alignParentTop="true"
+                                                    android:layout_alignParentRight="true"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="17dp"
+                                                    android:layout_marginRight="16dp"
+                                                    android:src="@drawable/flecha_arriba" />
+
+                                            </RelativeLayout>
+
+
+                                        </TableRow>
+
+                                        <TableRow
+                                            android:layout_width="match_parent"
+                                            android:layout_height="54dp"
+                                            android:layout_marginTop="5dp">
+
+                                            <TextView
+                                                android:id="@+id/StopCZXCXsZCbit"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="59dp"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:text="  Ultima Calibracion"
+                                                android:textColor="#000000"
+                                                android:textSize="20sp" />
+
+                                            <TextView
+                                                android:id="@+id/textView17"
+                                                android:layout_width="120dp"
+                                                android:layout_height="3dp" />
+
+                                            <TextView
+                                                android:id="@+id/tvUltimaCalibracion"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="42dp"
+                                                android:background="@drawable/fondolineainferiornegratranslucido"
+                                                android:fontFamily="sans-serif-medium"
+                                                android:textAlignment="center"
+                                                android:textColor="#000000"
+                                                android:textSize="17sp" />
+
+
+                                        </TableRow>
+                                        <FrameLayout
+                                            android:visibility="gone" android:layout_height="wrap_content"
+                                            android:layout_width="wrap_content">
+                                            <TableRow android:layout_height="59dp"
+                                                android:layout_width="match_parent"
+                                                >
+
+                                                <TextView
+                                                    android:id="@+id/ano"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="65dp"
+                                                    android:fontFamily="sans-serif-medium"
+                                                    android:text="  ano"
+                                                    android:textColor="#000000"
+                                                    android:textSize="20sp" />
+
+                                                <TextView
+                                                    android:layout_width="240dp"
+                                                    android:layout_height="wrap_content" />
+
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:orientation="horizontal">
+
+                                                    <Spinner
+                                                        android:id="@+id/spano"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="48dp"
+                                                        android:background="@drawable/style_spinner"
+                                                        android:textAlignment="center" />
+
+
+                                                    <ImageView
+                                                        android:layout_width="27dp"
+                                                        android:layout_height="18dp"
+                                                        android:layout_alignParentTop="true"
+                                                        android:layout_alignParentRight="true"
+                                                        android:layout_gravity="center"
+                                                        android:layout_marginTop="17dp"
+                                                        android:layout_marginRight="16dp"
+                                                        android:src="@drawable/flecha_arriba" />
+
+                                                </RelativeLayout>
+
+                                            </TableRow>
+                                            <TableRow android:layout_height="59dp"
+                                                android:layout_width="match_parent">
+
+                                                <TextView
+                                                    android:id="@+id/uni"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="65dp"
+                                                    android:fontFamily="sans-serif-medium"
+                                                    android:text="  uni"
+                                                    android:textColor="#000000"
+                                                    android:textSize="20sp" />
+
+                                                <TextView
+                                                    android:layout_width="240dp"
+                                                    android:layout_height="wrap_content" />
+
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:orientation="horizontal">
+
+                                                    <Spinner
+                                                        android:id="@+id/spuni"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="48dp"
+                                                        android:background="@drawable/style_spinner"
+                                                        android:textAlignment="center" />
+
+
+                                                    <ImageView
+                                                        android:layout_width="27dp"
+                                                        android:layout_height="18dp"
+                                                        android:layout_alignParentTop="true"
+                                                        android:layout_alignParentRight="true"
+                                                        android:layout_gravity="center"
+                                                        android:layout_marginTop="17dp"
+                                                        android:layout_marginRight="16dp"
+                                                        android:src="@drawable/flecha_arriba" />
+
+                                                </RelativeLayout>
+
+                                            </TableRow>
+                                            <TableRow android:layout_height="59dp"
+                                                android:layout_width="match_parent">
+
+                                                <TextView
+                                                    android:id="@+id/reg"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="65dp"
+                                                    android:fontFamily="sans-serif-medium"
+                                                    android:text="  reg"
+                                                    android:textColor="#000000"
+                                                    android:textSize="20sp" />
+
+                                                <TextView
+                                                    android:layout_width="240dp"
+                                                    android:layout_height="wrap_content" />
+
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:orientation="horizontal">
+
+                                                    <Spinner
+                                                        android:id="@+id/spreg"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="48dp"
+                                                        android:background="@drawable/style_spinner"
+                                                        android:textAlignment="center" />
+
+
+                                                    <ImageView
+                                                        android:layout_width="27dp"
+                                                        android:layout_height="18dp"
+                                                        android:layout_alignParentTop="true"
+                                                        android:layout_alignParentRight="true"
+                                                        android:layout_gravity="center"
+                                                        android:layout_marginTop="17dp"
+                                                        android:layout_marginRight="16dp"
+                                                        android:src="@drawable/flecha_arriba" />
+
+                                                </RelativeLayout>
+
+                                            </TableRow>
+                                            <TableRow android:layout_height="59dp"
+                                                android:layout_width="match_parent">
+
+                                                <TextView
+                                                    android:id="@+id/bot"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="65dp"
+                                                    android:fontFamily="sans-serif-medium"
+                                                    android:text="  bot"
+                                                    android:textColor="#000000"
+                                                    android:textSize="20sp" />
+
+                                                <TextView
+                                                    android:layout_width="240dp"
+                                                    android:layout_height="wrap_content" />
+
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:orientation="horizontal">
+
+                                                    <Spinner
+                                                        android:id="@+id/spbot"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="48dp"
+                                                        android:background="@drawable/style_spinner"
+                                                        android:textAlignment="center" />
+
+
+                                                    <ImageView
+                                                        android:layout_width="27dp"
+                                                        android:layout_height="18dp"
+                                                        android:layout_alignParentTop="true"
+                                                        android:layout_alignParentRight="true"
+                                                        android:layout_gravity="center"
+                                                        android:layout_marginTop="17dp"
+                                                        android:layout_marginRight="16dp"
+                                                        android:src="@drawable/flecha_arriba" />
+
+                                                </RelativeLayout>
+
+                                            </TableRow>
+                                            <TableRow android:layout_height="59dp"
+                                                android:layout_width="match_parent">
+
+                                                <TextView
+                                                    android:id="@+id/bps"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="65dp"
+                                                    android:fontFamily="sans-serif-medium"
+                                                    android:text="  bps"
+                                                    android:textColor="#000000"
+                                                    android:textSize="20sp" />
+
+                                                <TextView
+
+                                                    android:layout_width="240dp"
+                                                    android:layout_height="wrap_content" />
+
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:orientation="horizontal">
+
+                                                    <Spinner
+                                                        android:id="@+id/spbps"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="48dp"
+                                                        android:background="@drawable/style_spinner"
+                                                        android:textAlignment="center" />
+
+
+                                                    <ImageView
+                                                        android:layout_width="27dp"
+                                                        android:layout_height="18dp"
+                                                        android:layout_alignParentTop="true"
+                                                        android:layout_alignParentRight="true"
+                                                        android:layout_gravity="center"
+                                                        android:layout_marginTop="17dp"
+                                                        android:layout_marginRight="16dp"
+                                                        android:src="@drawable/flecha_arriba" />
+
+                                                </RelativeLayout>
+
+                                            </TableRow>
+                                        </FrameLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="68dp"
+                                            android:layout_marginStart="35dp"
+                                            android:layout_marginEnd="35dp"
+                                            android:orientation="horizontal">
+
+                                            <Button
+                                                android:id="@+id/btIniciarCalibracion"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginEnd="5dp"
+                                                android:layout_weight="1"
+                                                android:background="@drawable/botoneraprincipalgrisoscuro"
+                                                android:fontFamily="sans-serif-black"
+                                                android:gravity="center"
+                                                android:text="Iniciar Calibracion"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#FFFFFF"
+                                                android:textSize="22sp" />
+
+                                            <Button
+                                                android:id="@+id/btReajusteCero"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginStart="5dp"
+                                                android:layout_weight="1"
+                                                android:background="@drawable/botoneraprincipalgrisoscuro"
+                                                android:fontFamily="sans-serif-black"
+                                                android:gravity="center"
+                                                android:text="Re Ajuste Cero"
+                                                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                android:textColor="#FFFFFF"
+                                                android:textSize="22sp" />
+
+                                        </LinearLayout>
+                                        <!--  <LinearLayout
+                                              android:layout_width="match_parent"
+                                              android:layout_height="wrap_content"
+                                              android:layout_marginStart="25dp"
+                                              android:layout_marginEnd="25dp"
+                                              android:orientation="horizontal">
+                                              <Button
+                                                  android:id="@+id/btreset"
+                                                  android:layout_width="wrap_content"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_marginEnd="5dp"
+                                                  android:layout_weight="1"
+                                                  android:background="@drawable/botoneraprincipalgrisoscuro"
+                                                  android:fontFamily="sans-serif-black"
+                                                  android:gravity="center"
+                                                  android:text="Reset o.O"
+                                                  android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                                                  android:textColor="#FFFFFF"
+                                                  android:textSize="22sp" />
+
+                                          </LinearLayout> -->
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </ScrollView>
+
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

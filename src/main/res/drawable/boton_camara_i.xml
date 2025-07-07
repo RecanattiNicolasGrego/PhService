@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fondo del botón -->
+    <item android:id="@+id/fondo"
+        android:drawable="@drawable/boton_selector" />
+
+    <!-- Icono -->
+    <item android:id="@+id/icono"
+        android:drawable="@drawable/boton_camara"
+        android:gravity="center"
+        />
+
+</layer-list>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/borderradius"
+    android:backgroundTint="@color/gris"
+    android:layout_height="match_parent">
+
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <Button
+            android:id="@+id/buttonc"
+            android:layout_width="0dp"
+            android:layout_height="88dp"
+            android:layout_marginEnd="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_selector_gris"
+            android:backgroundTint="@color/grisoscuro"
+            android:text="CANCELAR"
+            android:textColor="@color/blanco"
+            android:textSize="24sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/buttons"
+            android:layout_width="0dp"
+            android:layout_height="88dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_selector_gris"
+            android:backgroundTint="@color/grisoscuro"
+            android:text="GUARDAR"
+            android:textColor="@color/blanco"
+            android:textSize="24sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="865dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/botoneraprincipal2"
+
+
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
+
+
+        <LinearLayout
+            android:layout_width="706dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text="Ingrese titulo del nuevo archivo"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="#FFFFFF"
+                    android:textSize="34sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/etDatos"
+                        android:layout_width="match_parent"
+                        android:layout_height="76dp"
+                        android:autoText="false"
+                        android:background="@drawable/stylekeycor3"
+                        android:cursorVisible="false"
+                        android:gravity="center"
+                        android:importantForAutofill="no"
+                        android:inputType="textUri|textNoSuggestions"
+                        android:text=""
+                        android:textSize="48sp"
+                        tools:targetApi="o">
+
+                        <requestFocus />
+                    </EditText>
+
+                    <LinearLayout
+                        android:id="@+id/lndelete_text"
+                        android:layout_width="65dp"
+                        android:layout_height="66dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="623dp"
+                        android:layout_marginEnd="18dp"
+                        android:background="@drawable/delete_text"
+                        android:orientation="horizontal"></LinearLayout>
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
