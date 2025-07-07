@@ -39,6 +39,23 @@ public class ExpansionManager implements Expansion,ListenerIntermediario.Interme
             }
         }
     }
+
+    @Override
+    public Boolean CambiarSalida(int numero, Boolean estado) {
+        try {
+            SetearSalida(estado,numero,0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean LeerEntrada(int numero) {
+       return LeerEntrada(numero, 0) == 1;
+    }
+
+
     public interface ExpansionesMessageListener {
         void ExpansionListener(int num, ArrayList<Integer> data);
     }
@@ -137,8 +154,8 @@ public class ExpansionManager implements Expansion,ListenerIntermediario.Interme
          while(ExpansionMap.size()>i && valor==null) {
             int XEntradas = ExpansionMap.get(i).getEntradas();
             int Entrada = NEntradas +numEntrada-1;
-            if(Entrada >XEntradas){
-                valor =ExpansionMap.get(i).LeerEntrada(numEntrada-1,id);
+            if(Entrada >XEntradas){// FIJARSE SI NO ES >=
+                valor =ExpansionMap.get(i).LeerEntrada(numEntrada-1,ExpansionMap.get(i).getIdModulo());
             }else{
                 NEntradas = NEntradas + XEntradas;
             }
@@ -155,8 +172,8 @@ public class ExpansionManager implements Expansion,ListenerIntermediario.Interme
         while(ExpansionMap.size()>i && res==null) {
             int XSalidas = ExpansionMap.get(i).getSalidas();
             int Salida = NSalidas+numSalida-1;
-            if(Salida>XSalidas){
-                res=ExpansionMap.get(i).SetearSalida(valor,Salida-1,id);
+            if(Salida>XSalidas){ // FIJARSE SI NO ES >=
+                res=ExpansionMap.get(i).SetearSalida(valor,Salida-1,ExpansionMap.get(i).getIdModulo());
 
             }else{
                 NSalidas=NSalidas+XSalidas;

@@ -221,16 +221,32 @@
                         android:textColor="#000000"
                         android:textSize="30sp" />
 
-                    <TextView
-                        android:id="@+id/tv_Baud1"
-                        android:layout_width="536dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/stylekeycor6ceropaddin"
-                        android:gravity="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#000000"
-                        android:textSize="30sp" />
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/sp_Baud"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/style_spinner"
+                            android:entries="@array/baudrate"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginRight="21dp"
+                            android:src="@drawable/flecha_arriba" />
+
+                    </RelativeLayout>
+
 
                 </LinearLayout>
 
@@ -254,16 +270,31 @@
                         android:textColor="#000000"
                         android:textSize="30sp" />
 
-                    <TextView
-                        android:id="@+id/tv_Stopbit"
-                        android:layout_width="536dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/stylekeycor6ceropaddin"
-                        android:gravity="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#000000"
-                        android:textSize="30sp" />
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/sp_Stopbit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/style_spinner"
+                            android:entries="@array/Stopbit"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginRight="21dp"
+                            android:src="@drawable/flecha_arriba" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -286,17 +317,31 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:textColor="#000000"
                         android:textSize="30sp" />
-
-                    <TextView
-                        android:id="@+id/tv_Databit"
-                        android:layout_width="536dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/stylekeycor6ceropaddin"
-                        android:gravity="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#000000"
-                        android:textSize="30sp" />
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/sp_Databit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/style_spinner"
+                            android:entries="@array/DataBit"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginRight="21dp"
+                            android:src="@drawable/flecha_arriba" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -321,17 +366,31 @@
                         android:textColor="#000000"
                         android:textSize="30sp" />
 
-                    <TextView
-                        android:id="@+id/tv_Parity"
-                        android:layout_width="536dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/stylekeycor6ceropaddin"
-                        android:gravity="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="#000000"
-                        android:textSize="30sp" />
+                        android:layout_weight="2"
+                        android:orientation="horizontal">
 
+                        <Spinner
+                            android:id="@+id/sp_Parity"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/style_spinner"
+                            android:entries="@array/Parity"
+                            android:textAlignment="center" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="17dp"
+                            android:layout_marginRight="21dp"
+                            android:src="@drawable/flecha_arriba" />
+
+                    </RelativeLayout>
                 </LinearLayout>
 
             </LinearLayout>

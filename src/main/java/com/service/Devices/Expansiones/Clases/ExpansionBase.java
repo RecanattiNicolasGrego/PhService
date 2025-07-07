@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.BalanzaService;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
+import com.service.Devices.Balanzas.Clases.BalanzaBase;
 import com.service.Interfaz.Expansion;
+import com.service.Interfaz.ExpansionGestor;
+import com.service.Interfaz.Expansiones;
 import com.service.Utils;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,6 +26,7 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
     public static String StopBdef="1";
     public static String DataBdef="8";
     public static String Paritydef="0";
+    Class<?> clazz;
     String idModulo= "\u0001";
 
     Boolean isRunning=false;
@@ -34,17 +39,23 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
     this.activity=activity;
   //  System.out.println(id);
     if(id!=null && !id.equals("1")) {
-        int numero = 1;
-        char caracter = (char) numero;
+        int numero = Integer.parseInt(id);
     //    System.out.println("El carácter para el número " + numero + " es: " + caracter);
-        idModulo = String.valueOf(caracter);
+            idModulo = String.valueOf((char) numero);
     }
-      //  System.out.println("id" +idModulo);
+        clazz = this.getClass();
+        //  System.out.println("id" +idModulo);
     serialport =Puerto;
 
 
 
     }
+
+    public int getIdModulo() {
+        int asciivalue =(int)idModulo.charAt(0);
+        return asciivalue;
+    }
+
     @Override
     public Integer LeerEntrada(int numEntrada, int id) {
         Integer res;
@@ -81,13 +92,30 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
         }
     }
 
+
     @Override
     public Integer getSalidas() {
-        return Salidas;
+        Integer Salidasaux=Salidas;
+        try {
+            Field field = clazz.getDeclaredField("Salidas");
+            field.setAccessible(true);
+            Salidasaux= (Integer)field.get(null); // null porque es static
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Salidasaux ;
     }
     @Override
     public Integer getEntradas() {
-        return Entradas;
+        Integer entradasaux =Entradas;
+        try {
+            Field field = clazz.getDeclaredField("Entradas");
+            field.setAccessible(true);
+            entradasaux= (Integer) field.get(null); // null porque es static
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return entradasaux;
     }
 
     @Override
@@ -135,7 +163,7 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
                        String x = respuesta;
                        String parte1 = x.substring(0, 2);
                        String parte2 = x.substring(2);
-                       Integer[] Estado1 = Utils.stringToBitArray(parte1+parte2);
+                       Integer[] Estado1 = Utils.hexsize2ToBitArray(parte1+parte2);
                        if (Estado1 != null) {
                            ArrayList<Integer> auxEstado = new ArrayList<>(Arrays.asList(Estado1));
                            auxEstado.subList(auxEstado.size() - 4, auxEstado.size()).clear();

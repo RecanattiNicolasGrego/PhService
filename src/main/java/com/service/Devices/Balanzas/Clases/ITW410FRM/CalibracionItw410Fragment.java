@@ -1,4 +1,4 @@
-package com.service.Devices.Balanzas.Clases.ITW410;
+package com.service.Devices.Balanzas.Clases.ITW410FRM;
 
 import static com.service.Utils.Mensaje;
 
@@ -40,12 +40,16 @@ import com.service.Utils;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CalibracionItw410Fragment extends Fragment {
     static AppCompatActivity activity;
     static ITW410_FORM BZA;
     private ButtonProvider buttonProvider;
-//    int subnombre=0;
+    ExecutorService thread = Executors.newFixedThreadPool(2);
+
+    //    int subnombre=0;
     TextView titulo;
     ProgressBar loadingPanel;
     TextView tvCarga;
@@ -156,10 +160,10 @@ public class CalibracionItw410Fragment extends Fragment {
             bt_home.setOnClickListener(view1 -> {
                 if(bt_homebool){
                     bt_homebool=false;
-                    new Thread() {
+                    thread.execute(new Runnable() {
                         @Override
                         public void run() {
-                            try {
+                    try {
                                 estado= BalanzaBase.M_MODO_BALANZA;
                                  BZA.Guardar_cal();
                                 getActivity().runOnUiThread(new Runnable() {
@@ -203,11 +207,10 @@ public class CalibracionItw410Fragment extends Fragment {
                                 e.printStackTrace();
                             }
                         }
-                    }.start();
-
-                }
             });
 
+        }
+    });
         }
     }
    private void initializeViews(View view) {
@@ -323,7 +326,7 @@ public class CalibracionItw410Fragment extends Fragment {
                 mBuilder.setView(mView);
                 dialog = mBuilder.create();
                 dialog.show();
-                new Thread(new Runnable() {
+                thread.execute(new Runnable() {
                     @Override
                     public void run() {
                         BZA.Recero_cal();
@@ -337,7 +340,7 @@ public class CalibracionItw410Fragment extends Fragment {
                             }
                         });
                     }
-                }).start();
+                });
             }
         });
         bt_iniciarCalibracion.setOnClickListener(view12 -> {
@@ -354,7 +357,7 @@ public class CalibracionItw410Fragment extends Fragment {
             }
             });
         final ArrayList<String>[] listdat = new ArrayList[1];
-        new Thread(new Runnable() {
+        thread.execute(new Runnable() {
             @Override
             public void run() {
                 puntoDecimal= PreferencesDevicesManager.getPuntoDecimal(BZA.Nombre,BZA.numBza,activity);
@@ -429,7 +432,7 @@ public class CalibracionItw410Fragment extends Fragment {
 
                 });
             }
-            }).start();
+            });
 
 
 

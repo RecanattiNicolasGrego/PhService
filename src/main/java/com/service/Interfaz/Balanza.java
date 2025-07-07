@@ -5,11 +5,10 @@ import com.service.Devices.Balanzas.Clases.BalanzaBase;
 
 public interface Balanza {
 
-
     /** Devuelve la balanza especificada
      * @param numID El ID a devolver.
      */
-    BalanzaBase getBalanza(int numID);
+    Balanza getBalanza(int numID);
 
     /**
      * Obtiene el valor neto de la balanza especificada.
@@ -102,20 +101,7 @@ public interface Balanza {
      */
     String getUnidad(int numBza);
 
-    /**
-     * Obtiene el pico de la balanza especificada como un String.
-     *
-     * @param numBza El número de la balanza.
-     * @return El pico como String.
-     */
-    String getPicoStr(int numBza);
-    /**
-     * Obtiene el pico de la balanza especificada.
-     *
-     * @param numBza El número de la balanza.
-     * @return El valor del pico.
-     */
-    Float getPico(int numBza);
+
   /**
      * Verifica si hay sobrecarga en la balanza especificada.
      *
@@ -124,6 +110,63 @@ public interface Balanza {
      */
     Boolean getSobrecarga(int numBza);
 
+
+        interface  ITW380 extends Balanza{
+            String getCaudalInstantaneo();
+            String getAcumuladoParcial();
+            String getResultadoPID();
+            String getProducto();
+            String getAcumuladoTotal();
+            String getAlarmaCaudalMinima();
+            String getAlarmaCaudalMaxima();
+            String getAlarmaAcumulado();
+            String getTurno1Acumulado();
+            String getTurno2Acumulado();
+            String getTurno3Acumulado();
+            String getTurno4Acumulado();
+            String getRegistroTurno();
+            String getRPM();
+            String getVelocidad();
+            String getPulsos();
+            String getTiempoCinta();
+            String getPIDSetpoint();
+            String getSetpoint();
+            String getSetpoint1Acumulado();
+            String getSetpoint2Acumulado();
+            String getSetpoint3Acumulado();
+            String getSetpoint4Acumulado();
+            String getSetpoint5Acumulado();
+            String getDiaMes();
+            String getAño();
+
+            String getHora();
+            String getTurno1();
+            String getTurno2();
+            String getTurno3();
+            String getTurno4();
+            String getEncoder();
+            String getVelocidadSinEncoder();
+            boolean setAcumula(Boolean Acumula);
+
+            boolean setParadaArranque(Boolean ParadaArranque);
+            boolean setResetAcumTotal();
+            boolean setResetAcumParcial();
+
+            boolean setAlarmaCaudalMin(Integer AlarmaCaudalMin);
+            boolean setAlarmaCaudalMax(Integer AlarmaCaudalMax);
+            boolean setAlarmaAcum(Integer AlarmaAcum);
+            boolean setPIDSetpoint(Integer PIDSetpoint);
+            boolean setSetpoint(Integer Setpoint);
+            boolean setDiaMes(Integer DiaMes);
+            boolean setAño(Integer Año);
+            boolean setHora(Integer Hora);
+            boolean setTurno1(Integer Turno1);
+            boolean setTurno2(Integer Turno2);
+            boolean setTurno3(Integer Turno3);
+            boolean setTurno4(Integer Turno4);
+            boolean setEncoder(Boolean Encoder);
+            boolean setVelocidadSinEncoder(Integer VelocidadSinEncoder);
+        }
         interface ITW410 extends Balanza{
             /**
              * Configura el set point de la balanza ITW410.

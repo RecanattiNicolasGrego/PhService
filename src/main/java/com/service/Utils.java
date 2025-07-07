@@ -7,13 +7,13 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Looper;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.method.DigitsKeyListener;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -28,7 +28,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
-import com.service.Interfaz.Modbus;
+import com.service.Comunicacion.Modbus.Req.BasicProcessImageSlave;
 import com.service.Interfaz.dispositivoBase;
 
 import java.io.BufferedInputStream;
@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -123,7 +122,8 @@ public  class Utils {
         final LinearLayout delete_text = mView.findViewById(R.id.lndelete_text);
         final Spinner spinner = mView.findViewById(R.id.spinner);
         ArrayList<String> items = new ArrayList<>();
-        items.addAll(PreferencesDevicesManager.obtenerAliasDeModelos(Modbus.ClasesModbus.values()));
+
+        items.addAll(PreferencesDevicesManager.obtenerAliasDeModelos(dispositivoBase.Modbus.ClasesModbus.values()));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(activity.getApplicationContext(), android.R.layout.simple_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -142,6 +142,7 @@ public  class Utils {
         });
         titulo.setText(Texto);
 
+
         if (!textView.getText().toString().equals("")) {
             userInput.setText(textView.getText().toString());
             userInput.setSelection(userInput.getText().length());
@@ -158,16 +159,39 @@ public  class Utils {
         Guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    dispositivoBase x =BalanzaService.getInstance().Dispositivos.getDispositivo(1);
-                    if(BalanzaService.ModelosClasesDispositivos.Slave.compararInstancia(1)) {
-                        Modbus.Slave mSlave = (Modbus.Slave) x;
-                        mSlave.publicarHoldingRegister(0, Modbus.Slave.ClasesModbus.valueOf(spinner.getSelectedItem().toString()), userInput.getText().toString());
-                    }
+
+
+
+                    /* x =BalanzaService.getInstance().Dispositivos.getDispositivo(2);
+                    if(BalanzaService.ModelosClasesDispositivos.Slave.compararInstancia(2)) {
+                        dispositivoBase.Modbus.Slave mSlave = (dispositivoBase.Modbus.Slave) x;
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ArrayList<Integer> x=  new ArrayList<Integer>();
+                                for (int i = 1; i < 30 ; i++) {
+                                    x.add(i);
+                                }
+                                BasicProcessImageSlave z = new BasicProcessImageSlave.BPIBuilder(mSlave.getImageBasic())
+                                        .InitDefaultCoils(x)
+                                        .InitDefaultHoldingRegisters(x)
+                                        .build();
+                                mSlave.init(new dispositivoBase.Modbus.Slave.DeviceMessageListenerM_Slave() {
+                                    @Override
+                                    public void CoilChange(int Num, int nRegistro, boolean oldVal, boolean newVal) {
+                                        System.out.println("COIL CHANGE "+Num+" "+nRegistro+" "+oldVal+" "+newVal);
+                                    }
+
+                                    @Override
+                                    public void RegisterChange(int Num, int nRegistro, Short oldVal, Short newVal) {
+                                        System.out.println("registerChange "+Num+" "+nRegistro+" "+oldVal+" "+newVal);
+                                    }
+                                },z);
+                            }
+                        }).start();
+                    }*/
                     //textView.setText(userInput.getText().toString());
                     dialog1.cancel();
-                } catch (IllegalArgumentException e) {
-                }
             }
         });
         Cancelar.setOnClickListener(view -> dialog1.cancel());
@@ -188,15 +212,19 @@ public  class Utils {
         return Fecha;
     }
     public static boolean isNumeric(String strNum) {
-        if (strNum == null) {
-            return false;
-        }
         try {
-            double d = Double.parseDouble(strNum);
-        } catch (NumberFormatException nfe) {
+            if (strNum == null) {
+                return false;
+            }
+            try {
+                double d = Double.parseDouble(strNum);
+            } catch (NumberFormatException nfe) {
+                return false;
+            }
+            return true;
+        } catch (Exception e) {
             return false;
         }
-        return true;
     }
     public static int[] numberToBitArray2(int number) {
         int[] bitArray = new int[16];
@@ -226,8 +254,35 @@ public  class Utils {
         }
         return sb.toString();
     }
+    public static Integer[] charToBitArray(String c) {
+        try {
+            Integer[] bitArray = new Integer[8];
+            Character x = Character.valueOf(c.charAt(0));
+            int value = (int) x; // convierte el char a su valor ASCII/Unicode
 
-    public static Integer[] stringToBitArray(String str) {
+            for (int i = 7; i >= 0; i--) {
+                bitArray[i] = (value >> (7 - i)) & 1;  // Shift de 7-i para colocar los bits de izquierda a derecha
+            }
+
+
+            return bitArray;
+        } catch (Exception e) {
+            System.out.println("YA NO ENTIENDO NA");
+            Integer[] aux = new Integer[8];
+            for (int i = 7; i >= 0; i--) {
+                if(i==1){
+                    aux[i] = 1;
+                }else{
+                    aux[i] = 0;
+                }
+                  // Shift de 7-i para colocar los bits de izquierda a derecha
+            }
+            return aux;
+        }
+    }
+
+
+    public static Integer[] hexsize2ToBitArray(String str) {
         if (str.length() % 2 != 0) {
         //    System.out.println("AAAAAAAAAAAAAAAA");
         }
@@ -474,6 +529,7 @@ public  class Utils {
             }
         });
         userInput.setInputType(InputType.TYPE_CLASS_NUMBER |InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        userInput.setFilters(new InputFilter[]{ new InputFilter.LengthFilter(10) });
 
         titulo.setText(Texto);
         if (!textView.getText().toString().equals("")) {
@@ -542,8 +598,12 @@ public  class Utils {
             @Override
             public void onClick(View view) {
                 if (isValidIPv4(userInput.getText().toString())) {
-                    textView.setText(userInput.getText().toString());
-                    dialog.cancel();
+                    if(!Utils.getIPAddress(true).equals(userInput.getText().toString())) {
+                        textView.setText(userInput.getText().toString());
+                        dialog.cancel();
+                    }else{
+                        Mensaje("No puede ser la ip actual",R.layout.item_customtoasterror,(AppCompatActivity) activity);
+                    }
                 } else {
                     Mensaje("No tiene formato IP",R.layout.item_customtoasterror,(AppCompatActivity) activity);
                 }
@@ -615,6 +675,14 @@ public  class Utils {
             }
 
         });
+    }
+    public  static void ocultarTeclado(EditText editText,AppCompatActivity actividad) {
+        if (editText != null && actividad != null) {
+            InputMethodManager imm = (InputMethodManager) actividad.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            }
+        }
     }
 
     /*public static String getHora(){

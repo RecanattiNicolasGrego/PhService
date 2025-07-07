@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.service.Comunicacion.Modbus.modbus4And.ModbusFactory;
 import com.service.Comunicacion.Modbus.modbus4And.ModbusSlaveSet;
-import com.service.Comunicacion.Modbus.modbus4And.ProcessImage;
 import com.service.Comunicacion.Modbus.modbus4And.exception.IllegalDataAddressException;
 import com.service.Comunicacion.Modbus.modbus4And.exception.ModbusInitException;
 import com.service.Comunicacion.Modbus.modbus4And.ip.IpParameters;
@@ -51,7 +50,7 @@ public class ModbusReqTCPslave {
      *
      * @throws ModbusInitException
      */
-    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack,BasicProcessImage image, String host) throws ModbusInitException {
+    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, BasicProcessImageSlave image, String host) throws ModbusInitException {
 
         ModbusFactory mModbusFactory = new ModbusFactory();
         IpParameters params = new IpParameters();

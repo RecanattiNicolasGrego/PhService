@@ -16,6 +16,7 @@
     import androidx.constraintlayout.widget.ConstraintLayout;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.service.BalanzaService;
     import com.service.estructuras.classDevice;
     import com.service.PreferencesDevicesManager;
     import com.service.R;
@@ -26,6 +27,8 @@
     public class RecyclerDeviceLimpio extends RecyclerView.Adapter<RecyclerDeviceLimpio.ViewHolder> {
             private int selectedPos = RecyclerView.NO_POSITION;
             private List<classDevice> listaDispositivos;
+            private Boolean band485=false;
+            private Boolean onlyonce=false;
             private final LayoutInflater mInflater;
             private ItemClickListener mClickListener;
             private int lastPosition = -1;
@@ -33,10 +36,15 @@
             Boolean banderaVistaPrevia =false;
             int Device=0;
             String Salida="";
+            Integer nuevomargin =0;
             String Salidastr="",Modelo="";
             String Devicestr;
 
-            public RecyclerDeviceLimpio(Context context, List<classDevice> data, AppCompatActivity mainActivity, ItemClickListener clickListener, String Salida, int Device) {
+        public void setPaddingchild(Integer padding){
+            this.nuevomargin =padding;
+            notifyDataSetChanged();
+        }
+        public RecyclerDeviceLimpio(Context context, List<classDevice> data, AppCompatActivity mainActivity, ItemClickListener clickListener, String Salida, int Device) {
                 this.mInflater = LayoutInflater.from(context);
                 this.listaDispositivos = data;
                 this.mainActivity = mainActivity;
@@ -54,56 +62,27 @@
 
                 return new ViewHolder(view);
             }
-            // binds the data to the TextView in each row
             @Override
             public void onBindViewHolder(ViewHolder holder, int position) {
                 Devicestr="";
+
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.ultimatelayout.getLayoutParams();
+                params.setMargins(params.leftMargin, params.topMargin, nuevomargin, params.bottomMargin);
+                holder.ultimatelayout.setLayoutParams(params);
+
                 ArrayList<String> Direccion = listaDispositivos.get(position).getDireccion();
                 if(Device==-1){
                     banderaVistaPrevia = true;
                     Device = PreferencesDevicesManager.obtenerIndiceTipo(listaDispositivos.get(position).getTipo());
                     Devicestr=listaDispositivos.get(position).getTipo();
                 }
-                    switch (Device) {
-                        case 0: {
-                            Devicestr = "Balanza";
-                            break;
-                        }
-                        case 1:{
-                            Devicestr = "Impresora";
-                            break;
-                        }
-                        case 2:{
-                            Devicestr="Expansion";
-                            break;
-                        }
-                        case 3:{
-                            Devicestr="Escaner";
-                            break;
-                        }
-                        case 4:{
-                            Devicestr="Dispositivo";
-                            break;
-                        }
-                    }
-                if(banderaVistaPrevia){
+                Devicestr = PreferencesDevicesManager.listaKeyDeviceMap.get(Device);
+                 if(banderaVistaPrevia){
                     Salidastr= listaDispositivos.get(position).getSalida();
                 }else {
-                    switch (Salida) {
-                        case "Puerto Serie 1": {
-                            Salidastr = "PuertoSerie 1";
-                            break;
-                        }
-                        case "Puerto Serie 2": {
-                            Salidastr = "PuertoSerie 2";
-                            break;
-                        }
-                        case "Puerto Serie 3": {
-                            Salidastr = "PuertoSerie 3";
-                            break;
-                        }
-                        case "Red": {
-                            Salidastr = "Red";
+                    Salidastr = PreferencesDevicesManager.salidaMap.get(Salida);
+                    switch (PreferencesDevicesManager.listaKeySalidaMap.indexOf(Salida)) {
+                        case 3: {
                             if(Direccion!=null) {
                                 int lenght = Direccion.size();
                                 if (lenght > 0) {
@@ -111,18 +90,16 @@
                                     holder.Slave.setText(IP);
                                 }
                             }
-                            holder.tvnombreipmac.setText("Red");
+                            holder.tvnombreipmac.setText("Red:");
                             holder.Slave.setClickable(false);
 
                             break;
                         }
-                        case "Bluetooth": {
-                            Salidastr = "Bluetooth";
+                        case 4: {
                             if(Direccion!=null) {
                                 int lenght = Direccion.size();
-                                holder.tvnombreipmac.setText("MAC");
                                 holder.Ltvid.setVisibility(VISIBLE);
-
+                                holder.tvnombreipmac.setText("Mac:");
                                 if (lenght > 0) {
                                     String mac = Direccion.get(0);
                                     holder.Slave.setText(mac);
@@ -131,72 +108,57 @@
                             holder.Slave.setClickable(false);
                             break;
                         }
-                        case "USB": {
-                            Salidastr = "USB";
-                            break;
-                        }
+
 
                     }
                 }
-                Boolean tieneid=false;
-
-//                switch (mData.get(0).getModelo()){
-//                    case 0:{
-//                        tieneid=OPTIMA_I.tieneid;
-//
-//                        break;
-//                    }
-//                    case 1:{
-//                        tieneid= MINIMA_I.tieneid;
-//
-//                        break;
-//                    }
-//                    case 2:{
-//                        tieneid= R31P30_I.tieneid;
-//
-//                       break;
-//                    }
-//                    case 3:{
-//                        tieneid= ITW410_FORM.tieneid;
-//                        break;
-//                    }
-//                    case 10:{
-//                        tieneid=false;
-//                        break;
-//                    }
-//                    case 20:{
-//                        tieneid=false;
-//                         break;
-//                    }
-//                    case 21:{
-//                        tieneid=false;
-//                         break;
-//                    }
-//                    case 22:{
-//                        tieneid=false;
-//                        break;
-//                    }
-//                    case 23:{
-//                        tieneid=false;
-//                        break;
-//                    }
-//                    case 30:{
-//                        tieneid=false;
-//                        break;
-//                    }
-//                    case 40:{
-//                        tieneid=false;
-//                        break;
-//                    }
-//
-//                    default:{
-//
-//                        break;
-//                    }
-//                }
                 Modelo = listaDispositivos.get(position).getModelo();
-                   holder.Ltvid.setVisibility(GONE);
-                    if(position<1||((Salidastr.equals("PuertoSerie 3")&& tieneid)|| Salidastr.equals("Red"))|| banderaVistaPrevia) { //POR AHORA ESTE IF/ELSE SE QUEDA HASTA QUE HAGAMOS PROTOCOLOS CON ID  ||Salidastr.equals("PuertoSerie 3")|| Salidastr.equals("Red")
+                 //if(listaDispositivos.size()>1 && !banderaVistaPrevia){
+                  //   Modelo = listaDispositivos.get(0).getModelo();
+                 //}
+                 Boolean multipledevices=true;
+                 switch (Device){
+                     case 0:{
+                         for (BalanzaService.ModelosClasesBzas modelo : BalanzaService.ModelosClasesBzas.values()) {
+                             System.out.println(Modelo+" "+modelo.name());
+                             if(Modelo.equals(modelo.name())){
+                                 multipledevices = modelo.getTienePorDemanda();
+                                 break;
+                             }
+
+                         }
+                         break;
+                     }
+                     case 4:{
+                         for (BalanzaService.ModelosClasesDispositivos modelo : BalanzaService.ModelosClasesDispositivos.values()) {
+                             if(Modelo.equals(modelo.name())){
+                                 multipledevices = modelo.getTiene485();
+                                 break;
+                             }
+
+                         }
+                     }
+                 }
+                 /*if(onlyonce){
+                    band485=false;
+                    multipledevices=false;
+                }*/
+                if(listaDispositivos.get(position).getID()>0 && ((PreferencesDevicesManager.EsPuertoSerie(Salidastr))||(PreferencesDevicesManager.aparentaDispositivo(PreferencesDevicesManager.listaKeyDeviceMap.get(4),Devicestr)))) {
+                   if(multipledevices){ //&& !onlyonce) {
+                       band485 = true;
+                   }
+                       String Slavestr = Integer.toString(listaDispositivos.get(position).getID());
+                       holder.Slave.setText(Slavestr);
+                       holder.Slave.setVisibility(VISIBLE);
+                       holder.Ltvid.setVisibility(VISIBLE);
+
+                }else{
+                    holder.Slave.setVisibility(GONE);
+                }
+
+                // exceptionbool = !Modelo.equals(BalanzaService.ModelosClasesDispositivos.Slave.name());
+                    System.out.println("SALIDA: "+Salidastr);
+                    if((position<1||(band485||  multipledevices && Salidastr.equals(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(5)))||Salidastr.equals(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(3)))||Salidastr.equals(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(4)))&& !(Salidastr.equals(PreferencesDevicesManager.salidaMap.get(3))))|| banderaVistaPrevia )){//&& !onlyonce) { //POR AHORA ESTE IF/ELSE SE QUEDA HASTA QUE HAGAMOS PROTOCOLOS CON ID  ||Salidastr.equals("PuertoSerie 3")|| Salidastr.equals("Red")
                         if(banderaVistaPrevia){
                             holder.numMOD.setText(("Nº " + Devicestr + " " + (listaDispositivos.get(position).getNDL()))+"        "+Salidastr);
                         }else{
@@ -209,9 +171,6 @@
                                case 0:{
                                    holder.constraintLayout1.setVisibility(VISIBLE);
                                    holder.constraintLayout2.setVisibility(GONE);
-                                   if(tieneid){
-                                       holder.Ltvid.setVisibility(VISIBLE);
-                                   }
                                    if(Direccion!=null) {
                                        int lenght = Direccion.size();
                                        if (lenght > 0) {
@@ -220,9 +179,6 @@
                                        }
                                    }
                                    holder.ipMac.setClickable(false);
-                                   listaDispositivos.get(position).setID(0);//POR AHORA VA A SER 0 POR DEFAULT HASTA HACER LO DEL ID
-                                   String Slavestr = Integer.toString(listaDispositivos.get(position).getID());
-                                   holder.Slave.setText(Slavestr);
                                    holder.Slave.setClickable(false);
                                    break;
                                }
@@ -236,13 +192,13 @@
                                        } catch (Exception e) {
                                        }
                                    }
-                                   if(Salidastr.contains("Puerto Serie")||Salidastr.contains("PuertoSerie")){
+                                   if(PreferencesDevicesManager.EsPuertoSerie(Salidastr)){
                                        holder.LtvModelo.setVisibility(VISIBLE);
-                                       holder.tv_Modelo.setText(Modelo);
-                                       holder.Ltvid.setVisibility(GONE);
+                                       holder.tv_Modelo.setText(Modelo.replace("_"," "));
+
 
                                    }else{
-                                       if(Salidastr.contains("Red")||Salidastr.equals("Bluetooth")){
+                                       if(Salidastr.contains(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(3)))||Salidastr.equals(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(4)))){
                                            holder.Ltvid.setVisibility(VISIBLE);
                                            holder.tvnombreipmac.setText(Salidastr);
                                        }
@@ -257,90 +213,103 @@
 
                                 }
                                case 3:{
-                                   holder.Ltvid.setVisibility(GONE);
-                                   holder.LtvBaud.setVisibility(VISIBLE);
-                                   holder.LtvData.setVisibility(VISIBLE);
-                                   holder.LtvStop.setVisibility(VISIBLE);
-                                   holder.constraintLayout12.setVisibility(VISIBLE);
-                                   holder.Ltvparity.setVisibility(VISIBLE);
-                                   if(Direccion!=null) {
-                                       int lenght = Direccion.size();
-                                       if (lenght > 0) {
-                                           String Baud = Direccion.get(0);
-                                           holder.tvBaud.setText(Baud);
+                                   if(PreferencesDevicesManager.EsPuertoSerie(Salidastr)) {
+                                       holder.LtvBaud.setVisibility(VISIBLE);
+                                       holder.LtvData.setVisibility(VISIBLE);
+                                       holder.LtvStop.setVisibility(VISIBLE);
+                                       holder.constraintLayout12.setVisibility(VISIBLE);
+                                       holder.Ltvparity.setVisibility(VISIBLE);
+                                       if (Direccion != null) {
+                                           int lenght = Direccion.size();
+                                           if (lenght > 0) {
+                                               String Baud = Direccion.get(0);
+                                               holder.tvBaud.setText(Baud);
+                                           }
+
+                                           holder.tvBaud.setClickable(false);
+                                           holder.tvData.setClickable(false);
+                                           if (lenght > 1) {
+                                               String DATA = Direccion.get(1);
+                                               holder.tvData.setText(DATA);
+                                           }
+                                           if (lenght > 2) {
+                                               String Stop = Direccion.get(2);
+                                               holder.tvStop.setText(Stop);
+                                           }
+                                           holder.tvStop.setClickable(false);
+
+                                           if (lenght > 3) {
+                                               String Parity = Direccion.get(3);
+                                               holder.tvparity.setText(Parity);
+                                           }
                                        }
-
-                                   holder.tvBaud.setClickable(false);
-                                   holder.tvData.setClickable(false);
-                                   if(lenght>1){
-                                       String DATA = Direccion.get(1);
-                                       holder.tvData.setText(DATA);
+                                       holder.tvparity.setClickable(false);
                                    }
-                                   if (lenght > 2) {
-                                       String Stop = Direccion.get(2);
-                                       holder.tvStop.setText(Stop);
-                                   }
-                                   holder.tvStop.setClickable(false);
-
-                                   if (lenght > 3) {
-                                       String Parity = Direccion.get(3);
-                                       holder.tvparity.setText(Parity);
-                                   }
-                                   }
-                                   holder.tvparity.setClickable(false);
                                    break;
                                }
                                case 4:{
                                    holder.tv_Modelo.setVisibility(VISIBLE);
                                    holder.LtvModelo.setVisibility(VISIBLE);
-                                   holder.tv_Modelo.setText(Modelo);
+                                   holder.tv_Modelo.setText(Modelo.replace("_"," "));
+
+                                   if(listaDispositivos.get(position).getID()>0){
+                                       holder.Slave.setVisibility(VISIBLE);
+                                       holder.Ltvid.setVisibility(VISIBLE);
+                                       try {
+                                           holder.Slave.setText(String.valueOf(listaDispositivos.get(position).getID()));
+                                       } catch (Exception e) {
+                                       }
+                                   }
                                    holder.constraintLayout1.setVisibility(VISIBLE);
-                                   if(Salidastr.contains("Puerto Serie")||Salidastr.contains("PuertoSerie")) {
+                                   if(PreferencesDevicesManager.EsPuertoSerie(Salidastr)) {
                                        holder.constraintLayout12.setVisibility(VISIBLE);
 
-                                   holder.LtvBaud.setVisibility(VISIBLE);
-                                   holder.LtvData.setVisibility(VISIBLE);
-                                   holder.LtvStop.setVisibility(VISIBLE);
-                                   holder.Ltvparity.setVisibility(VISIBLE);
-                                   if(Direccion!=null) {
-                                       int lenght = Direccion.size();
-                                       if (lenght > 0) {
-                                           String Baud = Direccion.get(0);
-                                           holder.tvBaud.setText(Baud);
-                                       }
-                                       holder.tvBaud.setClickable(false);
-                                       holder.tvData.setClickable(false);
-                                       if (lenght > 1) {
-                                           String DATA = Direccion.get(1);
-                                           holder.tvData.setText(DATA);
-                                       }
-                                       if (lenght > 2) {
-                                           String Stop = Direccion.get(2);
-                                           holder.tvStop.setText(Stop);
-                                       }
-                                       holder.tvStop.setClickable(false);
-
-                                       if (lenght > 3) {
-                                           String Parity = Direccion.get(3);
-                                           holder.tvparity.setText(Parity);
-                                       }
-                                   }else{
-                                       if(Direccion!=null) {
+                                       holder.LtvBaud.setVisibility(VISIBLE);
+                                       holder.LtvData.setVisibility(VISIBLE);
+                                       holder.LtvStop.setVisibility(VISIBLE);
+                                       holder.Ltvparity.setVisibility(VISIBLE);
+                                       if (Direccion != null) {
                                            int lenght = Direccion.size();
                                            if (lenght > 0) {
-                                               String IP = Direccion.get(0);
-                                               holder.Slave.setText(IP);
+                                               String Baud = Direccion.get(0);
+                                               holder.tvBaud.setText(Baud);
+                                           }
+                                           holder.tvBaud.setClickable(false);
+                                           holder.tvData.setClickable(false);
+                                           if (lenght > 1) {
+                                               String DATA = Direccion.get(1);
+                                               holder.tvData.setText(DATA);
+                                           }
+                                           if (lenght > 2) {
+                                               String Stop = Direccion.get(2);
+                                               holder.tvStop.setText(Stop);
+                                           }
+                                           holder.tvStop.setClickable(false);
+
+                                           if (lenght > 3) {
+                                               String Parity = Direccion.get(3);
+                                               holder.tvparity.setText(Parity);
                                            }
                                        }
-                                       holder.Ltvid.setVisibility(VISIBLE);
-                                       holder.tvnombreipmac.setText("Red");
-                                       holder.Slave.setClickable(false);
+                                   }else if (Salidastr.contains(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(3)))) {
+                                           holder.LtvExceptionIP.setVisibility(VISIBLE);
+                                           if(Direccion!=null){
+                                               int lenght = Direccion.size();
+                                               if (lenght > 0) {
+                                                   String IP = Direccion.get(0);
+                                                   holder.ipMac.setText(IP);
+                                               }
+                                           }
+                                       }
+                                   holder.tvnombreipmac.setText("Id");
+                                   if(Modelo.replace(" ","_").equals(BalanzaService.ModelosClasesDispositivos.Master.name())){
+                                       holder.tvnombreipmac.setText("Slave id");
                                    }
-                                   }
+                                   holder.Slave.setClickable(false);
                                    holder.tvparity.setClickable(false);
                                    break;
                                }
-                           }
+                            }
                     } else if (listaDispositivos.get(position).getID() == -1) {
                         holder.constraintLayout1.setVisibility(GONE);
                         holder.constraintLayout2.setVisibility(VISIBLE);
@@ -364,7 +333,10 @@
                     Device=-1;
                 }
                 holder.itemView.setSelected(selectedPos == position);
-                holder.tv_Modelo.setText(Modelo);
+                holder.tv_Modelo.setText(Modelo.replace("_"," "));
+               // if((Modelo.equals(BalanzaService.ModelosClasesDispositivos.Slave.name()) && Salidastr.equals(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(3)))) || Device==3 && Salidastr.equals(PreferencesDevicesManager.salidaMap.get(PreferencesDevicesManager.listaKeySalidaMap.get(5)))){ // EXCEPCIONES
+                   // onlyonce=true;
+                //}
             }
 
 
@@ -396,11 +368,11 @@
             }
             // stores and recycles views as they are scrolled off screen
             public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-                TextView ipMac,Slave,numMOD,tvnombreipmac,tvBaud,tvStop,tvData,tvparity, tv_Modelo;
+                TextView ipMac,Slave,numMOD,tvnombreipmac,tvBaud,tvStop,tvData,tvparity, tv_Modelo,tv_ipmac;
 
                 LinearLayout constraintLayout1,constraintLayout12;
                 ConstraintLayout constraintLayout2,ultimatelayout;
-                LinearLayout Ltvid,LtvBaud,LtvStop,LtvData,Ltvparity,LtvModelo;
+                LinearLayout Ltvid,LtvBaud,LtvStop,LtvData,Ltvparity,LtvModelo,LtvExceptionIP;
 
 
                 ViewHolder(View itemView) {
@@ -425,6 +397,7 @@
                      LtvStop = itemView.findViewById(R.id.Lstop);
                      LtvData = itemView.findViewById(R.id.Ldata);
                      Ltvparity = itemView.findViewById(R.id.Lparity);
+                    LtvExceptionIP = itemView.findViewById(R.id.LtvExceptionIP);
 
                     itemView.setOnClickListener(this);
 

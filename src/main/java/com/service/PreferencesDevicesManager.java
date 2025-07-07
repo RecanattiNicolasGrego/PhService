@@ -5,31 +5,36 @@ import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.service.Devices.Expansiones.Clases.SalidasC;
 import com.service.estructuras.classDevice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public  class PreferencesDevicesManager {
 
 
+
     public static final Map<String, List<String>> deviceMap = new LinkedHashMap<>();
-    public static final Map<String, String> salidaMap = new HashMap<>();
+    public static final Map<String, String> salidaMap = new LinkedHashMap<>();
 
     public static final ArrayList<String> DefConfig = new ArrayList<String>();
+    public static ArrayList<String> listaKeyDeviceMap;
+    public static ArrayList<String> listaKeySalidaMap;
     static {
         DefConfig.add("9600");
-        DefConfig.add("1");
         DefConfig.add("8");
+        DefConfig.add("1");
         DefConfig.add("0");
 //-----
+
         salidaMap.put("Puerto Serie 1", "PuertoSerie 1");
         salidaMap.put("Puerto Serie 2", "PuertoSerie 2");
         salidaMap.put("Puerto Serie 3", "PuertoSerie 3");
@@ -43,6 +48,9 @@ public  class PreferencesDevicesManager {
         deviceMap.put("Escaner", Arrays.asList("Escaner"));
         deviceMap.put("Dispositivo",obtenerAliasDeModelos(BalanzaService.ModelosClasesDispositivos.values()));
         deviceMap.put("default",Arrays.asList( "default"));
+
+        listaKeyDeviceMap = PreferencesDevicesManager.obtenerListaPorMap(PreferencesDevicesManager.deviceMap);
+        listaKeySalidaMap = PreferencesDevicesManager.obtenerListaPorMap(PreferencesDevicesManager.salidaMap);
 
     }
     private static List<String> listaTipos = obtenerListaTipos();private static String ultimaClave = listaTipos.get(listaTipos.size() - 1);
@@ -112,6 +120,36 @@ public  class PreferencesDevicesManager {
         return dispositivosOrganizados;
     }*/
 
+    public static ArrayList<String> obtenerListaPorMap(Map<String, ?> map) {
+        return new ArrayList<>(map.keySet());
+    }
+    public static String pluralizar(String single){
+        if (single.endsWith("z")) {
+            return single.substring(0, single.length() - 1) + "ces";
+        }
+        char ultimaLetra = single.charAt(single.length() - 1);
+        if ("aeiou".indexOf(ultimaLetra) != -1) {
+            return single + "s";
+        } else {
+            return single + "es";
+        }
+    }
+    public static boolean aparentaDispositivo(String vlista, String tipo) {
+            String vlistaNormalizada = pluralizar(vlista).replaceAll("\\s+", "").toLowerCase();
+            String tipoNormalizado = tipo.replaceAll("\\s+", "").toLowerCase();
+            String regex =Pattern.quote(vlistaNormalizada) + ".*";
+            return tipoNormalizado.matches(regex);
+        }
+    public static boolean EsPuertoSerie(String Salida) {
+        if (Salida == null) return false;
+        System.out.println(Salida);
+        // Normaliza a minúsculas y elimina solo los espacios, sin afectar los números
+        String tipoNormalizado = Salida.replaceAll("\\s+", "").toLowerCase();
+        System.out.println(tipoNormalizado);
+        // Expresión regular que detecta variantes como: "puerto serie", "puertoserie", "puertos series", etc.
+        System.out.println(tipoNormalizado.matches(".*puertos?serie[s]?.*"));
+        return tipoNormalizado.matches(".*puertos?serie[s]?.*");
+    }
 
     public static String obtenerClavePorValor(Map<String, String> map, String valor) {
      for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -137,7 +175,10 @@ public  class PreferencesDevicesManager {
          }
          if(tipo.contains("Balanza")){
              String Modelobza = Preferencias.getString("Modelo_"+num,"Optima");
-             balanzas.add(obtenerIndiceModeloPorTipo(0,Modelobza));
+             int index = obtenerIndiceModeloPorTipo(0,Modelobza);
+             for (int i = 0; i < BalanzaService.ModelosClasesBzas.values()[index].GetnumMultiBzas(); i++) {
+                 balanzas.add(index);
+             }
          }
          num++;
      }
@@ -186,15 +227,15 @@ public  class PreferencesDevicesManager {
         ObjEditor.putBoolean(String.valueOf("seteo_"+balanzalenght), x.getSeteo());
         if(Tipo.contains(valordef)){
             ObjEditor.putString(String.valueOf("Baud_"+balanzalenght), x.getDireccion().get(0));
-            ObjEditor.putString(String.valueOf("DataB_"+balanzalenght), x.getDireccion().get(2));
-            ObjEditor.putString(String.valueOf("StopB_"+balanzalenght), x.getDireccion().get(1));
+            ObjEditor.putString(String.valueOf("DataB_"+balanzalenght), x.getDireccion().get(1));
+            ObjEditor.putString(String.valueOf("StopB_"+balanzalenght), x.getDireccion().get(2));
             ObjEditor.putString(String.valueOf("Parity_"+balanzalenght), x.getDireccion().get(3));
             ObjEditor.putString(String.valueOf("Direccion_"+balanzalenght), x.getDireccion().get(0));
         }
         if(x.getSalida().contains("PuertoSerie")){
             ObjEditor.putString(String.valueOf("Baud_"+balanzalenght), x.getDireccion().get(0));
-            ObjEditor.putString(String.valueOf("DataB_"+balanzalenght), x.getDireccion().get(2));
-            ObjEditor.putString(String.valueOf("StopB_"+balanzalenght), x.getDireccion().get(1));
+            ObjEditor.putString(String.valueOf("DataB_"+balanzalenght), x.getDireccion().get(1));
+            ObjEditor.putString(String.valueOf("StopB_"+balanzalenght), x.getDireccion().get(2));
             ObjEditor.putString(String.valueOf("Parity_"+balanzalenght), x.getDireccion().get(3));
         }else if(x.getSalida().contains("Red")||x.getSalida().contains("Bluetooth")){
             ObjEditor.putString(String.valueOf("Direccion_"+balanzalenght), x.getDireccion().get(0));
@@ -207,33 +248,10 @@ public  class PreferencesDevicesManager {
     }
     public static int obtenerIndiceModeloPorTipo(int tipo, String modelo) {
         List<String> keys = new ArrayList<>(deviceMap.keySet());
-
         String tipox= keys.get(tipo);
-       /* switch (tipo){
-            case 0:{
-                tipox ="Balanza";
-                break;
-            }
-            case 1:{
-                tipox="Impresora";
-                break;
-            }
-            case 2:{tipox="Expansion" ;
-            break;
-            }
-            case 3:{
-                tipox="Escaner";
-                break;
-            }
-            case 4:{
-                tipox="Dispositivo";
-                break;
-            }
-        }*/
-
         List<String> modelos = deviceMap.get(tipox);
         if (modelos != null) {
-            return modelos.indexOf(modelo);
+            return modelos.indexOf(modelo.replace(" ","_"));
         }
         return -1;
     }
@@ -283,6 +301,7 @@ public  class PreferencesDevicesManager {
               String Salida = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
               int index =0;
               for (String key : salidaMap.keySet()) {
+
                   if (Objects.equals(salidaMap.get(key), Salida)) {
                        if (!array[index]) {
                           array[index] = true;
@@ -410,6 +429,7 @@ public  class PreferencesDevicesManager {
                 int NumeroID = Preferencias.getInt("ID_" + num, 1);
                 ArrayList<String> listaux = new ArrayList<String>();
                 if (Salidaaux.contains("PuertoSerie")) {
+
                     String baud = Preferencias.getString("Baud_" + num, "9600");
                     String dataB = Preferencias.getString("DataB_" + num, "1");
                     String stopB = Preferencias.getString("StopB_" + num, "8");
@@ -585,6 +605,7 @@ public  class PreferencesDevicesManager {
         }
         return ArrayBalanzas;
     }
+
     public static boolean existeTipo(String tipo) {
         return deviceMap.containsKey(tipo);
     }
@@ -593,6 +614,32 @@ public  class PreferencesDevicesManager {
             return deviceMap.get(tipo);
         }
         return new ArrayList<>();
+    }
+    public static int indexofclasesdevices(ArrayList<classDevice> arr, classDevice b) {
+        int response = 0;
+        int count = 0;
+        if (b.getTipo() != PreferencesDevicesManager.valordef) {
+            for (classDevice a : arr) {
+                if (a.getND() == b.getND()) {
+                    response = count;
+                }
+                count++;
+            }
+        } else {
+            response = 0;
+        }
+        return response;
+    }
+
+    public static boolean EstaEnUsoElID(int exclude,int id,int Tipo,String Salida, AppCompatActivity activity) {
+        ArrayList<classDevice> list = get_listPorSalida(Salida, Tipo, activity);
+        for (classDevice x :
+                list) {
+            if (x.getID() == id && x.getNDL() != exclude) {
+                return true;
+            }
+        }
+        return false;
     }
     public static  boolean existeModelo(String tipo, String modelo) {
         List<String> modelos = deviceMap.get(tipo); // Obtiene la lista de modelos de un tipo
@@ -613,6 +660,11 @@ public  class PreferencesDevicesManager {
         SharedPreferences.Editor ObjEditor=Preferencias.edit();
         ObjEditor.putString(nombrevariable, variable);
         ObjEditor.apply();
+    }
+
+    public static String getmensajeHelper(int i,String labelText) {
+        SharedPreferences Preferencias= ComService.getInstance().activity.getApplicationContext().getSharedPreferences("HelperData", Context.MODE_PRIVATE);
+        return Preferencias.getString(i+"_"+labelText,"");
     }
     public static String getSharedPreferenceEstandar(String Modelo, String nombrevariable, AppCompatActivity activity) {
         SharedPreferences Preferencias= activity.getApplicationContext().getSharedPreferences(Modelo, Context.MODE_PRIVATE);

@@ -1,5 +1,6 @@
 package com.service.Devices.Dispositivos.Clases;
-import com.service.Comunicacion.Modbus.Req.BasicProcessImage;
+import com.service.Comunicacion.GestorPuertoSerie;
+import com.service.Comunicacion.Modbus.Req.BasicProcessImageSlave;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuSlave;
 import com.service.Comunicacion.Modbus.Req.ModbusReqTCPslave;
 import com.service.Comunicacion.Modbus.modbus4And.ModbusSlaveSet;
@@ -8,26 +9,28 @@ import com.service.Comunicacion.Modbus.modbus4And.exception.IllegalDataAddressEx
 import com.service.Comunicacion.Modbus.modbus4And.exception.ModbusInitException;
 import com.service.Comunicacion.Modbus.modbus4And.requset.OnRequestBack;
 import com.service.Interfaz.Dispositivo;
-import com.service.Interfaz.Modbus;
+import com.service.Interfaz.dispositivoBase;
 import com.service.estructuras.classDevice;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class SlaveDispositivos  extends DispositivoBase implements Dispositivo,Modbus.Slave {
+public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, dispositivoBase.Modbus.Slave {
     private ModbusSlaveSet SlaveTCP;
     private Modbus.Slave.DeviceMessageListenerM_Slave listener;
     private ModbusSlaveSet SlaveRTU;
     Boolean  isinit=false;
+    public static Boolean  puede485=true;
+
     static int limit = ((int) ((int)Short.MAX_VALUE + 1) * 2);
     public SlaveDispositivos(String strpuerto, classDevice Device,int ndevice){
         super(strpuerto,Device,ndevice);
     }
 
 
-    static BasicProcessImage getModscanProcessImage( BasicProcessImage image,int ndevice,DeviceMessageListenerM_Slave listener) {
+    static BasicProcessImageSlave getModscanProcessImage(BasicProcessImageSlave image, int ndevice, DeviceMessageListenerM_Slave listener) {
 
-        BasicProcessImage processImage = image;//getBasicProcessImage(slaveId);
+        BasicProcessImageSlave processImage = image;//getBasicProcessImage(slaveId);
         // Add an image listener.
         processImage.addListener(new ProcessImageListener() {
             @Override
@@ -144,12 +147,12 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo,M
         return null;
     }
     @Override
-    public BasicProcessImage getImageBasic() {
+    public BasicProcessImageSlave getImageBasic() {
         System.out.println("SLAVE ID ?!?!?!"+ Slaveid);
-        return new BasicProcessImage(Slaveid);
+        return new BasicProcessImageSlave(Slaveid);
     }
     @Override
-    public void init(DeviceMessageListenerM_Slave ListenerM_Slave,BasicProcessImage image) {
+    public void init(DeviceMessageListenerM_Slave ListenerM_Slave, BasicProcessImageSlave image) {
         System.out.println(("OLA !?!?")+ (image == null) );
         if(image.getSlaveId() == Device.getID()){
             CountDownLatch latch = new CountDownLatch(1);
@@ -158,7 +161,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo,M
                 if (Device.getSalida().equals("Red")) {
                     try {
                                try {
-                                   SlaveTCP = ModbusReqTCPslave.getInstance().init(new OnRequestBack<String>() {
+                                   SlaveTCP = GestorPuertoSerie.getInstance().initializateSlaveTCPmodbus(Device.getDireccion().get(0),getModscanProcessImage(image, ndevice, listener),new OnRequestBack<String>() {
                                        @Override
                                        public void onSuccess(String s) {
                                            System.out.println(s);
@@ -171,7 +174,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo,M
                                            System.out.println(s);
                                            latch.countDown();
                                        }
-                                   }, getModscanProcessImage(image, ndevice, listener), Device.getDireccion().get(0));
+                                   });
                                } catch (ModbusInitException e) {
                                    System.out.println("ERROR MODBUS Init Red "+e.getMessage());
                                }
@@ -179,17 +182,19 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo,M
                     }
                 } else {
                 try {
-                    SlaveRTU = ModbusReqRtuSlave.getInstance().init(new OnRequestBack<String>() {
+                    SlaveRTU = GestorPuertoSerie.getInstance().initializateSlaveRTUmodbus(strpuerto, Integer.parseInt(Device.getDireccion().get(0)), Integer.parseInt(Device.getDireccion().get(1)), Integer.parseInt(Device.getDireccion().get(2)), Integer.parseInt(Device.getDireccion().get(3)),
+                            getModscanProcessImage(image, ndevice, listener),new OnRequestBack<String>() {
                         @Override
                         public void onSuccess(String s) {
-                            isinit=true;
+                            isinit = true;
                             latch.countDown();
                         }
+
                         @Override
                         public void onFailed(String s) {
                             latch.countDown();
                         }
-                    },  getModscanProcessImage(image,ndevice,listener), strpuerto, Integer.parseInt(Device.getDireccion().get(0)), Integer.parseInt(Device.getDireccion().get(1)), Integer.parseInt(Device.getDireccion().get(2)), Integer.parseInt(Device.getDireccion().get(3)));
+                    });
                 } catch (Exception e) {
                     System.out.println("ERROR MODBUS Init  RTU"+e.getMessage());
                 }}

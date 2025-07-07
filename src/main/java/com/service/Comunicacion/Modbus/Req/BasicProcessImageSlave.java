@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BasicProcessImage implements ProcessImage {
+public class BasicProcessImageSlave implements ProcessImage {
     private final int slaveId;
     private boolean allowInvalidAddress = false;
     private short invalidAddressValue = 0;
@@ -50,7 +50,7 @@ public class BasicProcessImage implements ProcessImage {
     private final List<ProcessImageListener> writeListeners = new ArrayList<>();
     private byte exceptionStatus;
 
-    public BasicProcessImage(int slaveId) {
+    public BasicProcessImageSlave(int slaveId) {
         ModbusUtils.validateSlaveId(slaveId, false);
         this.slaveId = slaveId;
     }
@@ -375,4 +375,57 @@ public class BasicProcessImage implements ProcessImage {
     private boolean getBit(short s, int bit) {
         return ((s >> bit) & 0x1) == 1;
     }
+  /*  public static class BPIBuilder {
+        private final BasicProcessImage img;
+
+        public BPIBuilder(BasicProcessImage img) {
+            this.img = img;
+        }
+
+        public BPIBuilder offCoils(int from, int to) {
+            for (int i = from; i <= to; i++) img.setCoil(i, false);
+            return this;
+        }
+
+        public BPIBuilder clearRegisters(int from, int to) {
+            for (int i = from; i <= to; i++) img.setHoldingRegister(i, (short) 0);
+            return this;
+        }
+
+        public BasicProcessImage build() {
+            return img;
+        }
+    }*/
+  public static class BPIBuilder {
+      private final BasicProcessImageSlave img;
+
+      public BPIBuilder(BasicProcessImageSlave imgg) {
+          img = imgg;// new BasicProcessImage(slaveId);
+      }
+
+      public BPIBuilder setCoil(int index, boolean value) {
+          img.setCoil(index-1, value);
+          return this;
+      }
+      public BPIBuilder setHoldingRegister(int index, int value) {
+          img.setHoldingRegister(index-1, (short)value);
+          return this;
+      }
+
+      public BPIBuilder InitDefaultCoils(ArrayList<Integer> indices) {
+          for (int i : indices) img.setCoil(i-1, false);
+          return this;
+      }
+
+      public BPIBuilder InitDefaultHoldingRegisters(ArrayList<Integer> indices) {
+          for (int i : indices) img.setHoldingRegister(i-1, (short) 0);
+          return this;
+      }
+
+      public BasicProcessImageSlave build() {
+          return img;
+      }
+  }
+
 }
+

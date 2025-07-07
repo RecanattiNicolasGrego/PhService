@@ -2,7 +2,9 @@ package com.service.Recyclers;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ScrollView;
 
 public class ScrollViewScroll extends ScrollView {
@@ -43,8 +45,30 @@ public class ScrollViewScroll extends ScrollView {
         }
         return super.onTouchEvent(event);
     }
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
 
-    private boolean isTouchOnScrollbar(MotionEvent event) {
+        if (getChildCount() > 0) {
+            View content = getChildAt(0);
+
+            // Le damos padding derecho al hijo (el LinearLayout que contiene todo)
+            int rightPadding = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, 20, getResources().getDisplayMetrics());
+
+            content.setPadding(
+                    content.getPaddingLeft(),
+                    content.getPaddingTop(),
+                    rightPadding,
+                    content.getPaddingBottom()
+            );
+        }
+
+        // Asegurate de que el scrollbar esté fuera del contenido
+        setScrollBarStyle(SCROLLBARS_OUTSIDE_OVERLAY);
+        setClipToPadding(false); // Esto es para el ScrollViewScroll
+    }
+     private boolean isTouchOnScrollbar(MotionEvent event) {
         int scrollBarWidth = getVerticalScrollbarWidth();
         int x = (int) event.getX();
         int viewWidth = getWidth();

@@ -43,7 +43,7 @@ public ModbusReqRtuMaster init(String puerto, int baudrate, int dataBits, int st
             Log.d(TAG, "onFailed " + msg);
             connectionLatch.countDown();
         }
-    }, puerto, baudrate, dataBits, stopbit, parity);
+    }, puerto, baudrate, dataBits,stopbit , parity);
 
     connectionLatch.await();
     return modbusReq[0];

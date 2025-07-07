@@ -280,7 +280,9 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                                               //  BZA.setPesoUnitario(PreferencesDevicesManager.getPesoUnitario(BZA.Nombre,BZA.numBza, activity));// BZA.setPesoUnitario( BZA.getPesoUnitario());
                                                 BZA.Estado =  BalanzaBase.M_MODO_BALANZA;
                                                 reader.stopReading();
-                                                BZA.readers.startReading();
+                                                if(BZA.readers!=null) {
+                                                    BZA.readers.startReading();
+                                                }
                                                 reader=null;
                                                 bt_homebool=true;
                                                 dialog.cancel();
@@ -315,7 +317,9 @@ private String leertoggles(RadioGroup toggle,Integer id){ //NUEVO
                                 try {
                                     reader.stopReading();
                                     reader=null;
-                                    BZA.readers.startReading();
+                                    if(BZA.readers!=null) {
+                                        BZA.readers.startReading();
+                                    }
                                     estado= BalanzaBase.M_MODO_BALANZA;
                                     // BZA.setPesoUnitario(PreferencesDevicesManager.getPesoUnitario(BZA.Nombre,BZA.numBza, activity)); //BZA.setPesoUnitario( BZA.getPesoUnitario());
                                     BZA.Estado =  BalanzaBase.M_MODO_BALANZA;

@@ -1,6 +1,7 @@
 package com.service.Recyclers;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 import android.bluetooth.BluetoothClass;
 import android.content.Context;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.service.Devices.Impresora.PrinterDiscovery;
+import com.service.Comunicacion.PrinterDiscovery;
 import com.service.estructuras.ZebraStruct;
 import com.service.R;
 
@@ -25,8 +26,7 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
 
 
     private static int selectedPos = RecyclerView.NO_POSITION;
-    private List<ZebraStruct> ListElementsArrayList2;
-    private List<ZebraStruct>  ListScanner;
+    private List<ZebraStruct> ListScanner;
     private final LayoutInflater mInflater;
     private static ItemClickListener mClickListener;
     private Context context;
@@ -34,7 +34,6 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
     public RecyclerSearcher(Context context, List<ZebraStruct> data) {
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
-        this.ListElementsArrayList2 = data;
         this.ListScanner=data;
 
     }
@@ -50,7 +49,6 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         holder.mac.setText(ListScanner.get(position).getDireccionx());
         if(ListScanner.get(position).getClase().equals(String.valueOf(BluetoothClass.Device.Major.IMAGING))){
             holder.tv_f_Campo1.setText("Impresora: ");
@@ -58,20 +56,22 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
             holder.tv_f_Campo1.setText("Nombre: ");
         }
         String tipo = ListScanner.get(position).getTipo();
-    //    System.out.println(tipo+" "+ PrinterDiscovery.btle+" a "+ String.valueOf(PrinterDiscovery.btc));
+       System.out.println();
         if (!tipo.isEmpty()) {
-
             if(tipo.equals(PrinterDiscovery.btc) ) {
                 holder.nombretv1.setText(ListScanner.get(position).getname());
                 holder.linear.setBackgroundResource(R.drawable.borde_c);
                 holder.Tipo_I.setImageResource(R.drawable.bluetooth_b);
                 holder.btle_tv.setVisibility(GONE);
+                holder.nombretv1.setVisibility(VISIBLE);
+
                 holder.nombretv2.setText("mac:");
             }else if(tipo.equals(PrinterDiscovery.btle)) {
                 holder.nombretv1.setText(ListScanner.get(position).getname());
+                holder.nombretv1.setVisibility(VISIBLE);
                 holder.linear.setBackgroundResource(R.drawable.borde_le);
                 holder.Tipo_I.setImageResource(R.drawable.bluetooth_b);
-                holder.btle_tv.setVisibility(View.VISIBLE);
+                holder.btle_tv.setVisibility(VISIBLE);
                 holder.nombretv2.setText("mac:");
             }else if (tipo.equals("WFO")) {
                 holder.nombretv1.setVisibility(GONE);
@@ -99,7 +99,6 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
     public int getItemCount() {
         return ListScanner.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView nombretv1, btle_tv,mac,tv_f_Campo1, nombretv2;
         ImageView Tipo_I;
@@ -134,36 +133,51 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
     }
 
     public void removeAt(int position) {
-        ListElementsArrayList2.remove(position);
+        ListScanner.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, ListElementsArrayList2.size());
+        notifyItemRangeChanged(position, ListScanner.size());
     }
 
     public void filterList(List<ZebraStruct> filteredList) {
-        ListScanner = filteredList;
-        notifyDataSetChanged();
+        synchronized(ListScanner){
+            ListScanner = filteredList;
+            notifyDataSetChanged();
+        }
     }
     public String getAddress(int position){
-        return ListElementsArrayList2.get(position).getDireccionx();
+        return ListScanner.get(position).getDireccionx();
     }
 
     public List<ZebraStruct> getlist() {
-        return ListElementsArrayList2;
+        return ListScanner;
+    }
+    public List<String> getlistMac() {
+        synchronized(ListScanner){
+            ArrayList<String> Listmac = new ArrayList<String>();
+            for (ZebraStruct x : ListScanner) {
+                System.out.println("DIOS QUE VIDA DE MIERDA" + x.getDireccionx());
+                Listmac.add(x.getDireccionx());
+
+            }
+            return Listmac;
+        }
     }
     public void removeall(){
-        ListElementsArrayList2.clear();
+        ListScanner.clear();
     }
-    public String getTipo(int position){
-        return ListElementsArrayList2.get(position).getname();
+    public String getname(int position){
+        return ListScanner.get(position).getname();
     }
     public void add(String A, String B,String C, String D) {
-        ListElementsArrayList2.add(new ZebraStruct(A, B,C,D));
-        notifyItemInserted(ListElementsArrayList2.size() - 1);
-        notifyDataSetChanged();
-    }
+        synchronized(ListScanner) {
+            ListScanner.add(new ZebraStruct(A, B, C, D));
+            notifyItemChanged(ListScanner.size() - 1);
+            notifyDataSetChanged();
+        } }
     public void filtrar(String texto) {
         List<ZebraStruct> listaFiltrada = new ArrayList<>();
-        for (ZebraStruct imp  : ListElementsArrayList2) {
+
+        for (ZebraStruct imp  : ListScanner) {
             if(!Objects.equals(imp.getname(), "") && !texto.equalsIgnoreCase("")) {
                 if (imp.getname().toLowerCase().contains(texto.toLowerCase())) {
                     listaFiltrada.add(imp);
@@ -173,8 +187,10 @@ public class RecyclerSearcher extends RecyclerView.Adapter<RecyclerSearcher.View
                     listaFiltrada.add(imp);
                 }
             }
-            ListScanner.clear();
+
         }
+        ListScanner.clear();
+       // ListScanner=listaFiltrada
         notifyDataSetChanged();
     }
 }

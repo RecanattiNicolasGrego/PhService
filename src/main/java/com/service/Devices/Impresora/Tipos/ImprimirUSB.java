@@ -44,10 +44,14 @@ public class ImprimirUSB {
                     }
                     System.out.println(success);
                     if (success) {
+                        System.out.println("printeo");
                     } else {
+
+                        System.out.println("no printeo");
               //          Utils.Mensaje("Impresora no encontrada en usb",R.layout.item_customtoasterror,context);
                     }
             } catch (Exception e) {
+                System.out.println("me suicido : no printeo");
             //    Utils.Mensaje("usb init:" + e.getMessage(), R.layout.item_customtoasterror, context);
             }
         };

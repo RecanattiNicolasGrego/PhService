@@ -4,12 +4,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.service.Comunicacion.Modbus.JSerialCommWrapper;
 import com.service.Comunicacion.Modbus.modbus4And.ModbusFactory;
 import com.service.Comunicacion.Modbus.modbus4And.ModbusSlaveSet;
-import com.service.Comunicacion.Modbus.modbus4And.ProcessImage;
 import com.service.Comunicacion.Modbus.modbus4And.exception.IllegalDataAddressException;
 import com.service.Comunicacion.Modbus.modbus4And.exception.ModbusInitException;
 import com.service.Comunicacion.Modbus.modbus4And.requset.ModbusParam;
@@ -61,7 +58,7 @@ public class ModbusReqRtuSlave {
      *
      * @throws ModbusInitException
      */
-    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, BasicProcessImage image, String puerto, int baudrate, int dataBits, int stopbit, int parity) throws Exception {
+    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, BasicProcessImageSlave image, String puerto, int baudrate, int dataBits, int stopbit, int parity) throws Exception {
         ModbusFactory mModbusFactory = new ModbusFactory();
         SerialPort serialPort = null;
         SerialPortWrapper serialPortWrapper = new JSerialCommWrapper(puerto,serialPort, baudrate, dataBits, stopbit, parity);

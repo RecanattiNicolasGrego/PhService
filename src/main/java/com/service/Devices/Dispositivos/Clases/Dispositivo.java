@@ -5,11 +5,12 @@ import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Interfaz.dispositivoBase;
 import com.service.estructuras.classDevice;
 
-public class Dispositivo  extends DispositivoBase implements com.service.Interfaz.Dispositivo, dispositivoBase.rs232 {
+public class Dispositivo  extends DispositivoBase implements com.service.Interfaz.Dispositivo, dispositivoBase.ASCII {
 
     PuertosSerie port ;
     int Num;
-    dispositivoBase.rs232.DeviceMessageListenerRs232 listener;
+    public static Boolean         puede485=true;
+    ASCII.DeviceMessageListenerRs232 listener;
 
     public Dispositivo(String strpuerto, classDevice Device,int ndevice) {
         super(strpuerto, Device,ndevice);

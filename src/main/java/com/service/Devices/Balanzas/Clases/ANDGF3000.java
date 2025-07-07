@@ -1,5 +1,7 @@
 package com.service.Devices.Balanzas.Clases;
 
+import android.os.HandlerThread;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.Comunicacion.GestorPuertoSerie;
@@ -12,6 +14,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
+
+import android_serialport_api.SerialPort;
 
 public class ANDGF3000 extends BalanzaBase{
 
@@ -23,7 +28,7 @@ public class ANDGF3000 {
 private final Context context;
     private final PuertosSerie serialPort;
     private MainActivity mainActivity;
-    Handler mHandler= new Handler();
+    Handler = new Handler();
 
     public String estado="VERIFICANDO_MODO";
     public static final String M_VERIFICANDO_MODO="VERIFICANDO_MODO";
@@ -561,17 +566,25 @@ private final Context context;
     private  PuertosSerie serialPort;
     public static Boolean /*Tieneid=false,*/TieneCal =false;
 //    public static final String M_ERROR_COMUNICACION="M_ERROR_COMUNICACION";
-    public static String Nombre ="ANDGF3000";
+
     public Boolean inicioBandaPeso=false;
-    public static Integer nBalanzas=1;
-    public static final  String Bauddef="9600",StopBdef="1",DataBdef="8",Paritydef="0";
+    public static final int nBalanzas=1;
+
+    public static String    Nombre ="ANDGF3000";
+    public static String    Bauddef="9600";
+    public static String    StopBdef="1";
+    public static String    DataBdef="8";
+    public static String    Paritydef="0";
+    public static Boolean   TienePorDemanda =false;//true; // SI TIENE B) PERO NO HECHO
+    //public static int timeout = 500;
     public Integer acumulador=0;
     public ANDGF3000(String Puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener,int idaux) {
-        super(Puerto,id, activity,fragmentChangeListener,idaux);
+        super(Puerto,id, activity,fragmentChangeListener,nBalanzas);
+        System.out.println("Init ANDGF3000 "+id);
         try {
             this.serialPort = GestorPuertoSerie.getInstance().initPuertoSerie(Puerto,Integer.parseInt(Bauddef),Integer.parseInt(DataBdef),Integer.parseInt(StopBdef),Integer.parseInt(Paritydef),0,0);
         } finally {
-            this.numBza = (this.serialPort.get_Puerto()*10)+ id;
+            this.numBza = (this.serialPort.get_Puerto()*100)+ id;
         }
     }
     @Override public void init(int numBza) {
@@ -594,6 +607,7 @@ private final Context context;
         serialPort=null;
         Estado =M_VERIFICANDO_MODO;
         mHandler.removeCallbacks(Bucle);
+        handlerThread.quit();
     }
     @Override public void setTara(int numBza) {
         if(serialPort!=null){
@@ -607,6 +621,174 @@ private final Context context;
         return this;
     }*/
 
+    public Runnable BucleporDemanda = new Runnable() {
+        int contador=0;
+        String read="",read2="";
+        String[] array;
+        @Override
+        public void run() {
+            if(!Objects.equals(Estado, M_MODO_CALIBRACION)){
+                try {
+                    if(serialPort.HabilitadoLectura()){
+                        //          System.out.println("AND GF HABILITADO LECTURA");
+                        latch = new CountDownLatch(1);
+                        Semaforo.acquireUninterruptibly();
+                        serialPort.write("IP ");
+                        read=serialPort.read_2();
+
+
+                        String filtro="\r\n";
+                        // read=read.replace("\r\n","");
+
+                        if(read!=null){
+                            //        System.out.println("AND GF: "+read);
+                            if(read.toLowerCase().contains(filtro.toLowerCase())){
+                                Estado =M_MODO_BALANZA;
+                                if(read.toLowerCase().contains("ST".toLowerCase())){
+                                    EstableBool =true;
+                                    SobrecargaBool=false;
+                                }else if(read.toLowerCase().contains("US".toLowerCase())){
+
+                                    EstableBool =false;
+                                    SobrecargaBool=true;
+                                }else{
+                                    EstableBool =false;
+                                    SobrecargaBool=false;
+                                }
+
+                                if(read.contains("g")){
+                                    Unidad ="gr";
+                                }
+                                if(read.contains("kg")){
+                                    Unidad ="kg";
+                                }
+                                if(read.contains("k")){
+                                    Unidad ="kg";
+                                }
+
+                                array= read.split(filtro);
+
+                                if(array.length>0){
+
+
+                                    read2=array[0];
+                                    read2=read2.replace(" ","");
+                                    read2=read2.replace("\r\n","");
+                                    read2=read2.replace("\r","");
+                                    read2=read2.replace("\n","");
+                                    read2=read2.replace("\\u0007","");
+                                    read2=read2.replace("O","");
+                                    read2=read2.replace("E","");
+                                    read2=read2.replace("kg","");
+                                    read2=read2.replace("g","");
+                                    read2=read2.replace("gr","");
+                                    read2=read2.replace("ST","");
+                                    read2=read2.replace(",","");
+                                    read2=read2.replace("US","");
+                                    read=read2.replace(".","");
+
+                                    if(Utils.isNumeric(read2)){
+                                        int index = read2.indexOf('.'); // Busca el índice del primer punto en la cadena
+                                        PuntoDecimal = read.length() - index;
+                                        // uso bigdecimal porque si restaba me daba numeros raros detras de la coma
+                                        BrutoStr =read2;
+                                        BigDecimal number = new BigDecimal(BrutoStr);
+                                        BrutoStr = Utils.removeLeadingZeros(number);
+                                        Bruto=Float.parseFloat(read2);
+
+                                        //Bruto= redondear(Bruto);
+                                        //muestreoinstantaneo= bbruto.floatValue();
+                                        if(TaraDigital ==0){
+                                            Neto=Bruto-Tara;
+                                            //Neto= redondear(Neto);
+                                            NetoStr =String.valueOf(Neto);
+                                            if(index==-1){
+                                                NetoStr = NetoStr.replace(".0","");
+                                            }
+                                        }else{
+                                            Neto=Bruto- TaraDigital;
+                                            //Neto= redondear(Neto);
+                                            NetoStr =String.valueOf(Neto);
+                                            if(index==-1){
+                                                NetoStr = NetoStr.replace(".0","");
+                                            }
+                                        }
+                                        if(index!=-1&& PuntoDecimal >0){
+                                            String formato="0.";
+
+                                            StringBuilder capacidadBuilder = new StringBuilder(formato);
+                                            for(int i = 0; i< PuntoDecimal; i++){
+                                                capacidadBuilder.append("0");
+                                            }
+                                            formato = capacidadBuilder.toString();
+                                            DecimalFormat df = new DecimalFormat(formato);
+                                            NetoStr = df.format(Neto);
+                                            TaraDigitalStr = df.format(TaraDigital);
+                                            //taraStr = df.format(ta);
+                                        }
+
+
+                                        if(Bruto<pesoBandaCero){
+                                            BandaCero =true;
+                                        }
+                                        else{
+                                            if(inicioBandaPeso){
+                                                BandaCero =false;
+                                            }
+
+                                        }
+                                        acumulador++;
+
+                                    }
+                                    read="";
+
+                                }
+
+                            }else if (read.contains("\u0006C \r")){
+                                //entro a calibracion
+                                   /* if(numero>0){
+                                        mainActivity.   MainClass.openFragment(new CalibracionANDGF1Fragment());
+                                    }else{
+                                        mainActivity.MainClass.openFragment(new CalibracionANDGFFragment());
+                                    }*/
+
+                                Estado =M_MODO_CALIBRACION;
+                            }
+                        }
+                    }
+                    else if (contador<=8&& Objects.equals(Estado, M_VERIFICANDO_MODO)) {
+                        if (contador == 0) {
+                            //      System.out.println("ANDGF:BUSCANDO CALIBRACION");
+                            serialPort.write("\u0006C \r");
+                        } else {
+                            //      System.out.println("ANDGF:BUSCANDO CALIBRACION");
+                            serialPort.write("\u0005C \r");
+                        }
+
+                        contador++;
+                    }
+
+                    if (contador==8){
+                        //mainActivity.Mensaje(M_ERROR_COMUNICACION, R.layout.item_customtoasterror);
+                        contador++;
+                    }
+                    latch.countDown();
+                    Semaforo.release();
+
+                } catch (IOException e) {
+                    latch.countDown();
+                    Semaforo.release();
+                    e.printStackTrace();
+                }
+                mHandler.postDelayed(Bucle,100);
+
+            }
+            else {
+                mHandler.postDelayed(Bucle,50);
+            }
+        }
+    };
+
     public Runnable Bucle = new Runnable() {
 
         int contador=0;
@@ -619,7 +801,10 @@ private final Context context;
                 try {
                     if(serialPort.HabilitadoLectura()){
               //          System.out.println("AND GF HABILITADO LECTURA");
+                        latch = new CountDownLatch(1);
+                        Semaforo.acquireUninterruptibly();
                         read=serialPort.read_2();
+
 
                         String filtro="\r\n";
                         // read=read.replace("\r\n","");
@@ -710,10 +895,7 @@ private final Context context;
                                             TaraDigitalStr = df.format(TaraDigital);
                                             //taraStr = df.format(ta);
                                         }
-                                        if(Neto>pico){
-                                            pico=Neto;
-                                            picoStr= NetoStr;
-                                        }
+
 
                                         if(Bruto<pesoBandaCero){
                                             BandaCero =true;
@@ -759,9 +941,13 @@ private final Context context;
                         //mainActivity.Mensaje(M_ERROR_COMUNICACION, R.layout.item_customtoasterror);
                         contador++;
                     }
+                    latch.countDown();
+                    Semaforo.release();
 
 
                 } catch (IOException e) {
+                    latch.countDown();
+                    Semaforo.release();
                     e.printStackTrace();
                 }
                 mHandler.postDelayed(Bucle,100);

@@ -1,5 +1,8 @@
 package com.service.Devices.Balanzas.Clases;
 
+import android.os.Handler;
+import android.os.HandlerThread;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.Comunicacion.GestorPuertoSerie;
@@ -11,6 +14,7 @@ import com.service.Utils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.concurrent.CountDownLatch;
 
 public class SPIDER3 extends BalanzaBase{
     /***
@@ -651,7 +655,6 @@ public class SPIDER3 {
     };
 }
 *///-----------------FIN DE ACTUALIZACION DEL 3/2/25 --------------------------------------------
-    public static final String Nombre="SPIDER3";
     /** si ponemos tara digital, entonces toma la tara como tara digital,
      * si le damos a tara normal la tara digital pasa a cero y la tara es la tara
      *
@@ -659,20 +662,27 @@ public class SPIDER3 {
      */
     //PARA CONTADORA #005P03000102050000#013 TERMINAL
     private PuertosSerie serialPort;
-    public static Integer nBalanzas=1;
+    public static final int nBalanzas=1;
     private static final String CONSULTA_PIEZAS="PU\r\n", CONSULTA_BRUTO="SI\r\n";/* CONSULTA_PUNITARIO="XU2\r", CONSULTA_NETO="XN2\r",*/
     public static Boolean /*Tieneid=false,*/TieneCal =false;
-    public static final  String Bauddef="9600", StopBdef="1", DataBdef="8", Paritydef="0";
     public Boolean inicioBandaPeso=false;/*, contador =false;,stopcomunicacion=false;*/
    // public String calculoPesoUnitario="Error",
     public int acumulador=0; /*runnableIndice=0,,piezas=0*/
+    public static String Nombre="SPIDER3";
+    public static String  Bauddef="9600";
+    public static String  StopBdef="1";
+    public static String   DataBdef="8";
+    public static String   Paritydef="0";
+    public static Boolean  TienePorDemanda =false;//true; SI TIENE PERO NO HECHO
+   // public static int timeout=0;
 
     public SPIDER3(String Puerto, int id,AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener,int idaux) {
-        super(Puerto,id,activity,fragmentChangeListener,idaux);
+        super(Puerto,id,activity,fragmentChangeListener,nBalanzas);
+        System.out.println("Init SPIDER3 "+id);
         try{
             this.serialPort = GestorPuertoSerie.getInstance().initPuertoSerie(Puerto,Integer.parseInt(Bauddef),Integer.parseInt(StopBdef),Integer.parseInt(DataBdef),Integer.parseInt(Paritydef),0,0);
         }finally {
-            this.numBza = (this.serialPort.get_Puerto()*10)+ id;
+            this.numBza = (this.serialPort.get_Puerto()*100)+ id;
         }}
 
     @Override public void setTara(int numBza) {
@@ -694,6 +704,9 @@ public class SPIDER3 {
         pesoBandaCero= PreferencesDevicesManager.getPesoBandaCero(Nombre, this.numBza,activity);
         PuntoDecimal =PreferencesDevicesManager.getPuntoDecimal(Nombre,this.numBza,activity);
         ultimaCalibracion=PreferencesDevicesManager.getUltimaCalibracion(Nombre,this.numBza,activity);
+
+
+        // Asociar el Handler al Looper del nuevo hilo
         if(serialPort!=null){
             Bucle.run();
             /*if(contador){
@@ -718,6 +731,7 @@ public class SPIDER3 {
         serialPort=null;
         Estado =M_VERIFICANDO_MODO;
         mHandler.removeCallbacks(Bucle);
+        handlerThread.quit();
     }
 
 
@@ -732,8 +746,12 @@ public class SPIDER3 {
                 if(serialPort.HabilitadoLectura()){
                     acumulador=0;
                     //   System.out.println("punto decimal: "+puntoDecimal);
+
+                    latch = new CountDownLatch(1);
+                    Semaforo.acquireUninterruptibly();
                     read=serialPort.read_2();
                     String filtro="\r\n";
+
                     // read=read.replace("\r\n","");
                     if(read!=null){
                         //     System.out.println("peso unit: "+getPesoUnitario());
@@ -841,10 +859,7 @@ public class SPIDER3 {
                                         TaraDigitalStr = df.format(TaraDigital);
                                         //taraStr = df.format(ta);
                                     }
-                                    if(Neto>pico){
-                                        pico=Neto;
-                                        picoStr= NetoStr;
-                                    }
+
                                     if(Bruto<pesoBandaCero){
                                         BandaCero =true;
                                     }
@@ -867,12 +882,18 @@ public class SPIDER3 {
                     serialPort.write(CONSULTA_PIEZAS);
                     acumulador++;
                 }
+                latch.countDown();
+                Semaforo.release();
             } catch (IOException e) {
+                latch.countDown();
+                Semaforo.release();
                 //System.out.println("ERROR DE MINIMA, TRY-CATCH: "+e);
                 e.printStackTrace();
             }
             serialPort.write(CONSULTA_BRUTO);
-            mHandler.postDelayed(Bucle,200);
+           if(mHandler!=null) {
+               mHandler.postDelayed(this, 200);
+           }
         }
     };
 

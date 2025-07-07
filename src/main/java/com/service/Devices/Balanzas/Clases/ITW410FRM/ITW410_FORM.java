@@ -1,4 +1,4 @@
-package com.service.Devices.Balanzas.Clases.ITW410;
+package com.service.Devices.Balanzas.Clases.ITW410FRM;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,38 +12,53 @@ import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Interfaz.Balanza;
 import com.service.PreferencesDevicesManager;
+import com.service.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializable {
     int estado410=0,numeroSlave=1;
-    public static Integer nBalanzas=2;
-    public static Boolean /*Tieneid=false,*/TieneCal =true;
-    public static final String Bauddef="115200",StopBdef="1",DataBdef="8",Paritydef="0";
+    public static final int nBalanzas=1;
+    public static Boolean /*Tieneid=false,*/ TieneCal =true;
     private ModbusReqRtuMaster ModbusRtuMaster;
-    public static String Nombre ="ITW410";
+    public static String   Nombre ="ITW410";
+    public static String   Bauddef="115200";
+    public static String   StopBdef="1";
+    public static String    DataBdef="8";
+    public static String   Paritydef="0";
+    public static int  timeout = 500;
+    public static Boolean   TienePorDemanda =true;
+
     private final int numBzaMultiple410;
+
+    ExecutorService thread = Executors.newFixedThreadPool(2);
     private final ITW410_FORM context;
+    private static int adjustId(int id) {
+        return id == 0 ? 1 : id;
+    }
     public ITW410_FORM( String Puerto,int id,AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int numbza410) {
-        super(Puerto,id,activity,fragmentChangeListener,numbza410);
+        super(Puerto,adjustId(id),activity,fragmentChangeListener,nBalanzas);
         try {
-            Service= BalanzaService.getInstance();
-            this.ModbusRtuMaster = GestorPuertoSerie.getInstance().initializatemodbus(Puerto,Integer.parseInt(Bauddef),Integer.parseInt(DataBdef),Integer.parseInt(StopBdef),Integer.parseInt(Paritydef));
+             Service= BalanzaService.getInstance();
+            this.ModbusRtuMaster = GestorPuertoSerie.getInstance().initializateMasterRTUmodbus(Puerto,Integer.parseInt(Bauddef),Integer.parseInt(DataBdef),Integer.parseInt(StopBdef),Integer.parseInt(Paritydef));
             Thread.sleep(200);
         } catch (InterruptedException e) {
+            System.out.println("happenning something?"+e.getMessage());
         } finally {
-           // System.out.println("410id "+id+" 410subnum "+ numbza410);
            if(id==0){
                numeroSlave=1;
            }else{
                numeroSlave=id;
            }
             int inx=ModbusRtuMaster.get_Puerto();
-            this.numBza=(inx*10)*numbza410; // HAY QUE CAMBIARLO EN EL CASO DE QUE HAYA BALAMZAS 410 MULTIPLES. OSEA 410 CON 485
+            this.numBza=(inx*10000+numeroSlave*100)+numbza410; // HAY QUE CAMBIARLO EN EL CASO DE QUE HAYA BALAMZAS 410 MULTIPLES. OSEA 410 CON 485
+            System.out.println("Init ITW410 "+numbza410+" "+id+ " - numbza: "+this.numBza);
+
             this.numBzaMultiple410 =numbza410;
             context =this;
         }
@@ -53,32 +68,55 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     public Balanza getBalanza(int numBza) {
         return this;
     }*/
-     @Override public void init(int numBza) {
-        new Thread(new Runnable() {
+    // Crear y arrancar el hilo con Looper propio
 
-            @Override
-            public void run() {
-                try {
-                    Estado =M_MODO_BALANZA;
-                    Bucle.run();
-                    pesoBandaCero= getBandaCeroValue(numBza);
-                    PuntoDecimal =PreferencesDevicesManager.getPuntoDecimal(Nombre, context.numBza,activity);
-                    ultimaCalibracion=PreferencesDevicesManager.getUltimaCalibracion(Nombre, context.numBza,activity);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }).start();
-    }
+    @Override
+    public void init(int numBza) {
 
-    Runnable Bucle = new Runnable() {
 
+    // Asociar el Handler al Looper del nuevo hilo
+
+    // Ejecutar tu lógica dentro del hilo secundario
+    mHandler.post(new Runnable() {
         @Override
         public void run() {
-            Runnable runnable = new Runnable() {
-                public void run() {
-                    if(Objects.equals(Estado, M_MODO_BALANZA)) {
+            try {
+                Estado = M_MODO_BALANZA;
+                pesoBandaCero = getBandaCeroValue(numBza);
+                PuntoDecimal = PreferencesDevicesManager.getPuntoDecimal(Nombre, context.numBza, activity);
+                ultimaCalibracion = PreferencesDevicesManager.getUltimaCalibracion(Nombre, context.numBza, activity);
+
+                // Iniciar el bucle personalizado
+                iniciarBucle();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    });}
+    private void iniciarBucle() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Aquí va tu lógica que se repite (el "bucle")
+                Bucle.run();  // O lo que necesites hacer
+                // Reprogramar el bucle cada X milisegundos
+                mHandler.postDelayed(this, 1); // 1000 ms = 1 segundo
+                try {
+                    resetlatch().await();
+                } catch (InterruptedException e) {
+
+                }
+            }
+        }, 1);
+    }
+    Runnable Bucle = new Runnable() {
+        @Override
+        public void run() {
                         try {
+                            System.out.println("ESPERANDO"+getID(1));
+                            Semaforo.acquire();
+                            latch = resetlatch();
+                            System.out.println("Running"+getID(1));
                             if (numBzaMultiple410 == 1) {
                                 final float[] response = {0.0F};
                                 OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
@@ -91,9 +129,16 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                                         Tara = formatpuntodec(result[3]);
                                         TaraStr = format(PuntoDecimal,String.valueOf(Tara));
                                         estado410 = result[3];
+                                        try {
+                                            System.out.println("Running"+getID(1)+"RESPONDE");
+                                            latch.countDown();
+                                        } catch (Exception e) {
+
+                                        }
                                     }
                                     @Override
                                     public void onFailed(String error) {
+                                        latch.countDown();
                                     }
                                 };
                                 ModbusRtuMaster.readHoldingRegisters(callback, numeroSlave, 20, 4);
@@ -144,6 +189,11 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                                         int filter2 = result[3];
                                         int filter3 = result[4];
 
+                                        try {
+                                            latch.countDown();
+                                        } catch (Exception e) {
+
+                                        }
                                     }
 
                                     @Override
@@ -158,14 +208,9 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
 
 
                             };
-                        } catch (Exception e) {}
-                    }
-
-                    mHandler.postDelayed(Bucle,500);
-                }
-            };
-            new Thread(runnable).start();
-
+                        } catch (Exception e) {
+                            latch.countDown();
+                        }
         }
 
     };
@@ -179,6 +224,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
         }
         Estado =M_VERIFICANDO_MODO;
 
+        handlerThread.quit();
     }
 
 
@@ -207,7 +253,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 };
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
 
     }
 
@@ -277,6 +323,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     @Override public String Itw410FrmGetSetPoint(int numBza) {
         final short[][] res = {new short[0]};
         final String[] valueformater = new String[1];
+        Utils.EsHiloSecundario();
         CountDownLatch latch = new CountDownLatch(1);
         OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
             @Override
@@ -303,6 +350,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     @Override public Integer Itw410FrmGetSalida(int numBza) {
         final short[][] res = {new short[0]};
         final int[] response = {-1};
+        Utils.EsHiloSecundario();
         CountDownLatch latch = new CountDownLatch(1);
         OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
             @Override
@@ -353,13 +401,14 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 ModbusRtuMaster.writeCoil(callback,numeroSlave,11,true);
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
     }
     @Override public Integer Itw410FrmGetEstado(int numBza) {
         return estado410;
     }
     @Override public String Itw410FrmGetUltimoPeso(int numBza) {
         final short[][] res = {new short[0]};
+        Utils.EsHiloSecundario();
         final CountDownLatch latch = new CountDownLatch(1);
         final float[] response = {0};
         OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
@@ -394,6 +443,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     @Override public Integer Itw410FrmGetUltimoIndice(int numBza) {
         final short[][] res = {new short[0]};
         final int[] response = {-1};
+        Utils.EsHiloSecundario();
         final CountDownLatch latch = new CountDownLatch(1);
         OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
             @Override
@@ -513,7 +563,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                     }
                 }
             };
-            new Thread(runnable).start();
+            thread.execute(runnable);
         }
     }
 
@@ -561,7 +611,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                     }
                 }
             };
-            new Thread(runnable).start();
+            thread.execute(runnable);
         }
 
     }
@@ -583,6 +633,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     }
     protected ArrayList<String> Pedirparam() { // NUEVO
         ArrayList<String> list = new ArrayList<>();
+        Utils.EsHiloSecundario();
         CountDownLatch latch = new CountDownLatch(1);
         OnRequestBack<short[]> callback = new OnRequestBack<short[]>() {
             @Override
@@ -629,6 +680,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
         Runnable runnable = new Runnable() {
             public void run() {
                 if(ModbusRtuMaster!=null) {
+                    Utils.EsHiloSecundario();
                     CountDownLatch latch = new CountDownLatch(1);
                     OnRequestBack<String>  callback5 = new OnRequestBack<String>() {
                         @Override
@@ -711,7 +763,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 }
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
     }
     protected String Guardar_cal(){
         Runnable runnable = new Runnable() {
@@ -730,7 +782,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 ModbusRtuMaster.writeCoil(callback,numeroSlave,10,true);
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
         return "\u0005S\r";
     }
     protected String Recero_cal(){
@@ -770,7 +822,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 }
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
         return "";
     }
     protected String get_PesoConocido(){
@@ -783,6 +835,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
         Runnable runnable = new Runnable() {
             public void run() {
                 if(ModbusRtuMaster !=null){
+                    Utils.EsHiloSecundario();
                     CountDownLatch latch = new CountDownLatch(1);
                     if(numBzaMultiple410 ==1) {
                         OnRequestBack<String> callback = new OnRequestBack<String>() {
@@ -833,13 +886,14 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 }
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
     }
     protected  void setSpancal(){
         if(ModbusRtuMaster !=null){
 
             Runnable runnable = new Runnable() {
                 public void run() {
+                    Utils.EsHiloSecundario();
                     CountDownLatch latch = new CountDownLatch(1);
                     if(numBzaMultiple410 ==1) {
                         OnRequestBack<String> callback = new OnRequestBack<String>() {
@@ -888,7 +942,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                     }
                 }
             };
-            new Thread(runnable).start();
+            thread.execute(runnable);
         }
 
     }
@@ -900,6 +954,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
         Runnable runnable = new Runnable() {
             public void run() {
                 if(ModbusRtuMaster !=null){
+                    Utils.EsHiloSecundario();
                     CountDownLatch latch = new CountDownLatch(1);
                     if(numBzaMultiple410 ==1) {
                         OnRequestBack<String> callback = new OnRequestBack<String>() {
@@ -949,7 +1004,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
                 }
             }
         };
-        new Thread(runnable).start();
+        thread.execute(runnable);
     }
 
  /*public String Tara(){

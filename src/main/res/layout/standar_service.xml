@@ -41,37 +41,6 @@
                   app:tabIndicatorColor="@color/transparente"
                   app:tabTextAppearance="@style/TabTextAppearance"
                   app:tabMode="scrollable">
-                  <com.google.android.material.tabs.TabItem
-                      android:layout_width="wrap_content"
-                      android:visibility="visible"
-                      android:layout_height="wrap_content"
-                      android:text="V.Previa" />
-                  <com.google.android.material.tabs.TabItem
-                                     android:layout_width="wrap_content"
-                                     android:layout_height="wrap_content"
-
-                                     android:text="Balanzas" />
-                                 <com.google.android.material.tabs.TabItem
-                                     android:layout_width="wrap_content"
-                                     android:layout_height="wrap_content"
-                                     android:visibility="visible"
-                                     android:text="Impresoras" />
-
-                  <com.google.android.material.tabs.TabItem
-                      android:layout_width="wrap_content"
-                      android:visibility="visible"
-                      android:layout_height="wrap_content"
-                      android:text="Expansion" />
-                                 <com.google.android.material.tabs.TabItem
-                                     android:layout_width="wrap_content"
-                                     android:layout_height="wrap_content"
-                                     android:visibility="visible"
-                                     android:text="Escaneres" />
-                                 <com.google.android.material.tabs.TabItem
-                                     android:layout_width="wrap_content"
-                                     android:visibility="visible"
-                                     android:layout_height="wrap_content"
-                                     android:text="Dispositivos" />
 
 
               </com.google.android.material.tabs.TabLayout>
@@ -154,6 +123,7 @@
 
               </LinearLayout>
               <LinearLayout
+                  android:id="@+id/recyclerviewContainer"
                   android:layout_width="match_parent"
                   android:backgroundTint="@color/blanco"
                   android:layout_height="match_parent" android:background="@drawable/borderradiusmiddle">

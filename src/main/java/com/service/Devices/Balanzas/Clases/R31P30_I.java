@@ -12,6 +12,7 @@ import com.service.Utils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.concurrent.CountDownLatch;
 
 public class R31P30_I extends BalanzaBase{
 /*** HACE FALTA ACTUALIZAR ESTE ARCHIVO DESDE EL 3/2/25 CON : */
@@ -637,29 +638,26 @@ private final Context context;
     //PARA CONTADORA #005P03000102050000#013 TERMINAL
     private  PuertosSerie serialPort;
     Handler mHandler= new Handler();
-    public static Integer nBalanzas=1;
-    public static final String Nombre ="R31P30";
-//    private static final String CONSULTA_PUNITARIO="XU2\r";//??????
-//    private static final String CONSULTA_PIEZAS="PU\r\n";
-//    private static final String CONSULTA_BRUTO="P\r\n";
-//    private static final String CONSULTA_NETO="XN2\r";
-//    public static final String M_VERIFICANDO_MODO="VERIFICANDO_MODO";
-//    public static final String M_MODO_CALIBRACION="MODO_CALIBRACION";
-//    public static final String M_ERROR_COMUNICACION="M_ERROR_COMUNICACION";
+    public static final int nBalanzas=1;
     public static Boolean /*Tieneid=false,*/TieneCal =false;
-    public static final  String Bauddef="9600";
-    public static final String StopBdef="1";
-    public static final String DataBdef="8";
-    public static final String Paritydef="0";
+
+    public static String   Nombre ="R31P30";
+    public static String    Bauddef="9600";
+    public static String     StopBdef="1";
+    public static String    DataBdef="8";
+    public static String    Paritydef="0";
+    //public static int timeout=100;
+    public static Boolean    TienePorDemanda =false; // TENGO ENTENDIDO QUE SI TIENE PERO POR AHORA NO HECHO
     public Boolean inicioBandaPeso=false;
     public int acumulador=0;
 //    private OnFragmentChangeListener fragmentChangeListener;
     public R31P30_I(String puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener,int idaux) {
-        super(puerto,id,activity,fragmentChangeListener,idaux);
+        super(puerto,id,activity,fragmentChangeListener,nBalanzas);
+        System.out.println("Init R31P30_I "+id);
         try {
             this.serialPort = GestorPuertoSerie.getInstance().initPuertoSerie(puerto,Integer.parseInt(Bauddef),Integer.parseInt(DataBdef),Integer.parseInt(StopBdef),Integer.parseInt(Paritydef),0,0);
         } finally {
-            this.numBza = (this.serialPort.get_Puerto()*10)+ id;
+            this.numBza = (this.serialPort.get_Puerto()*100)+ id;
         }
     }
     public Runnable Bucle = new Runnable() {
@@ -673,8 +671,11 @@ private final Context context;
                 try {
                     if(serialPort.HabilitadoLectura()){
                         acumulador=0;
+                        latch = new CountDownLatch(1);
+                       Semaforo.acquireUninterruptibly();
                         read=serialPort.read_2();
                         String filtro="\r\n";
+
 
                         if(read!=null){
                           //  System.out.println("OHAUS : "+read);
@@ -787,10 +788,7 @@ private final Context context;
                                             taraDigitalStr = df.format(taraDigital);
                                             //taraStr = df.format(ta);
                                         }*/
-                                        if(Neto>pico){
-                                            pico=Neto;
-                                            picoStr= NetoStr;
-                                        }
+
 
                                         if(Bruto<pesoBandaCero){
                                             BandaCero =true;
@@ -820,13 +818,17 @@ private final Context context;
                         //serialPort.write(CONSULTA_PIEZAS);
                         acumulador++;
                     }
+                    latch.countDown();
+                    Semaforo.release();
 
 
                 } catch (IOException e) {
+                    latch.countDown();
+                    Semaforo.release();
                     //System.out.println("ERROR DE MINIMA, TRY-CATCH: "+e);
                     e.printStackTrace();
                 }
-                //System.out.println(" OHAUS CONSULTA BRUTO");
+            //System.out.println(" OHAUS CONSULTA BRUTO");
                 //serialPort.write(CONSULTA_BRUTO);
                 mHandler.postDelayed(Bucle,200);
 
@@ -873,6 +875,7 @@ private final Context context;
         serialPort=null;
         Estado =M_VERIFICANDO_MODO;
         mHandler.removeCallbacks(Bucle);
+        handlerThread.quit();
     }
 
 //    public void sendPuntoDecimal(){

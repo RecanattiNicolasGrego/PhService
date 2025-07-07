@@ -1,6 +1,8 @@
 package com.service.Devices.Balanzas.Clases.Optima;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,7 +12,6 @@ import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Interfaz.Balanza;
 import com.service.PreferencesDevicesManager;
-import com.service.R;
 import com.service.Utils;
 
 import java.io.IOException;
@@ -19,42 +20,226 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Serializable {
     PuertosSerie.PuertosSerieListener receiver = null;
-    public static final String Nombre = "OPTIMA";
+
     public PuertosSerie serialPort = null;
     private Boolean isRunning = false;
-    public static Integer nBalanzas=1;
-    public static final String StopBdef = "1", Bauddef = "9600", DataBdef = "8", Paritydef = "0";
+    public static final int nBalanzas = 1;
     public PuertosSerie.SerialPortReader readers = null;
     public static Boolean /*Tieneid=false,*/TieneCal = false;
-    Boolean  imgbool = false,  inicioBandaPeso = false, estadoNeto = false, estadoPesoNeg = false, estadoBajoCero = false, estadoBzaEnCero = false, estadoBajaBat = false, estadoCentroCero = false;
-    public int  acumulador = 0;
-    public OPTIMA_I(String puerto, int numero, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int idaux) {
+    public static String Nombre = "OPTIMA";
+    public static String StopBdef = "1";
+    public static String Bauddef = "9600";
+    public static String DataBdef = "8";
+    public static String Paritydef = "0";
 
-        super(puerto, numero, activity, fragmentChangeListener,idaux);
+    public static Boolean TienePorDemanda = true;
+    public static int timeout = 300;
+    Boolean imgbool = false, inicioBandaPeso = false, estadoNeto = false, estadoPesoNeg = false, estadoBajoCero = false, estadoBzaEnCero = false, estadoBajaBat = false, estadoCentroCero = false;
+    public int acumulador = 0;
+    String strid = "";
+
+    public OPTIMA_I(String puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int idaux) {
+        super(puerto, id, activity, fragmentChangeListener, nBalanzas);
         try {
-            System.out.print("INIT OPTIM");
+            System.out.print("INIT OPTIM" + id);
             this.serialPort = GestorPuertoSerie.getInstance().initPuertoSerie(puerto, Integer.parseInt(Bauddef), Integer.parseInt(DataBdef), Integer.parseInt(StopBdef), Integer.parseInt(Paritydef), 0, 0);
             Thread.sleep(300);
+
         } catch (InterruptedException e) {
 
         } finally {
-            this.numBza = (this.serialPort.get_Puerto() * 10) + numero; // si no tiene id seria :  10,20,3x  ; SI PUERTO 1 y 2 TIENEN ID ->(puerto.get_Puerto()*100)+numero;  Y CONTROLAR DE ALGUNA FORMA QUE ID NO TENGA 3 CIFRAS
+            if (id > 0) {
+                strid = String.valueOf((char) id);
+            } else {
+                strid = "";
+            }
+            this.numBza = (this.serialPort.get_Puerto() * 100) + id; // si no tiene id seria :  10,20,3x  ; SI PUERTO 1 y 2 TIENEN ID ->(puerto.get_Puerto()*100)+numero;  Y CONTROLAR DE ALGUNA FORMA QUE ID NO TENGA 3 CIFRAS
         }
     }
-   /* @Override
-    public Balanza getBalanza(int numBza) {
-        return this;
-    }*/
+
+    /* @Override
+     public Balanza getBalanza(int numBza) {
+         return this;
+     }*/
+    private void initbucle() {
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Aquí va tu lógica que se repite (el "bucle")
+                synchronized (this) {
+                    try {
+                        BucleporDemanda.run();  // O lo que necesites hacer
+                        // Reprogramar el bucle cada X milisegundos
+                    } catch (Exception e) {
+                        latch.countDown();
+                    }
+
+                }
+                mHandler.postDelayed(this, 1); // 1000 ms = 1 segundo
+            }
+        }, 1);
+
+    }
+
+    Runnable BucleporDemanda = new Runnable() {
+        public void run() {
+            String data2="";
+            Integer auxPuntoDecimal = null;
+            String auxBrutoStr = null;
+            Float auxBruto =0f;
+            char[] ArrByt = null;
+            String auxNetoStr="";
+            String auxTaraDigitalStr="";
+            Float auxNeto=0f;
+            Boolean bandestado=false;
+            Boolean bandbruto=false;
+            Boolean bandtara=false;
+            try {
+                int value = (int) strid.charAt(0);
+                System.out.println("ESPERANDO " + value);
+                Semaforo.acquire();
+                latch = resetlatch();
+                System.out.println("Running " + value);
+                // byte[] subArray = serialPort.writendwaitArrbit("\u0002" + strid + "XF\r", 10);
+                // ArrByt= Arrays.copyOfRange(subArray, 3, ArrByt.length-2);  // Extrae datos[1] y datos[2]
+                byte[] z = serialPort.writendwaitArrbit("\u0002" + strid + "XF\r", 10);
+                int c = z[2];
+                ArrByt = String.format("%8s", Integer.toBinaryString(c & 0xFF)).replace(' ', '0').toCharArray();
+                data2 = serialPort.writendwaitStr("\u0002"+strid+"XG\r",20);
+                if(data2!=null && data2.contains(strid)) {
+                    try {
+                        Unidad = new String(data2.substring(data2.indexOf("\u0003") -4,data2.indexOf("\u0003") -1).trim().replaceAll("\\d+([.,]\\d+)?\\n","").trim().replace("\n",""));
+                    } catch (Exception e) {
+                    }
+                    String[] array = data2.split("\r\n");
+                    data2 = limpiardata(array[0]);
+                    String data = data2.replace(".", "");
+                    if (Utils.isNumeric(data)) {
+                        int index = data2.indexOf('.');
+                        auxBrutoStr = Utils.removeLeadingZeros(new BigDecimal(data2));
+                        auxBruto = Float.parseFloat(data2);
+                        bandbruto=true;
+                        auxPuntoDecimal = data.length() - index;
+                        if (TaraDigital == 0) {
+                            auxNeto = auxBruto - Tara;
+                            auxNetoStr = String.valueOf(auxNeto);
+                            if (index == -1) {
+                                auxNetoStr = auxNetoStr.replace(".0", "");
+                            }
+                        } else {
+                            auxNeto = auxBruto - TaraDigital;
+                            auxNetoStr = String.valueOf(auxNeto);
+                            if (index == -1) {
+                                auxNetoStr = auxNetoStr.replace(".0", "");
+                            }
+                        }
+                        if (index != -1 && auxPuntoDecimal > 0) {
+                            String formato = "0.";
+                            StringBuilder capacidadBuilder = new StringBuilder(formato);
+                            for (int i = 0; i < auxPuntoDecimal; i++) {
+                                capacidadBuilder.append("0");
+                            }
+                            formato = capacidadBuilder.toString();
+                            DecimalFormat df = new DecimalFormat(formato);
+                            auxNetoStr = df.format(auxNeto);
+                            auxTaraDigitalStr = df.format(TaraDigital);
+                        }
+
+                    }
+
+                    //}
+               /* data2 =  serialPort.writendwaitStr("\u0002"+strid+"XT\r",20);
+                if(data2!=null && data2.contains(strid)) {
+                    int index = data2.indexOf('.');
+                    String[] array = data2.split("\r\n");
+                    data2 = limpiardata(array[0]);
+                    String data = data2.replace(".", "");*/
+                    // if (Utils.isNumeric(data)) {
+
+                    //}
+
+                }
+                if(!Objects.equals(auxBrutoStr, "") && !auxTaraDigitalStr.isEmpty() && !Objects.equals(auxNetoStr, "")) {
+                    TaraDigitalStr = auxTaraDigitalStr;
+                    Neto = auxNeto;
+                    NetoStr = auxNetoStr;
+                    Bruto = auxBruto;
+                    BrutoStr = auxBrutoStr;
+                    PuntoDecimal = auxPuntoDecimal;
+                }
+                    int x = 0;
+                    if(ArrByt.length>1) {
+                        for (char bit : ArrByt) {
+                            if (bit =='1') {
+                                switch (x) {
+                                    case 6:
+                                        SobrecargaBool = true;
+                                        break;
+                                    case 0:
+                                        EstableBool = true;
+                                        break;
+                                }
+                            } else {
+                                switch (x) {
+                                    case 6:
+                                        SobrecargaBool = false;
+                                        break;
+                                    case 0:
+                                        EstableBool = false;
+                                        break;
+                                }
+                            }
+                            x++;
+                        }
+                    }
+                    Thread.sleep(50);
+                    latch.countDown();
+            } catch (InterruptedException e) {
+                System.out.println("error optima"+e.getMessage());
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+
+                }
+                latch.countDown();
+            }
+        }
+    };
+
+    private String limpiardata(String data){
+        String data2 = data;
+        if(data!=null&&data.length()>2) {
+            data2 = data2.replace(strid, "");
+            data2 = data2.replace(String.valueOf(strid), "");
+            data2 = data2.replace("\u0002", "");
+            data2 = data2.replace("\u0003", "");
+            data2 = data2.replace(" ", "");
+            data2 = data2.replace("\r\n", "");
+            data2 = data2.replace("\r", "");
+            data2 = data2.replace("\n", "");
+            data2 = data2.replace("\u0007", "");
+            try {
+                data2 = data2.trim().substring(0, data2.length() - 2);
+            } catch (Exception e) {
+                System.out.println("ERRER CLEARDATA" + e.getMessage());
+            }
+        }
+        //  data2 = data2.replace("O", "");
+        return data2;
+    }
+
+
     private void receiverinit() {
         String filtro = "\r\n";
         receiver = new PuertosSerie.PuertosSerieListener() {
             @Override
             public void onMsjPort(String data) {
-            //    System.out.println("OPTIMA DATA: " + data);
+                System.out.println("OPTIMA DATA: " + data);
                 String[] array = new ArrayList<>().toArray(new String[0]);
                 if (Objects.equals(Estado, M_MODO_BALANZA)) {
                     String data2 = "";
@@ -85,30 +270,24 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
                             EstableBool = (arrbin[0] == '1');
                         } else {
                             String[] arrPeso = data.split(",");
-                            data2 = arrPeso[0];
-                            data2 = data2.replace(" ", "");
-                            data2 = data2.replace("\r\n", "");
-                            data2 = data2.replace("\r", "");
-                            data2 = data2.replace("\n", "");
-                            data2 = data2.replace("\\u0007", "");
-                            data2 = data2.replace("O", "");
-                            data2 = data2.replace("E", "");
-                            data2 = data2.replace("S", "");
-                            data2 = data2.replace("kg", "");
+                            data2 = limpiardata(arrPeso[0]);
                             data = data2.replace(".", "");
+
                             if (Utils.isNumeric(data)) {
+
                                 int index = data2.indexOf('.'); // Busca el índice del primer punto en la cadena
                                 PuntoDecimal = data.length() - index;
                                 // uso bigdecimal porque si restaba me daba numeros raros detras de la coma
                                 BrutoStr = Utils.removeLeadingZeros(new BigDecimal(data2));
                                 Bruto = Float.parseFloat(data2);
+
                             }
 
                             data2 = arrPeso[1];
                             if (data2.contains("E")) { // && !data2.matches("kg") lo saque por que en minima no funciona, pero por ahi es parte de optima
                                 EstableBool = true;
                                 SobrecargaBool = false;
-                            } else if (data2.contains("S") ) { // && !data2.matches("kg") lo saque por que en minima no funciona, pero por ahi es parte de optima
+                            } else if (data2.contains("S")) { // && !data2.matches("kg") lo saque por que en minima no funciona, pero por ahi es parte de optima
                                 EstableBool = false;
                                 SobrecargaBool = true;
                             } else {
@@ -117,15 +296,7 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
                                     SobrecargaBool = false;
                                 }
                             }
-                            data2 = data2.replace(" ", "");
-                            data2 = data2.replace("\r\n", "");
-                            data2 = data2.replace("\r", "");
-                            data2 = data2.replace("\n", "");
-                            data2 = data2.replace("\\u0007", "");
-                            data2 = data2.replace("O", "");
-                            data2 = data2.replace("S", "");
-                            data2 = data2.replace("E", "");
-                            data2 = data2.replace("kg", "");
+                            data2 = limpiardata(arrPeso[0]);
                             data = data2.replace(".", "");
                             if (Utils.isNumeric(data)) { // data2 lo saque por que en minima no funciona, pero por ahi es parte de optima
 
@@ -144,10 +315,7 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
                             DecimalFormat df = new DecimalFormat(formato);
                             TaraStr = df.format(Tara);
                         }
-                        if (Neto > pico) {
-                            pico = Neto;
-                            picoStr = NetoStr;
-                        }
+
                         if (Bruto < pesoBandaCero) {
                             BandaCero = true;
                         } else {
@@ -157,16 +325,16 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
                         }
                         acumulador++;
                     } else {
-                       // if (!data.contains(filtro.toLowerCase())) { lo saque por que en minima no funciona, pero por ahi es parte de optima
-                            data2 = data;
+                        // if (!data.contains(filtro.toLowerCase())) { lo saque por que en minima no funciona, pero por ahi es parte de optima
+                        data2 = data;
 
                         array = data.split(filtro);
-                     //   if (array.length > 0) {  lo saque por que en minima no funciona, pero por ahi es parte de optima
-                            data2 = array[0];
+                        //   if (array.length > 0) {  lo saque por que en minima no funciona, pero por ahi es parte de optima
+                        data2 = array[0];
                         if (data2.contains("E")) { // && !data2.matches("kg") lo saque por que en minima no funciona, pero por ahi es parte de optima
                             EstableBool = true;
                             SobrecargaBool = false;
-                        } else if (data2.contains("S") ) { // && !data2.matches("kg") lo saque por que en minima no funciona, pero por ahi es parte de optima
+                        } else if (data2.contains("S")) { // && !data2.matches("kg") lo saque por que en minima no funciona, pero por ahi es parte de optima
                             EstableBool = false;
                             SobrecargaBool = true;
                         } else {
@@ -175,58 +343,56 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
                                 SobrecargaBool = false;
                             }
                         }
-                            data2 = data2.replace(" ", "");
-                            data2 = data2.replace("\r\n", "");
-                            data2 = data2.replace("\r", "");
-                            data2 = data2.replace("\n", "");
-                            data2 = data2.replace("\\u0007", "");
-                            data2 = data2.replace("O", "");
-                            data2 = data2.replace("S", "");
-                            data2 = data2.replace("E", "");
-                            data2 = data2.replace("kg", "");
-                            data = data2.replace(".", "");
-                            if (Utils.isNumeric(data)) { // data2 lo saque por que en minima no funciona, pero por ahi es parte de optima
-                                int index = data2.indexOf('.'); // Busca el índice del primer punto en la cadena
-                                PuntoDecimal = data.length() - index;
-                                BrutoStr = Utils.removeLeadingZeros(new BigDecimal(data2));
-                                Bruto = Float.parseFloat(data2);
-                                if (TaraDigital == 0) {
-                                    Neto = Bruto - Tara;
-                                    if (index == -1) {
-                                        NetoStr = String.valueOf(Neto).replace(".0", "");
-                                    }
-                                } else {
-                                    Neto = Bruto - TaraDigital;
-                                    if (index == -1) {
-                                        NetoStr = String.valueOf(Neto).replace(".0", "");
-                                    }
-                                }
-                                if (index != -1 && PuntoDecimal > 0) {
-                                    String formato = "0.";
 
-                                    StringBuilder capacidadBuilder = new StringBuilder(formato);
-                                    for (int i = 0; i < PuntoDecimal; i++) {
-                                        capacidadBuilder.append("0");
-                                    }
-                                    formato = capacidadBuilder.toString();
-                                    DecimalFormat df = new DecimalFormat(formato);
-                                    NetoStr = df.format(Neto);
-                                    TaraDigitalStr = df.format(TaraDigital);
+                        String auxdat= data2;
+                        try {
+                            Unidad = auxdat.substring(data2.length() -2).trim().replaceAll("\\d+([.,]\\d+)?\\n","");
+                        } catch (Exception e) {
+
+                        }
+
+                        data2 = limpiardata(data2);
+                        data = data2.replace(".", "");
+                        if (Utils.isNumeric(data)) { // data2 lo saque por que en minima no funciona, pero por ahi es parte de optima
+                            int index = data2.indexOf('.'); // Busca el índice del primer punto en la cadena
+                            PuntoDecimal = data.length() - index;
+                            BrutoStr = Utils.removeLeadingZeros(new BigDecimal(data2));
+                            Bruto = Float.parseFloat(data2);
+                            if (TaraDigital == 0) {
+                                Neto = Bruto - Tara;
+                                if (index == -1) {
+                                    NetoStr = String.valueOf(Neto).replace(".0", "");
                                 }
-                                if (Neto > pico) {
-                                    pico = Neto;
-                                    picoStr = NetoStr;
+                            } else {
+                                Neto = Bruto - TaraDigital;
+                                if (index == -1) {
+                                    NetoStr = String.valueOf(Neto).replace(".0", "");
                                 }
-                                if (Bruto < pesoBandaCero) {
-                                    BandaCero = true;
-                                } else {
-                                    if (inicioBandaPeso) {
-                                        BandaCero = false;
-                                    }
-                                }
-                                acumulador++;
                             }
-                      //  }
+                            if (index != -1 && PuntoDecimal > 0) {
+                                String formato = "0.";
+
+                                StringBuilder capacidadBuilder = new StringBuilder(formato);
+                                for (int i = 0; i < PuntoDecimal; i++) {
+                                    capacidadBuilder.append("0");
+                                }
+                                formato = capacidadBuilder.toString();
+                                DecimalFormat df = new DecimalFormat(formato);
+                                Neto = Bruto;
+                                NetoStr = df.format(Neto);
+                                TaraDigitalStr = df.format(TaraDigital);
+                            }
+
+                            if (Bruto < pesoBandaCero) {
+                                BandaCero = true;
+                            } else {
+                                if (inicioBandaPeso) {
+                                    BandaCero = false;
+                                }
+                            }
+                            acumulador++;
+                        }
+                        //  }
                     }
                 }
             }
@@ -234,28 +400,52 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
         try {
             readers = new PuertosSerie.SerialPortReader(serialPort.getInputStream(), receiver);
         } catch (Exception e) {
-           // Utils.Mensaje(e.getMessage(), R.layout.item_customtoasterror, activity);
+            // Utils.Mensaje(e.getMessage(), R.layout.item_customtoasterror, activity);
         }
     }
+
+    private HandlerThread handlerThread;
+
     @Override
     public void init(int numBza) {
-     //   System.out.println("OPTIMA init");
-        Estado = M_VERIFICANDO_MODO;
-        isRunning = true;
-        pesoUnitario = PreferencesDevicesManager.getPesoUnitario(Nombre, this.numBza, activity);//getPesoUnitario();
-        pesoBandaCero = PreferencesDevicesManager.getPesoBandaCero(Nombre, this.numBza, activity);
-        PuntoDecimal = PreferencesDevicesManager.getPuntoDecimal(Nombre, this.numBza, activity);
-        ultimaCalibracion = PreferencesDevicesManager.getUltimaCalibracion(Nombre, this.numBza, activity);
-        receiverinit();
+        mHandler.post(() -> {
+            Estado = M_VERIFICANDO_MODO;
+            isRunning = true;
 
-        if (this.serialPort != null) {
-            Bucle.run();
-        }
+            pesoUnitario = PreferencesDevicesManager.getPesoUnitario(Nombre, numBza, activity);
+            pesoBandaCero = PreferencesDevicesManager.getPesoBandaCero(Nombre, numBza, activity);
+            PuntoDecimal = PreferencesDevicesManager.getPuntoDecimal(Nombre, numBza, activity);
+            ultimaCalibracion = PreferencesDevicesManager.getUltimaCalibracion(Nombre, numBza, activity);
+
+            if (!band485) {
+                receiverinit();
+            }
+            if (serialPort != null) {
+                mHandler.post(Bucle);
+
+                //iniciarBucle();
+            }
+        });
+
     }
+
+    private void iniciarBucle() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Bucle.run();  // Tu lógica en segundo plano
+                // Si quieres que se repita periódicamente:
+                mHandler.postDelayed(this, 1); // cada 1 segundo
+            }
+        });
+    }
+
+
     @Override
     public void escribir(String msj, int numBza) {
         serialPort.write(msj);
     }
+
     //    public String Cero(){
 //        serialPort.write("KZERO\r\n");
 //        setTaraDigital(0);
@@ -292,6 +482,7 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
     protected void Pedirparam() { // NUEVO
         serialPort.write("\u0005O\r");
     }
+
     protected void Guardar_cal() {
         serialPort.write("\u0005S\r");
     }
@@ -299,6 +490,7 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
     public void reset() {
         serialPort.write("\u0005T\r");
     }
+
     public void ReAjusteCero() {
         serialPort.write("\u0005M\r");
     }
@@ -373,12 +565,15 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
         }
         return "\u0005L" + pesoConocido + "\r";
     }
+
     public void Cero_cal() {
         serialPort.write("\u0005U\r");
     }
+
     public void Recero_cal() {
         serialPort.write("\u0005Z\r");
     }
+
     public String CapacidadMax_DivMin_PDecimal(String capacidad, String DivMin, String PuntoDecimal) {
         if (capacidad.length() + Integer.parseInt(PuntoDecimal) > 5) {
             return null;
@@ -422,6 +617,7 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
         lis.add('p');
         return lis;
     }
+
     private ArrayList<Character> initlist() {
         ArrayList<Character> list = new ArrayList<>();
         list.add('C');
@@ -438,6 +634,7 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
         list.add('O');
         return list;
     }
+
     public ArrayList<String> Errores(String lectura) {
         ArrayList<String> listErr = new ArrayList<>();
         if (lectura != null) {
@@ -606,7 +803,6 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
         }
     }
 
-   
 
     Runnable Bucle = new Runnable() {
         String[] array;
@@ -615,46 +811,75 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
 
         @Override
         public void run() {
-            try {
-                if (!isRunning) return;
-                if (Objects.equals(Estado, M_VERIFICANDO_MODO) && isRunning) {
-                    if (contador == 0) {
-                       // System.out.println("OPTIMA:BUSCANDO CALIBRACION");
-                        abrircalib();
-                        mHandler.postDelayed(Bucle, 500);
+            String prefix = !Objects.equals(strid, "") ? "\u0002" + strid : "\u0006";
+            String read = null;
+            if (!isRunning) return;
+            if (!Objects.equals(strid, "")) filtro = "\u0001";
+            if (Objects.equals(Estado, M_VERIFICANDO_MODO)) {
+                if (contador == 0) {
+                    read = serialPort.writendwaitStr("\u0006C\r",0);
+                    System.out.println("OPTIMA:BUSCANDO CALIBRACION");
+                    if (Objects.equals(strid, "")) {
                     } else {
-                      //  System.out.println("OPTIMA:BUSCANDO CALIBRACION");
-                        serialPort.write("\u0005C \r");
-                        mHandler.postDelayed(Bucle, 500);
+                        read = serialPort.writendwaitStr(prefix + "XF\r",10);
                     }
-                    //contador++;
+                } else {
+                    if (Objects.equals(strid, "")) {
+                        read = serialPort.writendwaitStr("\u0005"+"C\r",0);
+                    } else {
+                        read = serialPort.writendwaitStr(prefix + "XF\r",10);
+                    }
                 }
-                if (serialPort.HabilitadoLectura() && Objects.equals(Estado, M_VERIFICANDO_MODO)) {
-                    String read = serialPort.read_2();
-                    String filtro = "\r\n";
-                    if (read != null) {
-                        if (read.contains("\u0006C \r")) {
-                            //entro a calibracion
-                           // System.out.println("OPTIMA:CALIBRACION");
-                            Estado = M_MODO_CALIBRACION;
-                            isRunning=false;
-                            try {
-                                Thread.sleep(500);
-                                openCalibracion(numBza);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-
+                contador++;
+            }
+            if (read != null) {
+                String filtro = "\r\n";
+                if (!Objects.equals(strid, "")) filtro = "\u0001";
+                if (read.contains("\u0006C \r")) {
+                    //entro a calibracion
+                    // System.out.println("OPTIMA:CALIBRACION");
+                    Estado = M_MODO_CALIBRACION;
+                    isRunning = false;
+                    try {
+                        Thread.sleep(500);
+                        openCalibracion(numBza);
+                    } catch (InterruptedException e) {
                     }
-                    if (read.contains(filtro)) {
-                        Estado = M_MODO_BALANZA;
-                        isRunning=false;
+                }
+
+                if (read.toLowerCase().contains(filtro.toLowerCase())) {
+                    Estado = M_MODO_BALANZA;
+                    isRunning = false;
+                    if (band485) {
+                        initbucle();
+                        read = limpiardata(read);
+                        //String original = new String(read.toString().getBytes(), StandardCharsets.UTF_8);  // o ISO_8859_1, depende del origen
+                        Integer[] ArrByt = Utils.charToBitArray(read);
+                        int x = 0;
+                        for (Integer bit : ArrByt) {
+                            if (bit == 1) {
+                                switch (x) {
+                                    case 1:
+                                        SobrecargaBool = true;
+                                    case 7:
+                                        EstableBool = true;
+                                }
+                            } else {
+                                switch (x) {
+                                    case 1:
+                                        SobrecargaBool = false;
+                                    case 7:
+                                        EstableBool = false;
+                                }
+                            }
+                            x++;
+                        }
+                    } else {
                         readers.startReading();
-                        if (read.contains("E")) {
+                        if (read.toLowerCase().contains("E".toLowerCase())) {
                             EstableBool = true;
                             SobrecargaBool = false;
-                        } else if (read.contains("S")) {
+                        } else if (read.toLowerCase().contains("S".toLowerCase())) {
 
                             EstableBool = false;
                             SobrecargaBool = true;
@@ -665,16 +890,20 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
                         array = read.split(filtro);
                     }
                 }
-            } catch (IOException ex) {
+
+            }
+            ;
+            contador++;
+
+            if(Objects.equals(Estado, M_VERIFICANDO_MODO) && contador<=10) {
+                mHandler.postDelayed(Bucle, 500);
             }
         }
-
-        ;
     };
 
     @Override
     public void setTara(int numBza) {
-        setTaraDigital(numBza,Bruto);
+        setTaraDigital(numBza, Bruto);
         /*if (serialPort != null) {
             serialPort.write("KTARE\r");
         }*/
@@ -709,10 +938,14 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
 
         }
         serialPort = null;
-        readers.stopReading();
+        try {
+            readers.stopReading();
+        } catch (Exception e) {
+
+        }
         readers = null;
         Estado = M_VERIFICANDO_MODO;
-        mHandler.removeCallbacks(Bucle);
+        mHandler.removeCallbacks(BucleporDemanda);
     }
 
 
@@ -739,11 +972,11 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
     public Boolean calibracionHabilitada(int numBza) {
         return true;
     }
+
     @Override
     public Boolean getEstadoCentroCero(int numBza) {
         return estadoCentroCero;
     }
-
 
 
     @Override
@@ -770,10 +1003,10 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
     public Boolean getEstadoBajaBateria(int numBza) {
         return estadoBajaBat;
     }
+}
 
 
-
-    //    public String format(String numero) {
+//    public String format(String numero) {
 //        String formato = "0.";
 //        try {
 //            StringBuilder capacidadBuilder = new StringBuilder(formato);
@@ -792,8 +1025,5 @@ public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Seria
 //    }
 //    @Override
 
-    //    ------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------
 
-
-
-}

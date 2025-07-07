@@ -1,4 +1,4 @@
-package com.service.Devices.Impresora;
+package com.service.Comunicacion;
 
 import static android.view.View.GONE;
 
@@ -12,8 +12,10 @@ import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.service.ComService;
 import com.service.ServiceFragment;
 import com.service.estructuras.ZebraStruct;
 import com.zebra.sdk.btleComm.BluetoothLeDiscoverer;
@@ -29,7 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
+public class PrinterDiscovery extends AsyncTask<String, Void, List<ZebraStruct>> {
     Handler mainHandler = new Handler(Looper.getMainLooper());
     private ArrayList<String> listMac = new ArrayList<>();
     private ServiceFragment FService;
@@ -44,7 +46,7 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
     private CountDownLatch latchBTC = new CountDownLatch(1);
     private boolean interruptDiscovery = false;
     private long discoveryTimeout = 7000; // Tiempo máximo de búsqueda en milisegundos
-    private List<String> reachableHosts = new ArrayList<>();
+    private List<ZebraStruct> reachableHosts = new ArrayList<>();
 
     private IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
 
@@ -55,8 +57,7 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
     }
 
     @Override
-    protected List<String> doInBackground(String... params) {
-        listMac.clear();
+    protected List<ZebraStruct> doInBackground(String... params) {
         try {
                 ((ServiceFragment) FService).ListaScanner.clear();
         }catch (Exception e){
@@ -90,8 +91,8 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
     public void BTLESEARCHSTART() {
         try {
             latchBTLE = new CountDownLatch(1);
-            DiscoveryHandler discoveryHandler = new MyDiscoveryHandlerBTLE(FService.requireContext());
-            BluetoothLeDiscoverer.findPrinters(FService.requireContext(), discoveryHandler);
+            DiscoveryHandler discoveryHandler = new MyDiscoveryHandlerBTLE(ComService.getInstance().activity);
+            BluetoothLeDiscoverer.findPrinters(ComService.getInstance().activity, discoveryHandler);
             latchBTLE.await(5000, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,6 +101,7 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
 
     @SuppressLint("MissingPermission")
     public void BTCSEARCHSTART() {
+
         try {
             latchBTC = new CountDownLatch(1);
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -110,7 +112,7 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
         if (bluetoothAdapter != null && !bluetoothAdapter.isDiscovering()) {
             try {
                 bluetoothAdapter.startDiscovery();
-                FService.getContext().registerReceiver(bluetoothReceiver, filter);
+                ComService.getInstance().activity.registerReceiver(bluetoothReceiver, filter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -143,7 +145,6 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
             e.printStackTrace();
         }
 
-        listMac.clear();
         try {
             if (FService instanceof ServiceFragment) {
                 ((ServiceFragment) FService).ListaScanner.clear();
@@ -166,26 +167,30 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            if (interruptDiscovery) return;
+
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
                 if (device != null && device.getBluetoothClass().getDeviceClass() == 1664 && device.getAddress() != null) {
-                    if (!listMac.contains(device.getAddress())) {
-                        listMac.add(device.getAddress());
-                        reachableHosts.add(device.getAddress());
-                        //FService.ListaScanner.add(new ZebraStruct(device.getAddress(), device.getName(),"WF","WF"));
-                        FService.adapterimpresora.add(device.getAddress(), device.getName(),btc,btc);
-                        FService.progressBar.setVisibility(GONE);
+                    Boolean boolinList = false;
+                    try {
+                        boolinList = (!FService.adapterimpresora.getlistMac().contains(device.getAddress())||FService.adapterimpresora.getlistMac().isEmpty());
+                    } catch (Exception e) {
+                    }
+                    if (boolinList) {
+                            System.out.println(device.getName());
+                            FService.adapterimpresora.add(device.getAddress(), device.getName(), btc, btc);
+                            FService.progressBar.setVisibility(GONE);
                     }
                 }
             }
         }
     };
     @SuppressLint("MissingPermission")
-    public void stopDiscovery() {
+    private void stopDiscovery() {
         if (!interruptDiscovery) {
             try {
-                FService.requireContext().unregisterReceiver(bluetoothReceiver);
+                ComService.getInstance().activity.unregisterReceiver(bluetoothReceiver);
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -222,30 +227,42 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
         @SuppressLint("MissingPermission")
         @Override
         public void foundPrinter(DiscoveredPrinter printer) {
-            if (printer != null && !listMac.contains(printer.address)) {
-                listMac.add(printer.address);
-                String friendName="";
-                BluetoothDevice bluetoothDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(printer.address);
-                if (bluetoothDevice.getName() != null && bluetoothDevice.getBluetoothClass().getDeviceClass()== 1664 && !bluetoothDevice.getName().isEmpty()) {
-                    try {
-                        FService.multizebra.listMac.add(printer.address);
-                        String ms = printer.address;
-                       // System.out.println(ms);
+            System.out.println("ola?");
+            try {
+                if (interruptDiscovery) return;
 
+                Boolean boolinList = false;
+                try {
+                    boolinList = (!FService.adapterimpresora.getlistMac().contains(printer.address)||FService.adapterimpresora.getlistMac().isEmpty());
+                } catch (Exception e) {
+                }
+                if (printer != null && boolinList) {
+                    System.out.println("ola2?");
+                    String friendName = "";
+                    BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(printer.address);
+
+                    if (bluetoothDevice != null && bluetoothDevice.getBluetoothClass() != null  && bluetoothDevice.getName() != null && !bluetoothDevice.getName().isEmpty()) {
+                        System.out.println("ola3?");
                         try {
-                            bluetoothDevice = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(printer.address);
-                            friendName = bluetoothDevice.getName();
-                        //    System.out.println(friendName);
+                                friendName = bluetoothDevice.getName();
+                                System.out.println(friendName);
                         } catch (Exception e) {
+                            System.out.println("aaaaaaaaaaa");
                             e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        System.out.println("ola4?");
+                        String finalFriendName = friendName;
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            FService.adapterimpresora.add(printer.address, finalFriendName, btle, btle);
+                        FService.progressBar.setVisibility(GONE);
+                        });
                     }
                 }
-                FService.adapterimpresora.add(printer.address, friendName,btle,btle);
-                FService.progressBar.setVisibility(GONE);
             }
+           catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("PrinterDiscovery", "Error en foundPrinter: " + e.getMessage());
+                }
         }
 
         @Override
@@ -269,28 +286,30 @@ public class PrinterDiscovery extends AsyncTask<String, Void, List<String>> {
             discoveryWFJob.submit(new Runnable() {
                 @Override
                 public void run() {
+                    if (interruptDiscovery) return;
 
                     try {
                         NetworkDiscoverer.findPrinters(new DiscoveryHandler() {
                             @Override
                             public void foundPrinter(DiscoveredPrinter printer) {
-                                Boolean boolinList = true;
+                                System.out.println("A");
+                                Boolean boolinList = false;
                                 try {
-                                    boolinList = FService.adapterimpresora.getlist().contains(new ZebraStruct(printer.address, "WF","WF","WF"));
+                                    boolinList = (!FService.adapterimpresora.getlistMac().contains(printer.address)||FService.adapterimpresora.getlistMac().isEmpty());
+                                    System.out.println("A2"+ printer.address);
                                 } catch (Exception e) {
-                                    boolinList = true;
                                 }
-                                if (printer != null && !boolinList) {
+
+                                if (printer != null && boolinList) {
                                     try {
-                                        mainHandler.post(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                FService.progressBar.setVisibility(GONE);
-                                                FService.adapterimpresora.add(printer.address, "WF", "WF", "WF");
-                                            }});
-                                    } catch (Exception e) {
+                                        new Handler(Looper.getMainLooper()).post(() -> {
+                                        FService.progressBar.setVisibility(GONE);
+                                        FService.adapterimpresora.add(printer.address, "WF", "WF", "WF");
+                                        });
+                                    }catch (Exception e){
+
                                     }
-                                    reachableHosts.add(printer.address);
+                                  //  reachableHosts.add(new ZebraStruct(printer.address, "WF", "WF", "WF"));
 
                                 }
                             }

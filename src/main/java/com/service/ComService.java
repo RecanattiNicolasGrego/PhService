@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.service.Interfaz.OnFragmentChangeListener;
 
 public class ComService {
+    public static final String ServiceVersion = "1.050";
     public AppCompatActivity activity;
     public OnFragmentChangeListener fragmentChangeListener;
     private static ComService instance;

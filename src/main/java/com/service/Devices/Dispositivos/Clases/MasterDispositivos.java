@@ -1,28 +1,23 @@
 package com.service.Devices.Dispositivos.Clases;
 
-import android.telecom.Call;
-
 import com.service.Comunicacion.GestorPuertoSerie;
-import com.service.Comunicacion.Modbus.ModbusMasterRtu;
 import com.service.Comunicacion.Modbus.ModbusMasterTCP;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
-import com.service.Comunicacion.Modbus.Req.ModbusReqRtuSlave;
-import com.service.Comunicacion.Modbus.Req.ModbusReqTCPslave;
 import com.service.Comunicacion.Modbus.modbus4And.requset.ModbusReq;
 import com.service.Comunicacion.Modbus.modbus4And.requset.OnRequestBack;
 import com.service.Interfaz.Dispositivo;
-import com.service.Interfaz.Modbus;
 import com.service.Interfaz.dispositivoBase;
 import com.service.Utils;
 import com.service.estructuras.classDevice;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
-public class MasterDispositivos  extends DispositivoBase implements Dispositivo, Modbus.Master {
+public class MasterDispositivos  extends DispositivoBase implements Dispositivo, dispositivoBase.Modbus.Master {
     private ModbusReqRtuMaster ModbusRtuMaster;
     private ModbusReq ModbusTCPMaster;
     Boolean isinit =false;
+
+    public static Boolean   puede485=true;
     static int limit = ((int) ((int)Short.MAX_VALUE + 1) * 2);
     public MasterDispositivos(String strpuerto, classDevice Device,int ndevice) {
         super(strpuerto, Device, ndevice);
@@ -32,10 +27,10 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
         if (strpuerto != null) {
             if (Device.getSalida().equals("Red")) {
                 try {
-                    ModbusTCPMaster = ModbusMasterTCP.init(Device.getDireccion().get(0), new OnRequestBack<String>() {
+                    ModbusTCPMaster = GestorPuertoSerie.getInstance().initializateMasterTCPmodbus(Device.getDireccion().get(0), new OnRequestBack<String>() {
                         @Override
                         public void onSuccess(String s) {
-
+                            isinit=true;
                         }
 
                         @Override
@@ -43,19 +38,19 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
                         }
                     });
-                    isinit=true;
                 } catch (Exception e) {
                     System.out.println("ERROR MODBUS Init Red " + e.getMessage());
                 }
             } else {
-                try {
-                    ModbusRtuMaster  = GestorPuertoSerie.getInstance().initializatemodbus(strpuerto, Integer.parseInt(Device.getDireccion().get(0)), Integer.parseInt(Device.getDireccion().get(1)), Integer.parseInt(Device.getDireccion().get(2)), Integer.parseInt(Device.getDireccion().get(3)));
+                try { // OJO ACA QUE POR AHI HAY UN TEMITA DE DATABIT Y STOPBIT 26/6
+                    ModbusRtuMaster  = GestorPuertoSerie.getInstance().initializateMasterRTUmodbus(strpuerto, Integer.parseInt(Device.getDireccion().get(0)), Integer.parseInt(Device.getDireccion().get(1)), Integer.parseInt(Device.getDireccion().get(2)), Integer.parseInt(Device.getDireccion().get(3)));
                     isinit=true;
                 }catch(Exception e){
-
+                    System.out.println("ERROR MODBUS Init RTU " + e.getMessage());
                 }
             }
         }
+        System.out.println("INIT");
     }
     
 
@@ -87,7 +82,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                                             System.out.println("ERR s"+s);
                                             latch.countDown();
                                         }
-                                    }, Slaveid, registro, 2);
+                                    }, Slaveid, registro-1, 2);
                                 } else {
                                     ModbusRtuMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
                                         @Override
@@ -106,7 +101,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 2);
+                                    }, Slaveid, registro-1, 2);
                                 }
                                 if (x[0] > Long.MAX_VALUE) {
                                     x[0] = Long.MAX_VALUE - x[0];
@@ -131,7 +126,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 1);
+                                    }, Slaveid, registro-1, 1);
                                 } else {
                                     ModbusRtuMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
                                         @Override
@@ -148,7 +143,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 1);
+                                    }, Slaveid, registro-1, 1);
                                 }
                                 break;
                             }
@@ -170,7 +165,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 1);
+                                    }, Slaveid, registro-1, 1);
                                 } else {
                                     ModbusRtuMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
                                         @Override
@@ -186,7 +181,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                                             latch.countDown();
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 1);
+                                    }, Slaveid, registro-1, 1);
                                 }
                                 break;
                             }
@@ -211,7 +206,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                                             latch.countDown();
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 2);
+                                    }, Slaveid, registro-1, 2);
                                 } else {
                                     ModbusRtuMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
                                         @Override
@@ -229,7 +224,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                                             latch.countDown();
                                             System.out.println("ERR s"+s);
                                         }
-                                    }, Slaveid, registro, 2);
+                                    }, Slaveid, registro-1, 2);
                                 }break;
                             } default:}
                     } catch (Exception e) {
@@ -271,7 +266,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                             Callback.finish(null);
                             latch.countDown();
                         }
-                    }, Slaveid, registro, 1);
+                    }, Slaveid, registro-1, 1);
                 } else {
                     ModbusRtuMaster.readCoil(new OnRequestBack<boolean[]>() {
                         @Override
@@ -287,7 +282,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                             Callback.finish(null);
                             latch.countDown();
                         }
-                    }, Slaveid, registro, 1);
+                    }, Slaveid, registro-1, 1);
                 }
 
             } catch (Exception e) {
@@ -307,6 +302,344 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
         }
     }
+
+    @Override
+    public void leerMultiplesHoldingRegisters(Integer registro,Integer Alcance, RegistersCallback callbackCrudo) {
+        if(isinit) {
+            Utils.EsHiloSecundario();
+            String result = "";
+            CountDownLatch latch = new CountDownLatch(1);
+            try {
+                        if (Device.getSalida().equals("Red")) {
+                            ModbusTCPMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
+                                @Override
+                                public void onSuccess(short[] shorts) {
+                                    callbackCrudo.finish(shorts);
+                                    latch.countDown();
+                                }
+
+                                @Override
+                                public void onFailed(String s) {
+                                    callbackCrudo.finish(null);
+                                    latch.countDown();
+                                    System.out.println("ERR s"+s);
+                                }
+                            }, Slaveid, registro-1, Alcance);
+                        } else {
+                            ModbusRtuMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
+                                @Override
+                                public void onSuccess(short[] shorts) {
+                                    callbackCrudo.finish(shorts);
+                                    latch.countDown();
+                                }
+
+                                @Override
+                                public void onFailed(String s) {
+
+                                    callbackCrudo.finish(null);
+                                    latch.countDown();
+                                    System.out.println("ERR s"+s);
+                                }
+                            }, Slaveid, registro-1, Alcance);
+                        }
+
+            } catch (Exception e) {
+                System.out.println("ERR s"+e.getMessage());
+                callbackCrudo.finish(null);
+                latch.countDown();
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
+        }else{
+            System.out.println("ERR not init");
+            callbackCrudo.finish(null);
+        }
+    }
+
+    @Override
+    public void leerMultiplesCoils(Integer registro, Integer Alcance, CoilsCallback callbackCrudo) {
+        if(isinit) {
+            Utils.EsHiloSecundario();
+            CountDownLatch latch = new CountDownLatch(1);
+            try {
+                final Boolean[] x = {false};
+                if (Device.getSalida().equals("Red")) {
+                    ModbusTCPMaster.readCoil(new OnRequestBack<boolean[]>() {
+                        @Override
+                        public void onSuccess(boolean[] booleans) {
+                            callbackCrudo.finish(booleans);
+                            latch.countDown();
+
+                        }
+
+                        @Override
+                        public void onFailed(String s) {
+
+                            System.out.println("ERR s "+s);
+                            callbackCrudo.finish(null);
+                            latch.countDown();
+                        }
+                    }, Slaveid, registro-1, Alcance);
+                } else {
+                    ModbusRtuMaster.readCoil(new OnRequestBack<boolean[]>() {
+                        @Override
+                        public void onSuccess(boolean[] booleans) {
+                            callbackCrudo.finish(booleans);
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(String s) {
+
+                            System.out.println("ERR s "+s);
+                            callbackCrudo.finish(null);
+                            latch.countDown();
+                        }
+                    }, Slaveid, registro-1, Alcance);
+                }
+
+            } catch (Exception e) {
+                System.out.println("ERR s "+e.getMessage());
+                callbackCrudo.finish(null);
+                latch.countDown();
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+
+            }
+        }else{
+
+            System.out.println("ERR s not init");
+            callbackCrudo.finish(null);
+
+        }
+    }
+
+    @Override
+    public Boolean WriteMultiplesHoldingRegisters(Integer registro, short[] valor) {
+        System.out.println("WRITING");
+        final Boolean[] res = {false};
+        if(isinit) {
+            System.out.println("WRITING init");
+            Utils.EsHiloSecundario();
+            CountDownLatch latch = new CountDownLatch(1);
+            try {
+                final Boolean[] x = {false};
+                if (Device.getSalida().equals("Red")) {
+                    ModbusTCPMaster.writeRegisters(new OnRequestBack<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            res[0] =true;
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(String msg) {
+                            res[0] =false;
+                            latch.countDown();
+                        }
+                    },Slaveid, registro-1, valor);
+                } else {
+                    ModbusRtuMaster.writeRegisters(new OnRequestBack<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            res[0] =true;
+                            latch.countDown();
+                        }
+                        @Override
+                        public void onFailed(String msg) {
+                            res[0] =false;
+                            latch.countDown();
+                        }
+                    },Slaveid, registro-1, valor);
+                }
+            } catch (Exception e) {
+                System.out.println("ERR s "+e.getMessage());
+                latch.countDown();
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+            }
+        }else{
+            System.out.println("ERR s not init");
+        }
+        return    res[0];
+    }
+
+    @Override
+    public Boolean WriteMultiplesCoils(Integer registro, boolean[] valor) {
+        final Boolean[] res = {false};
+        if(isinit) {
+            Utils.EsHiloSecundario();
+            CountDownLatch latch = new CountDownLatch(1);
+            try {
+                final Boolean[] x = {false};
+                if (Device.getSalida().equals("Red")) {
+                    ModbusTCPMaster.writeCoils(
+                            new OnRequestBack<String>() {
+                                @Override
+                                public void onSuccess(String s) {
+                                    res[0] =true;
+                                    latch.countDown();
+                                }
+
+                                @Override
+                                public void onFailed(String msg) {
+                                    res[0] =false;
+                                    latch.countDown();
+                                }
+                            }, Slaveid, registro-1, valor);
+                } else {
+                    ModbusRtuMaster.writeCoils(new OnRequestBack<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            res[0]=true;
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(String msg) {
+                            res[0] =false;
+                            latch.countDown();
+                        }
+                    }, Slaveid, registro-1, valor);
+                }
+
+            } catch (Exception e) {
+                System.out.println("ERR s "+e.getMessage());
+                latch.countDown();
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+
+            }
+        }else{
+
+            System.out.println("ERR s not init");
+        }
+        return  res[0];
+    }
+
+
+    @Override
+    public Boolean WriteHoldingRegister(Integer registro, ClasesModbus clase, Integer valor) {
+
+        System.out.println("WRITING");
+        final Boolean[] res = {false};
+        if(isinit) {
+
+            System.out.println("WRITING init");
+            Utils.EsHiloSecundario();
+            CountDownLatch latch = new CountDownLatch(1);
+            try {
+                final Boolean[] x = {false};
+                if (Device.getSalida().equals("Red")) {
+                    ModbusTCPMaster.writeRegister(new OnRequestBack<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            res[0] =true;
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(String msg) {
+                            res[0] =false;
+                            latch.countDown();
+                        }
+                    },Slaveid, registro-1, valor);
+                } else {
+                    ModbusRtuMaster.writeRegister(new OnRequestBack<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            res[0] =true;
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(String msg) {
+                            res[0] =false;
+                            latch.countDown();
+                        }
+                    },Slaveid, registro-1, valor);
+                }
+
+            } catch (Exception e) {
+                System.out.println("ERR s "+e.getMessage());
+                latch.countDown();
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+
+            }
+        }else{
+            System.out.println("ERR s not init");
+
+        }
+        return    res[0];
+    }
+
+    @Override
+    public Boolean WriteCoil(Integer registro, Boolean valor) {
+        final Boolean[] res = {false};
+        if(isinit) {
+            Utils.EsHiloSecundario();
+            CountDownLatch latch = new CountDownLatch(1);
+            try {
+                final Boolean[] x = {false};
+                if (Device.getSalida().equals("Red")) {
+                    ModbusTCPMaster.writeCoil(
+                            new OnRequestBack<String>() {
+                                @Override
+                                public void onSuccess(String s) {
+                                    res[0] =true;
+                                    latch.countDown();
+                                }
+
+                                @Override
+                                public void onFailed(String msg) {
+                                    res[0] =false;
+                                    latch.countDown();
+                                }
+                            }, Slaveid, registro-1, valor);
+                } else {
+                    ModbusRtuMaster.writeCoil(new OnRequestBack<String>() {
+                        @Override
+                        public void onSuccess(String s) {
+                            res[0]=true;
+                            latch.countDown();
+                        }
+
+                        @Override
+                        public void onFailed(String msg) {
+                            res[0] =false;
+                            latch.countDown();
+                        }
+                    }, Slaveid, registro-1, valor);
+                }
+
+            } catch (Exception e) {
+                System.out.println("ERR s "+e.getMessage());
+                latch.countDown();
+            }
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+
+            }
+        }else{
+
+            System.out.println("ERR s not init");
+        }
+        return  res[0];
+    }
+
     @Override
     public void stop() {
         if (Device.getSalida().equals("Red")) {

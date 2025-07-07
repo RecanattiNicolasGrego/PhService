@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 
 public class MixtoC extends ExpansionBase {
-    static  {
-        Salidas=6;
-        Entradas=6;
-    };
+    public static int    Salidas=6;
+    public static int     Entradas=6;
+
     public static String Bauddef="115200";
     public static String StopBdef="1";
     public static String DataBdef="8";

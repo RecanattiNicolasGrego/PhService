@@ -6,7 +6,6 @@ import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.PreferencesDevicesManager;
-import com.service.R;
 import com.service.Utils;
 
 import java.io.IOException;
@@ -15,13 +14,21 @@ import java.util.Objects;
 
 public class zorra232 extends BalanzaBase {
     public PuertosSerie.SerialPortReader readers = null;
-    public static final String Nombre = "Zorra232";
     public PuertosSerie serialPort = null;
     PuertosSerie.PuertosSerieListener receiver = null;
     Boolean Modosingle =false;
-    public static final  String Bauddef="9600",StopBdef="1",DataBdef="8", Paritydef="0";
+    public static String Nombre = "Zorra232";
+    public static String Bauddef="9600";
+    public static String  StopBdef="1";
+    public static String  DataBdef="8";
+    public static String  Paritydef="0";
+    public static Boolean   TienePorDemanda =false;
+    public static Boolean band485=false;
+    public static final int nBalanzas=1;
+    //public static int timeout=0;
     public zorra232(String puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int numMultipleBza) {
-        super(puerto, id, activity, fragmentChangeListener, numMultipleBza);
+        super(puerto, 0, activity, fragmentChangeListener, nBalanzas);
+        System.out.println("Init zorra232 "+id);
         try {
             this.serialPort = GestorPuertoSerie.getInstance().initPuertoSerie(puerto, Integer.parseInt(Bauddef), Integer.parseInt(DataBdef), Integer.parseInt(StopBdef), Integer.parseInt(Paritydef), 1, 0);
             Thread.sleep(300);
@@ -29,7 +36,8 @@ public class zorra232 extends BalanzaBase {
 
         } finally {
             Estado=M_MODO_BALANZA;
-            this.numBza = (this.serialPort.get_Puerto() * 10) + id; // si no tiene id seria :  10,20,3x  ; SI PUERTO 1 y 2 TIENEN ID ->(puerto.get_Puerto()*100)+numero;  Y CONTROLAR DE ALGUNA FORMA QUE ID NO TENGA 3 CIFRAS
+            Modosingle = band485;
+            this.numBza = (this.serialPort.get_Puerto() * 100) + id; // si no tiene id seria :  10,20,3x  ; SI PUERTO 1 y 2 TIENEN ID ->(puerto.get_Puerto()*100)+numero;  Y CONTROLAR DE ALGUNA FORMA QUE ID NO TENGA 3 CIFRAS
         }
     }
 
@@ -39,10 +47,17 @@ public class zorra232 extends BalanzaBase {
         } catch (IOException e) {
         }
         serialPort = null;
-        readers.stopReading();
+        if(readers!=null){
+            readers.stopReading();
+        }
         readers = null;
         Estado = M_VERIFICANDO_MODO;
-        mHandler.removeCallbacks(Bucle);
+        try {
+            mHandler.removeCallbacks(Bucle);
+        } catch (Exception e) {
+
+        }
+        handlerThread.quit();
     }
 
     @Override
@@ -52,7 +67,7 @@ public class zorra232 extends BalanzaBase {
         pesoBandaCero = PreferencesDevicesManager.getPesoBandaCero(Nombre, this.numBza, activity);
         PuntoDecimal = PreferencesDevicesManager.getPuntoDecimal(Nombre, this.numBza, activity);
         ultimaCalibracion = PreferencesDevicesManager.getUltimaCalibracion(Nombre, this.numBza, activity);
-        if (this.serialPort != null) {
+        if (this.serialPort != null && !band485) {
             receiverinit();
         }
 
@@ -60,10 +75,9 @@ public class zorra232 extends BalanzaBase {
     private void receiverinit() {
         String filtro = "\u0002";
         receiver = new PuertosSerie.PuertosSerieListener() {
-
             @Override
             public void onMsjPort(String data) {
-               // System.out.println("Zorra232 data"+ data);
+                System.out.println("Zorra232 data"+ data);
                 String[] array = new ArrayList<>().toArray(new String[0]);
                 if (Objects.equals(Estado, M_MODO_BALANZA)) {
                     Boolean neg=false;
@@ -151,17 +165,21 @@ public class zorra232 extends BalanzaBase {
                         } else if (estadox.contains(filtro+PD+"6")) {
                             neg=true;
                         }
-                        data2 = array[1];
-                        data2 = data2.replace(filtro+PD+estadox, "");
-                        data2 = data2.replace(" ", "");
-                        data2 = data2.replace("\r\n", "");
-                        data2 = data2.replace("\r", "");
-                        data2 = data2.replace("\n", "");
-                        data2 = data2.replace("\\u0007", "");
-                        data2 = data2.replace("S", "");
-                        data2 = data2.replace("E", "");
-                        data2 = data2.replace("kg", "");
-                        data2 = data2.replace(".", "");
+                        try {
+                            data2 = array[1];
+                            data2 = data2.replace(filtro+PD+estadox, "");
+                            data2 = data2.replace(" ", "");
+                            data2 = data2.replace("\r\n", "");
+                            data2 = data2.replace("\r", "");
+                            data2 = data2.replace("\n", "");
+                            data2 = data2.replace("\\u0007", "");
+                            data2 = data2.replace("S", "");
+                            data2 = data2.replace("E", "");
+                            data2 = data2.replace("kg", "");
+                            data2 = data2.replace(".", "");
+                        } catch (Exception e) {
+
+                        }
                         try{
                             data2 = data2.substring(0,6);
                             StringBuilder sb = new StringBuilder(data2);
@@ -189,10 +207,6 @@ public class zorra232 extends BalanzaBase {
                                 Neto = Bruto - TaraDigital;
                                 NetoStr = String.valueOf(Neto);
                             }
-                            if (Neto > pico) {
-                                pico = Neto;
-                                picoStr = NetoStr;
-                            }
                             if (Bruto < pesoBandaCero) {
                                 BandaCero = true;
                             }
@@ -202,9 +216,13 @@ public class zorra232 extends BalanzaBase {
             }
         };
         try {
+            if(band485){
+               //Bucle peticion
+            }else{
             readers = new PuertosSerie.SerialPortReader(serialPort.getInputStream(), receiver);
             readers.startReading();
 
+            }
         } catch (Exception e) {
            // Utils.Mensaje(e.getMessage(), R.layout.item_customtoasterror, activity);
         }

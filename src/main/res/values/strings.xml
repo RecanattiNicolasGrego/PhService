@@ -4,7 +4,38 @@
     <string name="open">open</string>
 
     <string name="close">close</string>
-
+    <string-array name="DivisionMinima2">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+        <item>100</item>
+        <item>200</item>
+        <item>500</item>
+    </string-array>
+    <string-array name="PuntoDecimal2">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+    <string-array name="Filtros410">
+        <item>OFF</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+        <item>32</item>
+        <item>64</item>
+        <item>128</item>
+        <item>256</item>
+        <item>512</item>
+    </string-array>
     <string-array name="uart_baudrate">
         <item>50</item>
         <item>75</item>
@@ -133,6 +164,40 @@
         <item>Red</item>
         <item>BLT</item>
     </string-array>
+
+    <string-array name="Stopbit">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="DataBit">
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="baudrate">
+        <item>600</item>
+    <item>1200</item>
+    <item>2400</item>
+    <item>4800</item>
+    <item>9600</item>
+                    <item>14400</item>
+    <item>19200</item>
+    <item>38400</item>
+                    <item>56000</item>
+                    <item>57600</item>
+    <item>115200</item>
+    </string-array>
+    <string-array name="Parity">
+        <item>None</item>
+    <item>Odd</item>
+    <item>Even</item>
+    </string-array>
+
+
+
+
+
+
+
 
     <string-array name="Modelobza">
         <item>Optima</item>

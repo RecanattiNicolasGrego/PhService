@@ -14,6 +14,7 @@ import com.service.estructuras.classDevice;
 import com.service.R;
 import com.service.Utils;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -64,6 +65,7 @@ public class ImprimirEstandar {
             case 2:
             case 3: {
                 imprimirRS232();
+                break;
             }
             case 4: { // USB
 

@@ -89,10 +89,9 @@ public class UsbPrinterManager {
 
         byte[] data = label.getBytes(StandardCharsets.UTF_8);
         int result = connection.bulkTransfer(outEndpoint, data, data.length, 1000);
-
         connection.releaseInterface(usbInterface);
         connection.close();
-        System.out.println(result+ " device "+ device!=null);
+        System.out.println(result+ " device ");
         return result >= 0;
     }
 

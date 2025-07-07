@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 
 public class SalidasC extends ExpansionBase{
-    static  {
-        Salidas=(12);
-        Entradas=(0);
-    };
+    public static int     Salidas=(12);
+    public static int    Entradas=(0);
+
     public static String Bauddef="115200";
     public static String StopBdef="1";
     public static String DataBdef="8";

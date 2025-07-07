@@ -411,7 +411,6 @@ public class ModbusReq {
                 try {
                     WriteRegistersRequest request = new WriteRegistersRequest(slaveId, start, values);
                     WriteRegistersResponse response = (WriteRegistersResponse) mModbusMaster.send(request);
-
                     if (response.isException())
                         onRequestBack.onFailed(response.getExceptionMessage());
                     else

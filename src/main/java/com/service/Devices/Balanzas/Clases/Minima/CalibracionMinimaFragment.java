@@ -53,7 +53,6 @@ public class CalibracionMinimaFragment extends Fragment {
     AppCompatActivity activity;
     private ButtonProvider buttonProvider;
     PuertosSerie.SerialPortReader reader=null;
-    Handler mHandler= new Handler();
     Toast toast=null;
    // public static final String M_VERIFICANDO_MODO="VERIFICANDO_MODO",M_MODO_CALIBRACION="MODO_CALIBRACION",M_ERROR_COMUNICACION="M_ERROR_COMUNICACION"
     public String estado= BalanzaBase.M_VERIFICANDO_MODO,picoStr="0",estable="";//,ultimaCalibracion="",brutoStr="0",netoStr="0",taraStr="0", taraDigitalStr="0";
@@ -830,7 +829,9 @@ public class CalibracionMinimaFragment extends Fragment {
                                         // BZA.setPesoUnitario(PreferencesDevicesManager.getPesoUnitario(BZA.Nombre,BZA.numBza, activity));
                                         BZA.Estado = BalanzaBase.M_MODO_BALANZA;
                                         reader.stopReading();
-                                        BZA.readers.startReading();
+                                       if(BZA.readers!=null){
+                                           BZA.readers.startReading();
+                                       }
                                         reader=null;
                                         ComService.getInstance().openServiceFragment();
                                         boolBtHome =true;

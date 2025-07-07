@@ -8,8 +8,7 @@
     android:layout_marginEnd="10dp"
     android:layout_marginTop="10dp"
     android:padding="4dp"
-
-
+    android:clipToPadding="false"
     android:backgroundTint="@color/gregorutti_color"
     android:id="@+id/ultimatelayout"
     android:background="@drawable/borderradius">
@@ -134,12 +133,15 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LtvExceptionIP"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="40dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

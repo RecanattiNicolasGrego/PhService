@@ -5,9 +5,9 @@ public class ZebraStruct {
     private String name;
     private String tipoBT;
     private  String clase;
-    public ZebraStruct(String direccion, String tipo, String tipoBT,String clase) {
+    public ZebraStruct(String direccion, String name, String tipoBT, String clase) {
         this.direccion = direccion;
-        this.name = tipo;
+        this.name = name;
         this.tipoBT = tipoBT;
         this.clase=clase;
     }

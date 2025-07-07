@@ -1,4 +1,4 @@
-package com.service.Devices.Balanzas.Clases;
+package com.service.Comunicacion;
 
 import static android.view.View.GONE;
 
@@ -17,12 +17,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ProgressBar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.service.ComService;
 import com.service.ServiceFragment;
 import com.service.estructuras.ZebraStruct;
-import com.service.R;
-import com.service.Utils;
 import com.zebra.sdk.printer.discovery.DiscoveredPrinter;
 import com.zebra.sdk.printer.discovery.DiscoveryException;
 import com.zebra.sdk.printer.discovery.DiscoveryHandler;
@@ -58,12 +55,11 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
         this.FService = context;
         this.progressBar = progressBar;
         this.type = type;
-        wifiManager = (WifiManager) FService.requireContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        wifiManager = (WifiManager) ComService.getInstance().activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
 
     @Override
     protected List<String> doInBackground(String... params) {
-        listMac.clear();
         try {
             ((ServiceFragment) FService).ListaScanner.clear();
         }catch (Exception e){
@@ -101,12 +97,18 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
     private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (interruptDiscovery) return;
+
             boolean success = intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false);
             if (success) {
                 @SuppressLint("MissingPermission") List<android.net.wifi.ScanResult> results = wifiManager.getScanResults();
                 for (android.net.wifi.ScanResult result : results) {
-                    if (!result.SSID.isEmpty() && !listMac.contains(result.SSID)) {
-                        listMac.add(result.SSID);
+                    Boolean boolinList = false;
+                    try {
+                        boolinList = (!FService.adapterimpresora.getlistMac().contains(result.SSID)||FService.adapterimpresora.getlistMac().isEmpty());
+                    } catch (Exception e) {
+                    }
+                    if (!result.SSID.isEmpty() && boolinList) {
                         FService.adapterimpresora.add(result.SSID, result.SSID, "WFO", "WFO");
 
                     }
@@ -118,7 +120,7 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
     public void WFStartSearch(){
          if (wifiManager.isWifiEnabled()) {
             IntentFilter filter = new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
-            FService.getActivity().getApplicationContext().registerReceiver(scanReceiver, filter);
+             ComService.getInstance().activity.registerReceiver(scanReceiver, filter);
             wifiManager.startScan();
         } else {
            // Utils.Mensaje("Active Wifi", R.layout.item_customtoasterror,(AppCompatActivity) FService.requireActivity());
@@ -131,14 +133,17 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
             ScanCallback scanCallback = new ScanCallback() {
                 @Override
                 public void onScanResult(int callbackType, android.bluetooth.le.ScanResult result) {
+                    if (interruptDiscovery) return;
+
                     BluetoothDevice device = result.getDevice();
-                    if (device != null && device.getAddress() != null && device.getName()!=null && device.getBluetoothClass().getDeviceClass()!=1664  && !listMac.contains(device.getAddress()) &&!Objects.equals(device.getName(), "")) {
-                        if (!listMac.contains(device.getAddress())) {
-                            listMac.add(device.getAddress());
-                            reachableHosts.add(device.getAddress());
-                            FService.adapterimpresora.add(device.getAddress(), device.getName(), btle, btle);
-                            FService.progressBar.setVisibility(GONE);
-                        }
+                    Boolean boolinList = false;
+                    try {
+                        boolinList = (!FService.adapterimpresora.getlistMac().contains(device.getAddress())||FService.adapterimpresora.getlistMac().isEmpty());
+                    } catch (Exception e) {
+                    }
+                    if (device != null && device.getAddress() != null && device.getName()!=null && device.getBluetoothClass().getDeviceClass()!=1664  && boolinList &&!Objects.equals(device.getName(), "")) {
+                        FService.adapterimpresora.add(device.getAddress(), device.getName(), btle, btle);
+                        FService.progressBar.setVisibility(GONE);
                     }
                 }
                 @Override
@@ -161,6 +166,8 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
 
     @SuppressLint("MissingPermission")
     public void BTCSEARCHSTART() {
+        if (interruptDiscovery) return;
+
         try {
             latchBTC = new CountDownLatch(1);
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -171,7 +178,7 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
         if (bluetoothAdapter != null && !bluetoothAdapter.isDiscovering()) {
             try {
                 bluetoothAdapter.startDiscovery();
-                FService.getContext().registerReceiver(bluetoothReceiver, filter);
+                ComService.getInstance().activity.registerReceiver(bluetoothReceiver, filter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -204,7 +211,6 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
             e.printStackTrace();
         }
 
-        listMac.clear();
         try {
             if (FService instanceof ServiceFragment) {
                 ((ServiceFragment) FService).ListaScanner.clear();
@@ -231,11 +237,12 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
                 if (device != null  && device.getBluetoothClass().getDeviceClass()!=1664  && device.getAddress() != null) {
-                    if (!listMac.contains(device.getAddress())) {
-                        listMac.add(device.getAddress());
-                        reachableHosts.add(device.getAddress());
-                        //FService.ListaScanner.add(new ZebraStruct(device.getAddress(), device.getName(),"WF","WF"));
-
+                    Boolean boolinList = false;
+                    try {
+                        boolinList = (!FService.adapterimpresora.getlistMac().contains(device.getAddress())||FService.adapterimpresora.getlistMac().isEmpty());
+                    } catch (Exception e) {
+                    }
+                    if (boolinList) {
                         FService.adapterimpresora.add(device.getAddress(), device.getName(),btc,btc);
                         FService.progressBar.setVisibility(GONE);
                     }
@@ -244,10 +251,10 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
         }
     };
     @SuppressLint("MissingPermission")
-    public void stopDiscovery() {
+    private void stopDiscovery() {
         if (!interruptDiscovery) {
             try {
-                FService.requireContext().unregisterReceiver(bluetoothReceiver);
+                ComService.getInstance().activity.unregisterReceiver(bluetoothReceiver);
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -284,6 +291,8 @@ public class GenericDiscovery extends AsyncTask<String, Void, List<String>> {
             discoveryWFJob.submit(new Runnable() {
                 @Override
                 public void run() {
+                    if (interruptDiscovery) return;
+
 
                     try {
                         NetworkDiscoverer.findPrinters(new DiscoveryHandler() {

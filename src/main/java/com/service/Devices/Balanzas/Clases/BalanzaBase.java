@@ -1,6 +1,8 @@
 package com.service.Devices.Balanzas.Clases;
 
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,39 +11,165 @@ import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Interfaz.Balanza;
 import com.service.PreferencesDevicesManager;
 
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+
 
 public class BalanzaBase  implements Balanza {
-    public static String M_MODO_CALIBRACION="MODO_CALIBRACION";
-    public static String M_MODO_BALANZA="MODO_BALANZA";
-    public static String M_VERIFICANDO_MODO="VERIFICANDO_MODO";
+    String RegexSololetra = "[^a-zA-Z]+";
+    String RegexSoloNumero = "[^0-9.]+";
 
-    public BalanzaBase(String puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener,int numMultipleBza) {
+    public static String M_VERIFICANDO_MODO="VERIFICANDO_MODO";
+    protected Semaphore Semaforo = new Semaphore(0);
+    public Boolean band485=false;
+    Class<?> clazz;
+   public Boolean bandmultiplebza=false;
+   public String puertoseteado="";
+    public  HandlerThread handlerThread;
+
+
+
+    public BalanzaBase(String puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int numMultipleBza) {
             this.ID = id;
             this.activity = activity;
+            band485 = id>0;
+            bandmultiplebza=numMultipleBza>1;
+            this.puertoseteado = puerto;
             this.Service=BalanzaService.getInstance();
             this.fragmentChangeListener=fragmentChangeListener;
+            clazz = this.getClass(); // Clase real de la instancia
+        handlerThread = new HandlerThread(clazz.getName()+"_"+puertoseteado);
+        handlerThread.start(); // error falta memoria
+
+         /*
+
+        Process: com.jws.jwsapi, PID: 19555
+        java.lang.OutOfMemoryError: pthread_create (1040KB stack) failed: Try again
+        at java.lang.Thread.nativeCreate(Native Method)
+        at java.lang.Thread.start(Thread.java:733)
+        at com.service.Devices.Balanzas.Clases.BalanzaBase.<init>(BalanzaBase.java:46)
+        at com.service.BalanzaService$Balanzas.getBalanza(BalanzaService.java:839)
+        at com.service.Comunicacion.GestorRecursos$1.run(GestorRecursos.java:122)
+        at java.lang.Thread.run(Thread.java:764)
+        */
+        mHandler= new Handler(handlerThread.getLooper());
     }
-    public BalanzaService Service;
-    public AppCompatActivity activity;
-    public String Estado = M_VERIFICANDO_MODO,Nombre="",NetoStr="",TaraStr="",BrutoStr="",picoStr="", TaraDigitalStr ="",ultimaCalibracion="",Unidad="gr";
-    public float TaraDigital =0,Bruto=0,Tara=0,Neto=0,pico=0,pesoBandaCero=0F,pesoUnitario=0.5F;
-    public Integer PuntoDecimal =1,numBza=0,ID=0,nBalanzas=1;
-    public Handler mHandler= new Handler();
-    public OnFragmentChangeListener fragmentChangeListener;
-    public static final  String Bauddef="9600",StopBdef="1",DataBdef="8", Paritydef="0";
-    public Boolean TieneCal=false,Tieneid=false, BandaCero =true, EstableBool =false, SobrecargaBool = false;
+     protected BalanzaService Service;
+     public AppCompatActivity activity;
+     public String Estado = M_VERIFICANDO_MODO;
+
+     protected String NetoStr="";
+     protected String TaraStr="";
+     protected String BrutoStr="";
+     protected String TaraDigitalStr ="";
+     protected String ultimaCalibracion="";
+     protected String Unidad="kg";
+     protected float TaraDigital =0;
+    protected float Bruto=0;
+    protected float Tara=0;
+    protected float Neto=0;
+    protected float pesoBandaCero=0F;
+    protected float pesoUnitario=0.5F;
+     protected Integer PuntoDecimal =1;
+    public Integer numBza=0;
+    Integer ID=0;
+     static final int nBalanzas=1;
+     protected Handler mHandler;
+     protected OnFragmentChangeListener fragmentChangeListener;
+
+    /* VALORES DEFAULTS */
+     static String Nombre="";
+     static String Bauddef="9600";
+     static String StopBdef="1";
+     static String DataBdef="8";
+     static String Paritydef="0";
+     public static String M_MODO_CALIBRACION="MODO_CALIBRACION";
+     public static String M_MODO_BALANZA="MODO_BALANZA";
+     static int timeout = 0 ;
+     static Boolean TienePorDemanda =false;
+    /*********************************************/
+
+    public CountDownLatch latch = new CountDownLatch(1);
+     Boolean TieneCal=false;
+    Boolean Tieneid=false;
+    protected Boolean BandaCero =true;
+    protected Boolean EstableBool =false;
+    protected Boolean SobrecargaBool = false;
 
    /* @Override
-    public Balanza getBalanza(int numBza) {
+     Balanza getBalanza(int numBza) {
         return this;
     }*/
 
     @Override
-    public BalanzaBase getBalanza(int numID) {
+     public Balanza getBalanza(int numID) {
         return this;
     }
 
+      Boolean is485(){
+        return band485;
+    }
+    public CountDownLatch resetlatch() {
+        if (latch == null || latch.getCount() <= 0) {
+            latch = new CountDownLatch(1); // Reseteamos el latch
+        }
+        return latch; // Retornamos el latch actualizado
+    }
+    private int gettimeout() {
+        try {
+            Field field = clazz.getDeclaredField("timeout");
+            field.setAccessible(true);
+            return (Integer) field.get(null); // null porque es static
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    public void gestorBucles(boolean lock,CountDownLatch latch)  {
+        int timeout = gettimeout();
+        if(band485||bandmultiplebza) {
+            if (lock) {
+                try {
+                    Semaforo.tryAcquire();
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+
+                }
+            } else {
+                try {
+                    Semaforo.release();
+                   /* Boolean z = latch.await(100, TimeUnit.MILLISECONDS); // MIN TIEMPO DE BUCLE
+                    if(z){
+                        System.out.println("Cuidado con la balanza"+ numBza+" Esta yendo muy rapido en 485");
+                        Thread.sleep(100);
+                        try {
+                            latch.countDown();
+                        } catch (Exception e) {
+                        }
+                    }*/
+                    if(timeout>0) {
+                        Boolean x = latch.await(timeout, TimeUnit.MILLISECONDS);
+                        // SI ES POR TIME PODRIA TOMARLO ACA
+                        if (!x) {
+                            // SI SALE POR TIMEOUT LO AVISO POR ACA
+                            Thread.sleep(200);
+                            System.out.println("CUANDO DEJARA DE SALIR POR TIMEOUT=?!?!");
+                        }
+                    }else{
+                        System.out.println("programdor,tas usando el timeout default");
+                        latch.await(timeout, TimeUnit.MILLISECONDS);
+                        // PODRIA CONTROLAR ESTO CON EL CALLBACK DE MODBUS JIJIJAJA
+                    }
+                } catch (InterruptedException e) {
+                    Semaforo.tryAcquire();
+                }
+            }
+        }
+    }
      public void setID(int numID, int numBza) {
         ID =numID;
     }
@@ -52,19 +180,19 @@ public class BalanzaBase  implements Balanza {
         return Neto;
     }
     @Override public String getNetoStr(int numBza) {
-        return NetoStr;
+        return NetoStr.replaceAll(RegexSoloNumero,"");
     }
     @Override public Float getBruto(int numBza) {
         return Bruto;
     }
     @Override public String getBrutoStr(int numBza) {
-        return BrutoStr;
+        return BrutoStr.replaceAll(RegexSoloNumero,"");
     }
     @Override public Float getTara(int numBza) {
         return Tara;
     }
     @Override public String getTaraStr(int numBza) {
-        return TaraStr;
+        return TaraStr.replaceAll(RegexSoloNumero,"");
     }
 
     @Override public void setCero(int numBza) {
@@ -80,7 +208,7 @@ public class BalanzaBase  implements Balanza {
         setTaraDigital(TaraDigital);
     }
     @Override public String getTaraDigital(int numBza) {
-        return TaraDigitalStr;
+        return TaraDigitalStr.replaceAll(RegexSoloNumero,"");
     }
     public void setBandaCero(int numBza, Boolean bandaCeroi) {
         BandaCero =bandaCeroi;
@@ -101,30 +229,29 @@ public class BalanzaBase  implements Balanza {
     }
     @Override public String format(int numero,String peso) {
         String formato = "0.";
-        try {
-            StringBuilder capacidadBuilder = new StringBuilder(formato);
-            for (int i = 0; i < PuntoDecimal; i++) {
-                capacidadBuilder.append("0");
+        if(peso!=null) {
+            try {
+                StringBuilder capacidadBuilder = new StringBuilder(formato);
+                for (int i = 0; i < PuntoDecimal; i++) {
+                    capacidadBuilder.append("0");
+                }
+                formato = capacidadBuilder.toString();
+                DecimalFormat df = new DecimalFormat(formato);
+                String str = df.format(Double.parseDouble(peso));
+                return str;
+            } catch (NumberFormatException e) {
+                System.err.println("Error: El número no es válido.");
+                e.printStackTrace();
+                return "0";
             }
-            formato = capacidadBuilder.toString();
-            DecimalFormat df = new DecimalFormat(formato);
-            String str = df.format(Double.parseDouble(peso));
-            return str;
-        } catch (NumberFormatException e) {
-            System.err.println("Error: El número no es válido.");
-            e.printStackTrace();
+        }else{
             return "0";
         }
     }
     @Override public String getUnidad(int numBza) {
-        return PreferencesDevicesManager.getUnidad(Nombre,this.numBza, activity);
+        return Unidad.replaceAll(RegexSololetra,"");//PreferencesDevicesManager.getUnidad(Nombre,this.numBza, activity);
     }
-    @Override public String getPicoStr(int numBza) {
-        return picoStr;
-    }
-    @Override public Float getPico(int numBza) {
-        return pico;
-    }
+
 
 
 

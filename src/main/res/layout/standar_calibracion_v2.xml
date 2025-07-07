@@ -970,7 +970,7 @@
 
                                     android:orientation="horizontal"></LinearLayout>
                               <!--  android:background="@color/gris"-->
-                                <ScrollView
+                                <com.service.Recyclers.ScrollViewScroll
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     >
@@ -2142,7 +2142,7 @@
                                               </LinearLayout> -->
                                         </LinearLayout>
                                     </LinearLayout>
-                            </ScrollView>
+                            </com.service.Recyclers.ScrollViewScroll>
 
 
 
