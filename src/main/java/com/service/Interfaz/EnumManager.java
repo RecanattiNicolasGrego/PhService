@@ -4,7 +4,9 @@ package com.service.Interfaz;
     public  enum Balanzas{
         puede485("TienePorDemanda"),
         nBalanzas("nBalanzas"),
+        timeout("timeout"),
         TieneCal("TieneCal");
+
 
 
         public final String nombre;

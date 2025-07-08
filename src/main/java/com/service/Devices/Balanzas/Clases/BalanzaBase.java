@@ -7,6 +7,7 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.BalanzaService;
+import com.service.Interfaz.EnumManager;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Interfaz.Balanza;
 import com.service.PreferencesDevicesManager;
@@ -121,7 +122,7 @@ public class BalanzaBase  implements Balanza {
     }
     private int gettimeout() {
         try {
-            Field field = clazz.getDeclaredField("timeout");
+            Field field = clazz.getDeclaredField(EnumManager.Balanzas.timeout.name());
             field.setAccessible(true);
             return (Integer) field.get(null); // null porque es static
         } catch (Exception e) {

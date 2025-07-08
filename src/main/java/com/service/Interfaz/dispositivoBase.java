@@ -57,7 +57,7 @@ public interface dispositivoBase{
             void leerMultiplesCoils(Integer registro,Integer Alcance,CoilsCallback callbackCrudo);
             Boolean WriteMultiplesHoldingRegisters(Integer registro, short[] valor);
             Boolean WriteMultiplesCoils(Integer registro, boolean[] valor);
-            Boolean WriteHoldingRegister(Integer registro, ClasesModbus clase, Integer valor);
+            Boolean WriteHoldingRegister(Integer registro, Integer valor);
             Boolean WriteCoil(Integer registro, Boolean valor);
 
         }

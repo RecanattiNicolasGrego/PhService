@@ -13,6 +13,7 @@ import com.service.Devices.Balanzas.Clases.ITW380;
 import com.service.Devices.Balanzas.Clases.ITW410.ITW4102Bzas;
 import com.service.Devices.Balanzas.Clases.ITW410FRM.ITW410_FORM;
 import com.service.Devices.Balanzas.Clases.Minima.MINIMA_I;
+import com.service.Devices.Balanzas.Clases.NuevaBalanza;
 import com.service.Devices.Balanzas.Clases.Optima.OPTIMA_I;
 import com.service.Devices.Balanzas.Clases.PrSeries;
 import com.service.Devices.Balanzas.Clases.R31P30_I;
@@ -89,7 +90,7 @@ public  class BalanzaService implements Serializable {
     }
 
     public enum ModelosClasesDispositivos {
-        Dispositivo(com.service.Devices.Dispositivos.Clases.Dispositivo.class), Master(MasterDispositivos.class),Slave(SlaveDispositivos.class);
+        ASCII(com.service.Devices.Dispositivos.Clases.Dispositivo.class), Master(MasterDispositivos.class),Slave(SlaveDispositivos.class);
         public Class<? extends com.service.Interfaz.Dispositivo> clase;
         ModelosClasesDispositivos(Class<? extends com.service.Interfaz.Dispositivo> clase) {
             this.clase = clase ;//.getDeclaredConstructor().newInstance();
@@ -127,7 +128,7 @@ public  class BalanzaService implements Serializable {
     }
 
     public enum ModelosClasesBzas {
-            Optima(OPTIMA_I.class), Minima(MINIMA_I.class), R31p30(R31P30_I.class), ITW_410(ITW4102Bzas.class), Spider_3(SPIDER3.class), Andgf_3000(ANDGF3000.class), Zorra_232(zorra232.class),ITW_230_II(ITW230II.class),ITW_410_FRM(ITW410_FORM.class),OHAUS_PR_Serial(PrSeries.class),ITW_380_Caudal(ITW380.class);//, NuevaBza(OPTIMA_I.class);
+            Optima(OPTIMA_I.class), Minima(MINIMA_I.class), R31p30(R31P30_I.class), ITW_410(ITW4102Bzas.class), Spider_3(SPIDER3.class), Andgf_3000(ANDGF3000.class), Zorra_232(zorra232.class),ITW_230_II(ITW230II.class),ITW_410_FRM(ITW410_FORM.class),OHAUS_PR_Serial(PrSeries.class),ITW_380_Caudal(ITW380.class);//, NuevaBza(NuevaBalanza.class);
             public Class<? extends BalanzaBase> clase;
             ModelosClasesBzas( Class<? extends BalanzaBase> clase) {
                 this.clase = clase ;//.getDeclaredConstructor().newInstance();

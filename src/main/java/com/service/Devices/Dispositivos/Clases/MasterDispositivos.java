@@ -528,7 +528,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
 
     @Override
-    public Boolean WriteHoldingRegister(Integer registro, ClasesModbus clase, Integer valor) {
+    public Boolean WriteHoldingRegister(Integer registro, Integer valor) {
 
         System.out.println("WRITING");
         final Boolean[] res = {false};
