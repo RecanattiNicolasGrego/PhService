@@ -2,21 +2,20 @@ package com.service.Devices.Balanzas.Clases;
 
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.BalanzaService;
+import com.service.PHService;
+import com.service.utilsPackage.EnumReflexion;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Interfaz.Balanza;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 
 
 public class BalanzaBase  implements Balanza {
@@ -39,7 +38,7 @@ public class BalanzaBase  implements Balanza {
             band485 = id>0;
             bandmultiplebza=numMultipleBza>1;
             this.puertoseteado = puerto;
-            this.Service=BalanzaService.getInstance();
+            this.Service= PHService.Instancia();
             this.fragmentChangeListener=fragmentChangeListener;
             clazz = this.getClass(); // Clase real de la instancia
         handlerThread = new HandlerThread(clazz.getName()+"_"+puertoseteado);
@@ -58,7 +57,7 @@ public class BalanzaBase  implements Balanza {
         */
         mHandler= new Handler(handlerThread.getLooper());
     }
-     protected BalanzaService Service;
+     protected PHService Service;
      public AppCompatActivity activity;
      public String Estado = M_VERIFICANDO_MODO;
 
@@ -121,7 +120,7 @@ public class BalanzaBase  implements Balanza {
     }
     private int gettimeout() {
         try {
-            Field field = clazz.getDeclaredField("timeout");
+            Field field = clazz.getDeclaredField(EnumReflexion.Balanzas.timeout.name());
             field.setAccessible(true);
             return (Integer) field.get(null); // null porque es static
         } catch (Exception e) {

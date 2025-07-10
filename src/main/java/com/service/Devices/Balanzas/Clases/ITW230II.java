@@ -2,25 +2,21 @@ package com.service.Devices.Balanzas.Clases;
 
 
 
-import static com.service.Utils.removeLeadingZeros;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Interfaz.Balanza;
-import com.service.Interfaz.OnFragmentChangeListener;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -40,7 +36,7 @@ public class ITW230II  extends BalanzaBase implements Balanza, Serializable {
     public String ultimaCalibracion = "", brutoStr = "0", netoStr = "0", taraStr = "0", taraDigitalStr = "0", picoStr = "0", estable = "", estado = "VERIFICANDO_MODO";
     public static final String NOMBRE = "ITW230II", M_MODO_CALIBRACION = "MODO_CALIBRACION", M_MODO_BALANZA = "MODO_BALANZA", M_ERROR_COMUNICACION = "M_ERROR_COMUNICACION", M_VERIFICANDO_MODO = "VERIFICANDO_MODO";
     public float pesoBandaCero = 0F, pesoUnitario = 0.5F, taraDigital = 0, Bruto = 0, Tara = 0, Neto = 0, pico = 0;
-    BalanzaService Service;
+    PHService Service;
     public PuertosSerie.SerialPortReader readers = null;
     public static Boolean  TieneCal = true,TienePorDemanda = false;
     Boolean imgbool = false, Establebool = false, SobrecargaBool = false, inicioBandaPeso = false, bandaCero = true, estadoSobrecarga = false, estadoNeto = false, estadoPesoNeg = false, estadoBajoCero = false, estadoBzaEnCero = false, estadoBajaBat = false, estadoCentroCero = false, estadoEstable = false;
@@ -846,11 +842,15 @@ public class ITW230II  extends BalanzaBase implements Balanza, Serializable {
     @Override
     public void stop(int numBza) {
 //        serialPort = null;
-        readers.stopReading();
-        estado = M_VERIFICANDO_MODO;
-        //mHandler.removeCallbacks(GET_PESO_cal_bza);
+        try {
+            readers.stopReading();
+            estado = M_VERIFICANDO_MODO;
+            //mHandler.removeCallbacks(GET_PESO_cal_bza);
 
-        handlerThread.quit();
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

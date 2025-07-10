@@ -1,22 +1,18 @@
 package com.service.Devices.Balanzas.Clases;
 
-import android.os.HandlerThread;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
-
-import android_serialport_api.SerialPort;
 
 public class ANDGF3000 extends BalanzaBase{
 

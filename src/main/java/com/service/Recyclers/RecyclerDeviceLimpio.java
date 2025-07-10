@@ -16,9 +16,9 @@
     import androidx.constraintlayout.widget.ConstraintLayout;
     import androidx.recyclerview.widget.RecyclerView;
 
-    import com.service.BalanzaService;
+    import com.service.PHService;
     import com.service.estructuras.classDevice;
-    import com.service.PreferencesDevicesManager;
+    import com.service.utilsPackage.PreferencesDevicesManager;
     import com.service.R;
 
     import java.util.ArrayList;
@@ -119,7 +119,7 @@
                  Boolean multipledevices=true;
                  switch (Device){
                      case 0:{
-                         for (BalanzaService.ModelosClasesBzas modelo : BalanzaService.ModelosClasesBzas.values()) {
+                         for (PHService.ModelosClasesBzas modelo : PHService.ModelosClasesBzas.values()) {
                              System.out.println(Modelo+" "+modelo.name());
                              if(Modelo.equals(modelo.name())){
                                  multipledevices = modelo.getTienePorDemanda();
@@ -130,7 +130,7 @@
                          break;
                      }
                      case 4:{
-                         for (BalanzaService.ModelosClasesDispositivos modelo : BalanzaService.ModelosClasesDispositivos.values()) {
+                         for (PHService.ModelosClasesDispositivos modelo : PHService.ModelosClasesDispositivos.values()) {
                              if(Modelo.equals(modelo.name())){
                                  multipledevices = modelo.getTiene485();
                                  break;
@@ -302,7 +302,7 @@
                                            }
                                        }
                                    holder.tvnombreipmac.setText("Id");
-                                   if(Modelo.replace(" ","_").equals(BalanzaService.ModelosClasesDispositivos.Master.name())){
+                                   if(Modelo.replace(" ","_").equals(PHService.ModelosClasesDispositivos.Master.name())){
                                        holder.tvnombreipmac.setText("Slave id");
                                    }
                                    holder.Slave.setClickable(false);

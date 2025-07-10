@@ -1,4 +1,4 @@
-package com.service.Devices.Escanner.clases;
+package com.service.Devices.Escanneres.Clases;
 
 import android.content.Context;
 import android.hardware.usb.UsbConstants;
@@ -9,27 +9,17 @@ import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import android.content.Context;
-import android.hardware.usb.UsbConstants;
-import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbDeviceConnection;
-import android.hardware.usb.UsbEndpoint;
-import android.hardware.usb.UsbInterface;
-import android.hardware.usb.UsbManager;
+
 import android.hardware.usb.UsbRequest;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-
-public class usbManagerEscanner extends Thread {
+public class Prueba extends Thread {
 
     private UsbManager usbManager;
 
     private UsbDeviceConnection connection;
     private UsbEndpoint inEndpoint;
     private  UsbInterface usbInterface;
-    public usbManagerEscanner(Context context) {
+    public Prueba(Context context) {
         usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
         findPrinterDevice();  // Encuentra el dispositivo
     }

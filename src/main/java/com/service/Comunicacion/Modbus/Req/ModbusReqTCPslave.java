@@ -50,7 +50,7 @@ public class ModbusReqTCPslave {
      *
      * @throws ModbusInitException
      */
-    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, BasicProcessImageSlave image, String host) throws ModbusInitException {
+    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, MatrizSlave image, String host) throws ModbusInitException {
 
         ModbusFactory mModbusFactory = new ModbusFactory();
         IpParameters params = new IpParameters();
@@ -84,7 +84,6 @@ public class ModbusReqTCPslave {
                 }
             });
         } catch (Exception e) {
-            System.out.println("ERROR MODBUS Init no entiendo nada :/   "+e.getMessage());
             mModbusSlave.stop();
             isInit = false;
             Log.d(TAG, "Modbus4Android init failed " + e);

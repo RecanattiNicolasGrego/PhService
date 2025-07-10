@@ -2,11 +2,10 @@ package com.service.Comunicacion;
 
 import com.service.Comunicacion.Modbus.ModbusMasterRtu;
 import com.service.Comunicacion.Modbus.ModbusMasterTCP;
-import com.service.Comunicacion.Modbus.Req.BasicProcessImageSlave;
+import com.service.Comunicacion.Modbus.Req.MatrizSlave;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuSlave;
 import com.service.Comunicacion.Modbus.Req.ModbusReqTCPslave;
-import com.service.Comunicacion.Modbus.modbus4And.Modbus;
 import com.service.Comunicacion.Modbus.modbus4And.ModbusSlaveSet;
 import com.service.Comunicacion.Modbus.modbus4And.exception.ModbusInitException;
 import com.service.Comunicacion.Modbus.modbus4And.requset.ModbusReq;
@@ -183,7 +182,7 @@ public class GestorPuertoSerie {
             }
             return Modbus;
     }
-    public ModbusSlaveSet initializateSlaveTCPmodbus(String IP,BasicProcessImageSlave img,OnRequestBack<String> Callback) throws ModbusInitException {
+    public ModbusSlaveSet initializateSlaveTCPmodbus(String IP, MatrizSlave img, OnRequestBack<String> Callback) throws ModbusInitException {
        synchronized (IP) {
            CountDownLatch latch = new CountDownLatch(1);
            ModbusSlaveSet Modbus = null;
@@ -221,7 +220,7 @@ public class GestorPuertoSerie {
            return Modbus;
        }
     }
-        public ModbusSlaveSet initializateSlaveRTUmodbus (String Port, int Baud, int databit, int Stopbit, int Parity, BasicProcessImageSlave img,OnRequestBack<String> Callback) {
+        public ModbusSlaveSet initializateSlaveRTUmodbus (String Port, int Baud, int databit, int Stopbit, int Parity, MatrizSlave img, OnRequestBack<String> Callback) {
             synchronized (Port) {
                 CountDownLatch latch = new CountDownLatch(1);
                 ModbusSlaveSet Modbus = null;
@@ -320,5 +319,13 @@ public class GestorPuertoSerie {
                 }
                 return Modbus;
             }
+        }
+        public void Reset(){
+
+        ModbusMRA =null;ModbusMRB =null;ModbusMRC =null;
+            serialPortB=null;serialPortA=null;serialPortC=null;
+            //ModbusSTA=null;
+            ModbusSRA=null;ModbusSRB=null;ModbusSRC=null;
+
         }
     }

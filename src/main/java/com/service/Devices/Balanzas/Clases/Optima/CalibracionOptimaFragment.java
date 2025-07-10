@@ -1,5 +1,5 @@
 package com.service.Devices.Balanzas.Clases.Optima;
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -29,15 +29,15 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class CalibracionOptimaFragment extends Fragment {
     RadioButton OFF1,OFF2,OFF3,OFF4,OFF5,OFF6,OFF7,OFF8,OFF13, ON1,ON2,ON3,ON4,ON5,ON6,ON7,ON8,ON13;
     ConstraintLayout table_parametrosPrincipales;
     View viewMang=null;
-    BalanzaService Service;
+    PHService Service;
 
     public float Bruto=0,Tara=0,Neto=0/*,pico=0,taraDigital=0,pesoUnitario=0.5F,pesoBandaCero=0F*/;
     public Boolean lasttanque = true,BooleanRESET=false,btSeteobool=true,bt_homebool=true,bt_resetbool=true,btCalibracionbool=true,enviarparambool=true,bt_iniciarCalibracionbool=true,btReajusteCerobool=true/*,bandaCero =true,inicioBandaPeso=false*/;
@@ -73,7 +73,7 @@ public class CalibracionOptimaFragment extends Fragment {
    // private OPTIMA_I bza;
 //    private OnFragmentChangeListener fragmentChangeListener;
 
-    public static CalibracionOptimaFragment newInstance(OPTIMA_I instance, BalanzaService service) {
+    public static CalibracionOptimaFragment newInstance(OPTIMA_I instance, PHService service) {
         CalibracionOptimaFragment fragment = new CalibracionOptimaFragment();
         Bundle args = new Bundle();
         args.putSerializable("instance", instance);
@@ -90,7 +90,7 @@ public class CalibracionOptimaFragment extends Fragment {
         estado= BalanzaBase.M_MODO_CALIBRACION;
         if (getArguments() != null) {
             BZA = (OPTIMA_I)getArguments().getSerializable("instance");
-            Service =  BalanzaService.getInstance();//(BalanzaService) getArguments().getSerializable("instanceService");
+            Service =  PHService.Instancia();//(BalanzaService) getArguments().getSerializable("instanceService");
             activity = ComService.getInstance().activity;//activity = (AppCompatActivity)BZA.activity;//BZA.activity;
             BZA.abrircalib();
 

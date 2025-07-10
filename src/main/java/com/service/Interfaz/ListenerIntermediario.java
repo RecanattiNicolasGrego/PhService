@@ -1,8 +1,4 @@
-package com.service.Devices.Expansiones.Clases;
-
-import com.service.Interfaz.Expansion;
-import com.service.Interfaz.ExpansionGestor;
-import com.service.Interfaz.fachade;
+package com.service.Interfaz;
 
 import java.util.ArrayList;
 

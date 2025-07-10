@@ -1,6 +1,6 @@
 package com.service.Devices.Balanzas.Clases.ITW410FRM;
 
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
 
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
@@ -28,14 +28,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -54,7 +54,7 @@ public class CalibracionItw410Fragment extends Fragment {
     ProgressBar loadingPanel;
     TextView tvCarga;
     Button Guardar;
-    BalanzaService Service;
+    PHService Service;
     //    public float pesoUnitario=0.5F,pesoBandaCero=0F,taraDigital=0,Bruto=0,Tara=0,Neto=0,pico=0;
     public String read,estado= BalanzaBase.M_MODO_CALIBRACION,estable=""/*,ultimaCalibracion="",brutoStr="0",netoStr="0",taraStr="0",taraDigitalStr="0",picoStr="0"*/;
     public Boolean isCollapsed = false,stoped=false,inicioBandaPeso=false,lasttanque = true,bandaCero =true,btSeteobool=true,bt_homebool=true,bt_resetbool=true,btCalibracionbool=true,enviarparambool=true,bt_iniciarCalibracionbool=true,btReajusteCerobool=true;
@@ -71,7 +71,7 @@ public class CalibracionItw410Fragment extends Fragment {
     View viewMang=null;
 //    private OnFragmentChangeListener fragmentChangeListener;
 
-    public static CalibracionItw410Fragment newInstance(ITW410_FORM instance, BalanzaService service) {
+    public static CalibracionItw410Fragment newInstance(ITW410_FORM instance, PHService service) {
         CalibracionItw410Fragment fragment = new CalibracionItw410Fragment();
         Bundle args = new Bundle();
         args.putSerializable("instance", instance);
@@ -90,7 +90,7 @@ public class CalibracionItw410Fragment extends Fragment {
         if (getArguments() != null) {
             BZA = (ITW410_FORM) getArguments().getSerializable("instance");
             BZA.Estado =BalanzaBase.M_MODO_CALIBRACION;
-            Service = BalanzaService.getInstance();// (BalanzaService) getArguments().getSerializable("instanceService");
+            Service = PHService.Instancia();// (BalanzaService) getArguments().getSerializable("instanceService");
                 activity = ComService.getInstance().activity;
         }
         return viewMang;

@@ -1,15 +1,12 @@
 package com.service.Devices.Balanzas.Clases;
 
-import android.os.Handler;
-import android.os.HandlerThread;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -730,8 +727,12 @@ public class SPIDER3 {
         }
         serialPort=null;
         Estado =M_VERIFICANDO_MODO;
-        mHandler.removeCallbacks(Bucle);
-        handlerThread.quit();
+        try {
+            mHandler.removeCallbacks(Bucle);
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
 

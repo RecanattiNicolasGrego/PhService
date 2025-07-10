@@ -3,16 +3,16 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Comunicacion.Modbus.modbus4And.requset.OnRequestBack;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
 import com.service.Comunicacion.GestorPuertoSerie;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Interfaz.Balanza;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     public ITW410_FORM( String Puerto,int id,AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int numbza410) {
         super(Puerto,adjustId(id),activity,fragmentChangeListener,nBalanzas);
         try {
-             Service= BalanzaService.getInstance();
+             Service= PHService.Instancia();
             this.ModbusRtuMaster = GestorPuertoSerie.getInstance().initializateMasterRTUmodbus(Puerto,Integer.parseInt(Bauddef),Integer.parseInt(DataBdef),Integer.parseInt(StopBdef),Integer.parseInt(Paritydef));
             Thread.sleep(200);
         } catch (InterruptedException e) {
@@ -216,15 +216,27 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     };
     @Override public void escribir(String msj,int numBza) {}
     @Override public void stop(int numBza) {
-        mHandler.removeCallbacks(Bucle);
-        if(ModbusRtuMaster!=null){
-            ModbusRtuMaster.destroy();
-            ModbusRtuMaster=null;
+        try {
             mHandler.removeCallbacks(Bucle);
+        } catch (Exception e) {
+
+        }
+        try {
+            if(ModbusRtuMaster!=null){
+                ModbusRtuMaster.destroy();
+                ModbusRtuMaster=null;
+                mHandler.removeCallbacks(Bucle);
+            }
+        } catch (Exception e) {
+
         }
         Estado =M_VERIFICANDO_MODO;
 
-        handlerThread.quit();
+        try {
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
 
@@ -621,7 +633,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
         Bundle args = new Bundle();
         args.putSerializable("instance", context);
         args.putSerializable("instanceService", Service);
-        fragmentChangeListener.openFragmentService(fragment,args);
+        fragmentChangeListener.AbrirServiceFragment(fragment,args);
     }
 
 
@@ -948,7 +960,7 @@ public class ITW410_FORM extends BalanzaBase implements Balanza.ITW410, Serializ
     }
     protected void salir_cal(){
         // open principal
-        ComService.getInstance().fragmentChangeListener.openFragmentPrincipal();
+        ComService.getInstance().fragmentChangeListener.AbrirFragmentPrincipal();
     }
     protected   void setCerocal(){
         Runnable runnable = new Runnable() {

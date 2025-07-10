@@ -1,4 +1,4 @@
-package com.service;
+package com.service.utilsPackage;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,8 +28,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
-import com.service.Comunicacion.Modbus.Req.BasicProcessImageSlave;
+import com.service.PHService;
 import com.service.Interfaz.dispositivoBase;
+import com.service.R;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -160,7 +161,20 @@ public  class Utils {
             @Override
             public void onClick(View view) {
 
+                dispositivoBase x = PHService.Instancia().Dispositivos.getDispositivo(1);
+                if(PHService.ModelosClasesDispositivos.Master.compararInstancia(1)) {
+                    dispositivoBase.Modbus.Master mSlave = (dispositivoBase.Modbus.Master) x;
+                    boolean[] lista = new boolean[33];
+                    for (int j = 1; j < 31; j++) lista[j]=true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSlave.init();
+                            mSlave.EscribirMultiplesCoils(1,lista);
 
+                        }
+                    }).start();
+                }
 
                     /* x =BalanzaService.getInstance().Dispositivos.getDispositivo(2);
                     if(BalanzaService.ModelosClasesDispositivos.Slave.compararInstancia(2)) {

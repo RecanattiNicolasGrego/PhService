@@ -1,8 +1,6 @@
 package com.service.Devices.Dispositivos.Clases;
 import com.service.Comunicacion.GestorPuertoSerie;
-import com.service.Comunicacion.Modbus.Req.BasicProcessImageSlave;
-import com.service.Comunicacion.Modbus.Req.ModbusReqRtuSlave;
-import com.service.Comunicacion.Modbus.Req.ModbusReqTCPslave;
+import com.service.Comunicacion.Modbus.Req.MatrizSlave;
 import com.service.Comunicacion.Modbus.modbus4And.ModbusSlaveSet;
 import com.service.Comunicacion.Modbus.modbus4And.ProcessImageListener;
 import com.service.Comunicacion.Modbus.modbus4And.exception.IllegalDataAddressException;
@@ -17,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, dispositivoBase.Modbus.Slave {
     private ModbusSlaveSet SlaveTCP;
-    private Modbus.Slave.DeviceMessageListenerM_Slave listener;
+    private DispositivoSlaveListener listener;
     private ModbusSlaveSet SlaveRTU;
     Boolean  isinit=false;
     public static Boolean  puede485=true;
@@ -28,19 +26,19 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
     }
 
 
-    static BasicProcessImageSlave getModscanProcessImage(BasicProcessImageSlave image, int ndevice, DeviceMessageListenerM_Slave listener) {
+    static MatrizSlave getModscanProcessImage(MatrizSlave image, int ndevice, DispositivoSlaveListener listener) {
 
-        BasicProcessImageSlave processImage = image;//getBasicProcessImage(slaveId);
+        MatrizSlave processImage = image;//getBasicProcessImage(slaveId);
         // Add an image listener.
         processImage.addListener(new ProcessImageListener() {
             @Override
             public void coilWrite(int i, boolean b, boolean b1) {
-                listener.CoilChange(ndevice, i+1, b, b1);
+                listener.CoilCambiado(ndevice, i+1, b, b1);
             }
 
             @Override
             public void holdingRegisterWrite(int i, short i1, short i2) {
-                listener.RegisterChange(ndevice, i+1, i1, i2);
+                listener.RegistroCambiado(ndevice, i+1, i1, i2);
             }
         });
         return processImage;
@@ -49,7 +47,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
 
 
     @Override
-    public Boolean publicarCoil( Integer registro, Boolean valor) {
+    public Boolean PublicarCoil(Integer registro, Boolean valor) {
         if(isinit) {
             try {
                 short x = 0;
@@ -70,7 +68,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
     }
 
     @Override
-    public String leerHoldingRegister(Integer registro, ClasesModbus clase) {
+    public String LeerHoldingRegister(Integer registro, ClasesModbus clase) {
         if(isinit) {
             try {
                 switch (clase) {
@@ -88,7 +86,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
                         }
                         return String.valueOf(x);
                     }
-                    case Unsigned_Int: {
+                    case enteroSinSigno: {
                         Integer x = 0;
                         if (Device.getSalida().equals("Red")) {
                             x = SlaveTCP.getProcessImage(Slaveid).getHoldingRegister(registro) & 0xFFFF;
@@ -97,7 +95,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
                         }
                         return String.valueOf(x);
                     }
-                    case Signed_Int: {
+                    case enteroConSigno: {
                         short x = 0;
                         if (Device.getSalida().equals("Red")) {
                             x = SlaveTCP.getProcessImage(Slaveid).getHoldingRegister(registro);
@@ -129,7 +127,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
         return null;
     }
     @Override
-    public Boolean leerCoil(Integer registro) {
+    public Boolean LeerCoil(Integer registro) {
         if(isinit) {
             try {
                 Boolean x = false;
@@ -147,17 +145,18 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
         return null;
     }
     @Override
-    public BasicProcessImageSlave getImageBasic() {
-        System.out.println("SLAVE ID ?!?!?!"+ Slaveid);
-        return new BasicProcessImageSlave(Slaveid);
+    public MatrizSlave getMatrizSlaveBasica() {
+         return new MatrizSlave(Slaveid);
     }
+    MatrizSlave imagenBasic;
     @Override
-    public void init(DeviceMessageListenerM_Slave ListenerM_Slave, BasicProcessImageSlave image) {
+    public void init(DispositivoSlaveListener ListenerM_Slave, MatrizSlave image) {
         System.out.println(("OLA !?!?")+ (image == null) );
         if(image.getSlaveId() == Device.getID()){
             CountDownLatch latch = new CountDownLatch(1);
             listener = ListenerM_Slave;
             if (strpuerto != null) {
+                imagenBasic = image;
                 if (Device.getSalida().equals("Red")) {
                     try {
                                try {
@@ -209,7 +208,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
         }
     }
     @Override
-    public Boolean publicarHoldingRegister(Integer registro, ClasesModbus clase, String valor) {
+    public Boolean PublicarHoldingRegister(Integer registro, ClasesModbus clase, String valor) {
         if(isinit) {
             try {
                 //dependiendo de la @param clase format value
@@ -275,8 +274,8 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
                             return false;
                         }
                     }
-                    case Signed_Int:
-                    case Unsigned_Int: {
+                    case enteroConSigno:
+                    case enteroSinSigno: {
                         if (Device.getSalida().equals("Red")) {
                             SlaveTCP.getProcessImage(Slaveid).setHoldingRegister(registro, (short) (Integer.parseInt(valor)));
                         } else {
@@ -284,7 +283,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
                         }
                         Integer limitemod1 = 0;
                         Integer limitemod2 = 0;
-                        if (clase == ClasesModbus.Signed_Int) {
+                        if (clase == ClasesModbus.enteroConSigno) {
                             limitemod1 = (limit / 2) - 1;
                             limitemod2 = (-1 * limit / 2);
                         } else {
@@ -312,11 +311,13 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
     public void stop() {
         if (Device.getSalida().equals("Red")){
             try {
-                SlaveTCP.stop();
+                SlaveTCP.removeProcessImage(imagenBasic);
+             //   SlaveTCP.stop();
             } catch (Exception e) {
             }
         }else{
             try {
+                SlaveRTU.removeProcessImage(imagenBasic);
                 SlaveRTU.stop();
             } catch (Exception e) {
 

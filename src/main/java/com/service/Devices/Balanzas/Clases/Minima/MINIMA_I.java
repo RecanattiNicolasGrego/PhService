@@ -1,15 +1,13 @@
 package com.service.Devices.Balanzas.Clases.Minima;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -153,7 +151,7 @@ public class MINIMA_I extends BalanzaBase implements  Serializable {
             Bundle args = new Bundle();
              args.putSerializable("instance", Minima);
             args.putSerializable("instanceService",Service);
-              fragmentChangeListener.openFragmentService(fragment,args);
+              fragmentChangeListener.AbrirServiceFragment(fragment,args);
         }
     }
     private String limpiardata(String data){

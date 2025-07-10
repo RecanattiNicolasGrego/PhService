@@ -5,8 +5,6 @@ import android.hardware.usb.UsbManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.service.Devices.Impresora.more.DiscoveredPrinterListAdapter;
-import com.service.R;
-import com.service.Utils;
 import com.zebra.sdk.comm.Connection;
 import com.zebra.sdk.printer.FieldDescriptionData;
 

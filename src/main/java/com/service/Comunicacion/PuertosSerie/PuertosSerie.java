@@ -180,8 +180,12 @@ public class PuertosSerie {
     }
     public void close() throws IOException {
         if(serialPort!=null){
-            serialPort.close();
-            serialPort=null;
+            try {
+                serialPort.close();
+                serialPort=null;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     public void write(String cmd) {

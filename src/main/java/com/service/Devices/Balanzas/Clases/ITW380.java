@@ -2,14 +2,14 @@ package com.service.Devices.Balanzas.Clases;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
 import com.service.Comunicacion.Modbus.modbus4And.requset.OnRequestBack;
 import com.service.Interfaz.Balanza;
 import com.service.Interfaz.OnFragmentChangeListener;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -74,7 +74,7 @@ public class ITW380 extends BalanzaBase implements Balanza.ITW380, Serializable 
         public ITW380(String Puerto, int id, AppCompatActivity activity, OnFragmentChangeListener fragmentChangeListener, int numbza) {
             super(Puerto,adjustId(id),activity,fragmentChangeListener,nBalanzas);
             try {
-                Service= BalanzaService.getInstance();
+                Service= PHService.Instancia();
                 this.ModbusRtuMaster = GestorPuertoSerie.getInstance().initializateMasterRTUmodbus(Puerto,Integer.parseInt(Bauddef),Integer.parseInt(DataBdef),Integer.parseInt(StopBdef),Integer.parseInt(Paritydef));
                 Thread.sleep(200);
             } catch (InterruptedException e) {
@@ -429,15 +429,26 @@ public class ITW380 extends BalanzaBase implements Balanza.ITW380, Serializable 
     }
 
         @Override public void stop(int numBza) {
-            mHandler.removeCallbacks(Bucle);
-            if(ModbusRtuMaster!=null){
-                ModbusRtuMaster.destroy();
-                ModbusRtuMaster=null;
+            try {
                 mHandler.removeCallbacks(Bucle);
-            }
-            Estado =M_VERIFICANDO_MODO;
+            } catch (Exception e) {
 
+            }
+            try {
+                if(ModbusRtuMaster!=null){
+                    ModbusRtuMaster.destroy();
+                    ModbusRtuMaster=null;
+                    mHandler.removeCallbacks(Bucle);
+                }
+                Estado =M_VERIFICANDO_MODO;
+            } catch (Exception e) {
+
+            }
+            try{
             handlerThread.quit();
+            } catch (Exception e) {
+
+            }
         }
 
 

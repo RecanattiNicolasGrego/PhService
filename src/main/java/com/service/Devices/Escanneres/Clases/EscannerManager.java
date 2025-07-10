@@ -1,7 +1,8 @@
 package com.service.Devices.Escanneres.Clases;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,12 +10,12 @@ public class EscannerManager  {
 
     private static EscannerManager instance;
     private Map<Integer, PuertosSerie> scannerMap = new HashMap<>();
-    private ScannerMessageListener listener;
-
-    public interface ScannerMessageListener {
-        void EscannerListener(int num, String data);
+    private EscanerListener listener;
+    private EscanerUsb escanerUsb;
+    public interface EscanerListener {
+        void MensajeEscaneres(int num, String data);
     }
-    public void setListener(EscannerManager.ScannerMessageListener Listener){
+    public void setListener(EscanerListener Listener){
         this.listener=Listener;
     }
 
@@ -25,16 +26,29 @@ public class EscannerManager  {
         }
         return instance;
     }
+    public void stop(){
+        try {
+            escanerUsb.stop();
+        } catch (Exception e) {
+
+        }
+        try {
+            for (PuertosSerie scanner : scannerMap.values()) {
+                scanner.close();
+            }
+        } catch (IOException e) {
+        }
+    }
     public void addScannerUSB(int num){
       //  scannerMap.put(num, scanner);
         System.out.println("DEBUG ESCANNER "+ num);
-        EscanerUsb Escaner =new EscanerUsb(ComService.getInstance().activity,null);
-        Escaner.readAsyncFromDevice();
-        Escaner.setListener(new EscanerListener() {
+        escanerUsb =new EscanerUsb(ComService.getInstance().activity,null);
+        escanerUsb.readAsyncFromDevice();
+        escanerUsb.setListener(new com.service.Interfaz.EscanerListener() {
             @Override
             public void newData(String data) {
                 if (listener != null) {
-                    listener.EscannerListener(num+1, data);
+                    listener.MensajeEscaneres(num+1, data);
                 }
             }
         });
@@ -49,7 +63,7 @@ public class EscannerManager  {
                 // Cuando recibes el mensaje, le añades el id
                 System.out.println("DEBUG ESCANNER "+data);
                 if (listener != null) {
-                    listener.EscannerListener(num+1, data);
+                    listener.MensajeEscaneres(num+1, data);
                 }
             }
         });

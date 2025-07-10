@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +57,11 @@ public class zorra232 extends BalanzaBase {
         } catch (Exception e) {
 
         }
-        handlerThread.quit();
+        try {
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

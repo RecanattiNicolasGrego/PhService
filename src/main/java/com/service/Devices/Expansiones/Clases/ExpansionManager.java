@@ -1,18 +1,19 @@
 package com.service.Devices.Expansiones.Clases;
 
 import com.service.Interfaz.Expansion;
+import com.service.Interfaz.ListenerIntermediario;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExpansionManager implements Expansion,ListenerIntermediario.Intermediario{
+public class ExpansionManager implements Expansion, ListenerIntermediario.Intermediario{
         ArrayList<Integer> Estados = new ArrayList<>();
         Integer  Salidas=0;
         Integer  Entradas=0;
         private static ExpansionManager instance;
         private Map<Integer, ExpansionBase> ExpansionMap = new HashMap<>();
-        private ExpansionesMessageListener listener;
+        private ExpansionesListener listener;
         protected Boolean isRunning = true;
     public static ExpansionManager getInstance() {
         if (instance == null) {
@@ -34,7 +35,7 @@ public class ExpansionManager implements Expansion,ListenerIntermediario.Interme
                     NEstados = NEstados+entry.getValue().getEstados().size();
                 };
                 if(entry.getKey()== NumeroExpansion){
-                    listener.ExpansionListener((NEstados+numEstadoNuevo+1), dato);
+                    listener.MensajeExpansiones((NEstados+numEstadoNuevo+1), dato);
                 }
             }
         }
@@ -56,10 +57,10 @@ public class ExpansionManager implements Expansion,ListenerIntermediario.Interme
     }
 
 
-    public interface ExpansionesMessageListener {
-        void ExpansionListener(int num, ArrayList<Integer> data);
+    public interface ExpansionesListener {
+        void MensajeExpansiones(int num, ArrayList<Integer> data);
     }
-    public void setListener(ExpansionManager.ExpansionesMessageListener Listener){
+    public void setListener(ExpansionesListener Listener){
         this.listener=Listener; // LEAN LISTENER
     }
     private void ActualizarEstados(){

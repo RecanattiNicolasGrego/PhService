@@ -1,4 +1,4 @@
-package com.service.Devices;
+package com.service.Recyclers;
 
 import android.graphics.Rect;
 import android.view.View;

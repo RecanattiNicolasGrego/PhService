@@ -1,13 +1,12 @@
 package com.service.Devices.Dispositivos.Clases;
 
 import com.service.Comunicacion.GestorPuertoSerie;
-import com.service.Comunicacion.Modbus.ModbusMasterTCP;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
 import com.service.Comunicacion.Modbus.modbus4And.requset.ModbusReq;
 import com.service.Comunicacion.Modbus.modbus4And.requset.OnRequestBack;
 import com.service.Interfaz.Dispositivo;
 import com.service.Interfaz.dispositivoBase;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 import com.service.estructuras.classDevice;
 
 import java.util.concurrent.CountDownLatch;
@@ -52,12 +51,12 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
         }
         System.out.println("INIT");
     }
-    
+
 
 
 
     @Override
-    public void leerHoldingRegister(final Integer registro, final Modbus.ClasesModbus clase, final Modbus.RegisterCallback Callback) {
+    public void LeerHoldingRegister(final Integer registro, final Modbus.ClasesModbus clase, final Modbus.RegisterCallback Callback) {
                 if(isinit) {
                     Utils.EsHiloSecundario();
                     String result = "";
@@ -108,7 +107,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                                 }
                                 break;
                             }
-                            case Unsigned_Int: {
+                            case enteroSinSigno: {
                                 final Integer[] x = {0};
                                 if (Device.getSalida().equals("Red")) {
                                     ModbusTCPMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
@@ -147,7 +146,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                                 }
                                 break;
                             }
-                            case Signed_Int: {
+                            case enteroConSigno: {
                                 final short[] x = {0};
                                 if (Device.getSalida().equals("Red")) {
                                     ModbusTCPMaster.readHoldingRegisters(new OnRequestBack<short[]>() {
@@ -244,7 +243,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
                 }
             }
     @Override
-    public void leerCoil(Integer registro, Modbus.CoilCallback Callback ) {
+    public void LeerCoil(Integer registro, Modbus.CoilCallback Callback ) {
         if(isinit) {
             Utils.EsHiloSecundario();
             CountDownLatch latch = new CountDownLatch(1);
@@ -304,7 +303,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
     }
 
     @Override
-    public void leerMultiplesHoldingRegisters(Integer registro,Integer Alcance, RegistersCallback callbackCrudo) {
+    public void LeerMultiplesHoldingRegisters(Integer registro, Integer Alcance, RegistersCallback callbackCrudo) {
         if(isinit) {
             Utils.EsHiloSecundario();
             String result = "";
@@ -360,7 +359,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
     }
 
     @Override
-    public void leerMultiplesCoils(Integer registro, Integer Alcance, CoilsCallback callbackCrudo) {
+    public void LeerMultiplesCoils(Integer registro, Integer Alcance, CoilsCallback callbackCrudo) {
         if(isinit) {
             Utils.EsHiloSecundario();
             CountDownLatch latch = new CountDownLatch(1);
@@ -420,7 +419,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
     }
 
     @Override
-    public Boolean WriteMultiplesHoldingRegisters(Integer registro, short[] valor) {
+    public Boolean EscribirMultiplesHoldingRegister(Integer registro, short[] valor) {
         System.out.println("WRITING");
         final Boolean[] res = {false};
         if(isinit) {
@@ -472,7 +471,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
     }
 
     @Override
-    public Boolean WriteMultiplesCoils(Integer registro, boolean[] valor) {
+    public Boolean EscribirMultiplesCoils(Integer registro, boolean[] valor) {
         final Boolean[] res = {false};
         if(isinit) {
             Utils.EsHiloSecundario();
@@ -528,7 +527,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
 
 
     @Override
-    public Boolean WriteHoldingRegister(Integer registro, ClasesModbus clase, Integer valor) {
+    public Boolean EscribirHoldingRegister(Integer registro, Integer valor) {
 
         System.out.println("WRITING");
         final Boolean[] res = {false};
@@ -586,7 +585,7 @@ public class MasterDispositivos  extends DispositivoBase implements Dispositivo,
     }
 
     @Override
-    public Boolean WriteCoil(Integer registro, Boolean valor) {
+    public Boolean EscribirCoil(Integer registro, Boolean valor) {
         final Boolean[] res = {false};
         if(isinit) {
             Utils.EsHiloSecundario();

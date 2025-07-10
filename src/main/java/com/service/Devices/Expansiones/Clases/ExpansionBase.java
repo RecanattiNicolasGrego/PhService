@@ -2,13 +2,12 @@ package com.service.Devices.Expansiones.Clases;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.Devices.Balanzas.Clases.BalanzaBase;
+import com.service.utilsPackage.EnumReflexion;
 import com.service.Interfaz.Expansion;
-import com.service.Interfaz.ExpansionGestor;
-import com.service.Interfaz.Expansiones;
-import com.service.Utils;
+import com.service.Interfaz.ListenerIntermediario;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class ExpansionBase implements Expansion,ListenerIntermediario{
+public class ExpansionBase implements Expansion, ListenerIntermediario {
     ArrayList<Integer> Estados = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0));
     Integer NumeroExpansion = 0;
     static Integer Salidas=0;
@@ -31,7 +30,7 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
 
     Boolean isRunning=false;
     private ScheduledExecutorService scheduler;
-    BalanzaService Service= BalanzaService.getInstance();
+    PHService Service= PHService.Instancia();
     AppCompatActivity activity=null;
     PuertosSerie serialport=null;
 
@@ -97,7 +96,7 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
     public Integer getSalidas() {
         Integer Salidasaux=Salidas;
         try {
-            Field field = clazz.getDeclaredField("Salidas");
+            Field field = clazz.getDeclaredField(EnumReflexion.Expansiones.Salidas.name());
             field.setAccessible(true);
             Salidasaux= (Integer)field.get(null); // null porque es static
         } catch (Exception e) {
@@ -109,7 +108,7 @@ public class ExpansionBase implements Expansion,ListenerIntermediario{
     public Integer getEntradas() {
         Integer entradasaux =Entradas;
         try {
-            Field field = clazz.getDeclaredField("Entradas");
+            Field field = clazz.getDeclaredField(EnumReflexion.Expansiones.Entradas.name());
             field.setAccessible(true);
             entradasaux= (Integer) field.get(null); // null porque es static
         } catch (Exception e) {

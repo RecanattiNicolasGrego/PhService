@@ -1,6 +1,8 @@
-package com.service;
+package com.service.utilsPackage;
 
 import android.view.View;
+
+import com.service.R;
 
 public class buttonclass {
     private String labelText;
@@ -20,7 +22,7 @@ public class buttonclass {
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    Utils.Mensaje(PreferencesDevicesManager.getmensajeHelper(i,labelText),R.layout.item_customtoasterror,ComService.getInstance().activity);
+                    Utils.Mensaje(PreferencesDevicesManager.getmensajeHelper(i,labelText), R.layout.item_customtoasterror,ComService.getInstance().activity);
                     return false;
                 }
             });

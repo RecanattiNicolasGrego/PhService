@@ -1,11 +1,11 @@
-package com.service;
+package com.service.utilsPackage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.Devices.Expansiones.Clases.SalidasC;
+import com.service.PHService;
 import com.service.estructuras.classDevice;
 
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public  class PreferencesDevicesManager {
@@ -42,11 +41,11 @@ public  class PreferencesDevicesManager {
         salidaMap.put("Bluetooth", "Bluetooth");
         salidaMap.put("USB", "USB");
         //---------
-        deviceMap.put("Balanza", obtenerAliasDeModelos(BalanzaService.ModelosClasesBzas.values()));
+        deviceMap.put("Balanza", obtenerAliasDeModelos(PHService.ModelosClasesBzas.values()));
         deviceMap.put("Impresora", Arrays.asList("ZEBRA"));
-        deviceMap.put("Expansion", obtenerAliasDeModelos(BalanzaService.ModelosClasesExpansiones.values()));
+        deviceMap.put("Expansion", obtenerAliasDeModelos(PHService.ModelosClasesExpansiones.values()));
         deviceMap.put("Escaner", Arrays.asList("Escaner"));
-        deviceMap.put("Dispositivo",obtenerAliasDeModelos(BalanzaService.ModelosClasesDispositivos.values()));
+        deviceMap.put("Dispositivo",obtenerAliasDeModelos(PHService.ModelosClasesDispositivos.values()));
         deviceMap.put("default",Arrays.asList( "default"));
 
         listaKeyDeviceMap = PreferencesDevicesManager.obtenerListaPorMap(PreferencesDevicesManager.deviceMap);
@@ -176,7 +175,7 @@ public  class PreferencesDevicesManager {
          if(tipo.contains("Balanza")){
              String Modelobza = Preferencias.getString("Modelo_"+num,"Optima");
              int index = obtenerIndiceModeloPorTipo(0,Modelobza);
-             for (int i = 0; i < BalanzaService.ModelosClasesBzas.values()[index].GetnumMultiBzas(); i++) {
+             for (int i = 0; i < PHService.ModelosClasesBzas.values()[index].GetnumMultiBzas(); i++) {
                  balanzas.add(index);
              }
          }
@@ -424,7 +423,7 @@ public  class PreferencesDevicesManager {
                 numdevl++;
                 Boolean seteo = Preferencias.getBoolean("seteo_" + num, false);
                 String Modelobza="";
-                Modelobza = Preferencias.getString("Modelo_" + num, BalanzaService.ModelosClasesBzas.values()[0].name());
+                Modelobza = Preferencias.getString("Modelo_" + num, PHService.ModelosClasesBzas.values()[0].name());
                 String Salidaaux = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
                 int NumeroID = Preferencias.getInt("ID_" + num, 1);
                 ArrayList<String> listaux = new ArrayList<String>();
@@ -492,7 +491,7 @@ public  class PreferencesDevicesManager {
                 balanza.setND(tipoCounters.get("Balanza"));
                 Boolean seteo = Preferencias.getBoolean("seteo_" + num, false);
                 String Modelobza = "";
-                Modelobza = Preferencias.getString("Modelo_" + num, BalanzaService.ModelosClasesBzas.values()[0].name());
+                Modelobza = Preferencias.getString("Modelo_" + num, PHService.ModelosClasesBzas.values()[0].name());
                 String Salidaaux = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
                 int NumeroID = Preferencias.getInt("ID_" + num, 1);
                 ArrayList<String> listaux = new ArrayList<String>();
@@ -561,7 +560,7 @@ public  class PreferencesDevicesManager {
                 numbza++;
                 Boolean seteo = Preferencias.getBoolean("seteo_" + num, false);
                 String Modelobza="";
-                Modelobza = Preferencias.getString("Modelo_" + num, BalanzaService.ModelosClasesBzas.values()[0].name());
+                Modelobza = Preferencias.getString("Modelo_" + num, PHService.ModelosClasesBzas.values()[0].name());
                 String Salidaaux = Preferencias.getString("Salida_" + num, "PuertoSerie 1");
                 int NumeroID = Preferencias.getInt("ID_" + num, 1);
                 ArrayList<String> listaux = new ArrayList<String>();

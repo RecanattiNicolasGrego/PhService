@@ -58,7 +58,7 @@ public class ModbusReqRtuSlave {
      *
      * @throws ModbusInitException
      */
-    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, BasicProcessImageSlave image, String puerto, int baudrate, int dataBits, int stopbit, int parity) throws Exception {
+    public ModbusSlaveSet init(final OnRequestBack<String> onRequestBack, MatrizSlave image, String puerto, int baudrate, int dataBits, int stopbit, int parity) throws Exception {
         ModbusFactory mModbusFactory = new ModbusFactory();
         SerialPort serialPort = null;
         SerialPortWrapper serialPortWrapper = new JSerialCommWrapper(puerto,serialPort, baudrate, dataBits, stopbit, parity);

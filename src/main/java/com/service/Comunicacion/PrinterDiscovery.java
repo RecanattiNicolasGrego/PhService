@@ -15,7 +15,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.ServiceFragment;
 import com.service.estructuras.ZebraStruct;
 import com.zebra.sdk.btleComm.BluetoothLeDiscoverer;

@@ -1,12 +1,7 @@
-package com.service.Interfaz;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
+package com.service.utilsPackage;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
+
 public class  Reflextion_Interface  {
 
 

@@ -1,10 +1,12 @@
-package com.service;
+package com.service.utilsPackage;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.service.PHService;
 import com.service.Interfaz.OnFragmentChangeListener;
+import com.service.ServiceFragment;
 
 public class ComService {
     public static final String ServiceVersion = "1.050";
@@ -28,9 +30,9 @@ public class ComService {
         return instance;
     }
     public void openServiceFragment(){
-        ServiceFragment fragment = Servicefragment.newInstance(BalanzaService.getInstance());
+        ServiceFragment fragment = Servicefragment.newInstance(PHService.Instancia());
         Bundle args = new Bundle();
-        args.putSerializable("instanceService", BalanzaService.getInstance());
-        fragmentChangeListener.openFragmentService( fragment,args);
+        args.putSerializable("instanceService", PHService.Instancia());
+        fragmentChangeListener.AbrirServiceFragment( fragment,args);
     }
 }

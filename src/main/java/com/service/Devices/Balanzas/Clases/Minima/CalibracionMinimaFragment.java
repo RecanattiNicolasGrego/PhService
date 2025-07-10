@@ -1,11 +1,10 @@
 package com.service.Devices.Balanzas.Clases.Minima;
 
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
 
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -33,15 +32,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.service.BalanzaService;
+import com.service.PHService;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,11 +69,11 @@ public class CalibracionMinimaFragment extends Fragment {
     RadioGroup toggle1,toggle2,toggle3,toggle4,toggle5,toggle6,toggle7,toggle8,toggle13;
     RadioButton OFF1,OFF2,OFF3,OFF4,OFF5,OFF6,OFF7,OFF8,OFF13, ON1,ON2,ON3,ON4,ON5,ON6,ON7,ON8,ON13;
     ConstraintLayout tableParametrosPrincipales;
-    BalanzaService Service;
+    PHService Service;
 
 //    private OnFragmentChangeListener fragmentChangeListener;
 
-    public static CalibracionMinimaFragment newInstance(MINIMA_I instance, BalanzaService bza) {
+    public static CalibracionMinimaFragment newInstance(MINIMA_I instance, PHService bza) {
         CalibracionMinimaFragment fragment = new CalibracionMinimaFragment();
         Bundle args = new Bundle();
         args.putSerializable("instance", instance);
@@ -92,7 +91,7 @@ public class CalibracionMinimaFragment extends Fragment {
         buttonProvider = ButtonProviderSingleton.getInstance().getButtonProvider();
         if (getArguments() != null) {
             BZA = (MINIMA_I) getArguments().getSerializable("instance");
-            Service =  BalanzaService.getInstance();//(BalanzaService) getArguments().getSerializable("instanceService");
+            Service =  PHService.Instancia();//(BalanzaService) getArguments().getSerializable("instanceService");
             activity = ComService.getInstance().activity;//BZA.activity;//BZA.activity;
            BZA.abrirCalib();
         }

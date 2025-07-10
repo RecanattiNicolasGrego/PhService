@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -874,8 +874,12 @@ private final Context context;
         }
         serialPort=null;
         Estado =M_VERIFICANDO_MODO;
-        mHandler.removeCallbacks(Bucle);
-        handlerThread.quit();
+        try {
+            mHandler.removeCallbacks(Bucle);
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
 //    public void sendPuntoDecimal(){

@@ -1,7 +1,7 @@
 package com.service.Devices.Balanzas.Clases.ITW410;
 
 
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -32,14 +32,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import com.service.BalanzaService;
-import com.service.ComService;
+import com.service.PHService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.GestorRecursos;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class calibracionitw410Fragment extends Fragment {
     Button Guardar;
    ArrayList<String> listfiltro1;
    ArrayList<String> DivisionMin_arr;
-    BalanzaService Service;
+    PHService Service;
     ExecutorService thread = Executors.newFixedThreadPool(2);
 
     public static final String M_ERROR_COMUNICACION="M_ERROR_COMUNICACION",M_MODO_CALIBRACION="MODO_CALIBRACION",M_MODO_BALANZA="MODO_BALANZA",M_VERIFICANDO_MODO="VERIFICANDO_MODO";
@@ -83,7 +83,7 @@ public class calibracionitw410Fragment extends Fragment {
     View viewMang=null;
     private OnFragmentChangeListener fragmentChangeListener;
 
-    public static calibracionitw410Fragment newInstance(ITW4102Bzas instance, BalanzaService service) {
+    public static calibracionitw410Fragment newInstance(ITW4102Bzas instance, PHService service) {
         calibracionitw410Fragment fragment = new calibracionitw410Fragment();
         Bundle args = new Bundle();
         args.putSerializable("instance", instance);
@@ -103,7 +103,7 @@ public class calibracionitw410Fragment extends Fragment {
         if (getArguments() != null) {
             BZA = (ITW4102Bzas) getArguments().getSerializable("instance");
             BZA.Estado=M_MODO_CALIBRACION;
-            Service = (BalanzaService) getArguments().getSerializable("instanceService");
+            Service = (PHService) getArguments().getSerializable("instanceService");
             mainActivity = ComService.getInstance().activity;
         }
         return viewMang;

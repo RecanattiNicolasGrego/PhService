@@ -4,5 +4,5 @@ import com.service.Devices.Escanneres.Clases.EscannerManager;
 
 public interface EscanerGestor{
 
-    public  void init(EscannerManager.ScannerMessageListener Listener);
+    public  void init(EscannerManager.EscanerListener Listener);
 }
