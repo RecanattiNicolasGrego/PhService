@@ -1,11 +1,10 @@
 package com.service.Devices.Balanzas.Clases.Minima;
 
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
 
 import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -35,13 +34,13 @@ import androidx.fragment.app.Fragment;
 
 import com.service.BalanzaService;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;

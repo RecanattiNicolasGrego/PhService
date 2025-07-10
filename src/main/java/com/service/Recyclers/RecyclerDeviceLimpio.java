@@ -18,7 +18,7 @@
 
     import com.service.BalanzaService;
     import com.service.estructuras.classDevice;
-    import com.service.PreferencesDevicesManager;
+    import com.service.utilsPackage.PreferencesDevicesManager;
     import com.service.R;
 
     import java.util.ArrayList;

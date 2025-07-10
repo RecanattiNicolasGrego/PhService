@@ -2,11 +2,10 @@ package com.service.Devices.Balanzas.Clases;
 
 
 
-import static com.service.Utils.removeLeadingZeros;
+import static com.service.utilsPackage.Utils.removeLeadingZeros;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.Toast;
@@ -17,10 +16,9 @@ import com.service.BalanzaService;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Interfaz.Balanza;
-import com.service.Interfaz.OnFragmentChangeListener;
-import com.service.PreferencesDevicesManager;
+import com.service.utilsPackage.PreferencesDevicesManager;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -846,11 +844,15 @@ public class ITW230II  extends BalanzaBase implements Balanza, Serializable {
     @Override
     public void stop(int numBza) {
 //        serialPort = null;
-        readers.stopReading();
-        estado = M_VERIFICANDO_MODO;
-        //mHandler.removeCallbacks(GET_PESO_cal_bza);
+        try {
+            readers.stopReading();
+            estado = M_VERIFICANDO_MODO;
+            //mHandler.removeCallbacks(GET_PESO_cal_bza);
 
-        handlerThread.quit();
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

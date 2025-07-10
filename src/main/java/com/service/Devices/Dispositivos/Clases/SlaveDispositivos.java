@@ -1,4 +1,5 @@
 package com.service.Devices.Dispositivos.Clases;
+import com.service.BalanzaService;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.Modbus.Req.BasicProcessImageSlave;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuSlave;
@@ -151,6 +152,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
         System.out.println("SLAVE ID ?!?!?!"+ Slaveid);
         return new BasicProcessImageSlave(Slaveid);
     }
+    BasicProcessImageSlave imagenBasic;
     @Override
     public void init(DeviceMessageListenerM_Slave ListenerM_Slave, BasicProcessImageSlave image) {
         System.out.println(("OLA !?!?")+ (image == null) );
@@ -158,6 +160,7 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
             CountDownLatch latch = new CountDownLatch(1);
             listener = ListenerM_Slave;
             if (strpuerto != null) {
+                imagenBasic = image;
                 if (Device.getSalida().equals("Red")) {
                     try {
                                try {
@@ -312,11 +315,13 @@ public class SlaveDispositivos  extends DispositivoBase implements Dispositivo, 
     public void stop() {
         if (Device.getSalida().equals("Red")){
             try {
-                SlaveTCP.stop();
+                SlaveTCP.removeProcessImage(imagenBasic);
+             //   SlaveTCP.stop();
             } catch (Exception e) {
             }
         }else{
             try {
+                SlaveRTU.removeProcessImage(imagenBasic);
                 SlaveRTU.stop();
             } catch (Exception e) {
 

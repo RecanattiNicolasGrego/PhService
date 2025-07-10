@@ -17,7 +17,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.ProgressBar;
 
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.ServiceFragment;
 import com.service.estructuras.ZebraStruct;
 import com.zebra.sdk.printer.discovery.DiscoveredPrinter;

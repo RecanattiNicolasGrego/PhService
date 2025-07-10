@@ -1,11 +1,11 @@
-package com.service;
+package com.service.utilsPackage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.Devices.Expansiones.Clases.SalidasC;
+import com.service.BalanzaService;
 import com.service.estructuras.classDevice;
 
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public  class PreferencesDevicesManager {

@@ -1,4 +1,4 @@
-package com.service.Devices.Escanner.clases;
+package com.service.Devices.Escanneres.Clases;
 
 
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public class TecladoUsb {

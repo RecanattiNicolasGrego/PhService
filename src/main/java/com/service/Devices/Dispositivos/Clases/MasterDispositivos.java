@@ -1,13 +1,12 @@
 package com.service.Devices.Dispositivos.Clases;
 
 import com.service.Comunicacion.GestorPuertoSerie;
-import com.service.Comunicacion.Modbus.ModbusMasterTCP;
 import com.service.Comunicacion.Modbus.Req.ModbusReqRtuMaster;
 import com.service.Comunicacion.Modbus.modbus4And.requset.ModbusReq;
 import com.service.Comunicacion.Modbus.modbus4And.requset.OnRequestBack;
 import com.service.Interfaz.Dispositivo;
 import com.service.Interfaz.dispositivoBase;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 import com.service.estructuras.classDevice;
 
 import java.util.concurrent.CountDownLatch;

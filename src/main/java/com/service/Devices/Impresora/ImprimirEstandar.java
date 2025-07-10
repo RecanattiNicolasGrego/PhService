@@ -11,8 +11,6 @@ import com.service.Devices.Impresora.Tipos.ImprimirRed;
 import com.service.Devices.Impresora.Tipos.ImprimirUSB;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.estructuras.classDevice;
-import com.service.R;
-import com.service.Utils;
 
 
 import java.util.ArrayList;

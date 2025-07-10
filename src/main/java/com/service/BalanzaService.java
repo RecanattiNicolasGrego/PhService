@@ -1,5 +1,6 @@
 package com.service;
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import com.service.Devices.Balanzas.Clases.ITW380;
 import com.service.Devices.Balanzas.Clases.ITW410.ITW4102Bzas;
 import com.service.Devices.Balanzas.Clases.ITW410FRM.ITW410_FORM;
 import com.service.Devices.Balanzas.Clases.Minima.MINIMA_I;
-import com.service.Devices.Balanzas.Clases.NuevaBalanza;
 import com.service.Devices.Balanzas.Clases.Optima.OPTIMA_I;
 import com.service.Devices.Balanzas.Clases.PrSeries;
 import com.service.Devices.Balanzas.Clases.R31P30_I;
@@ -23,7 +23,7 @@ import com.service.Devices.Dispositivos.Clases.MasterDispositivos;
 import com.service.Devices.Dispositivos.Clases.SlaveDispositivos;
 import com.service.Devices.Impresora.ImprimirEstandar;
 import com.service.Interfaz.Dispositivo;
-import com.service.Interfaz.EnumManager;
+import com.service.utilsPackage.EnumReflexion;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Devices.Escanneres.Clases.EscannerManager;
 import com.service.Devices.Expansiones.Clases.ExpansionManager;
@@ -35,11 +35,13 @@ import com.service.Devices.Expansiones.Clases.MixtoC;
 import com.service.Devices.Expansiones.Clases.SalidasC;
 import com.service.Interfaz.Balanza;
 import com.service.Interfaz.Printer;
-import com.service.Interfaz.Reflextion_Interface;
+import com.service.utilsPackage.Reflextion_Interface;
 import com.service.Interfaz.dispositivoBase;
 import com.service.estructuras.classDevice;
+import com.service.utilsPackage.ComService;
+import com.service.utilsPackage.PreferencesDevicesManager;
+
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,9 +54,9 @@ public  class BalanzaService implements Serializable {
 
    // public  Balanza Services;
     public com.service.Interfaz.ExpansionGestor Expansiones = new Expansiones();
-    public Dispositivo.DeviceFachade Dispositivos;
+    public Dispositivo.DeviceFachade Dispositivos=null;
 
-    private InternalDispositivos DispositivosInstancia;
+    private InternalDispositivos DispositivosInstancia=null;
     public com.service.Interfaz.EscanerGestor Escaneres = new Escaneres();
     public Printer Impresoras  = new Impresoras();
     //leandrito
@@ -76,10 +78,10 @@ public  class BalanzaService implements Serializable {
         public ArrayList<String> getConfiguraciones() {
             try {
                 ArrayList<String> list= new ArrayList<>();
-                list.add(Reflextion_Interface.getFieldValueStr(clase , String.valueOf(EnumManager.Configuracion_Puerto.BAUD.nombre)));
-                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.STOP.nombre)));
-                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.DATA.nombre)));
-                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.PARITY.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase , String.valueOf(EnumReflexion.Configuracion_Puerto.BAUD.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.STOP.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.DATA.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.PARITY.nombre)));
                 return list;
             } catch (Exception e) {
                 System.err.println("Error obteniendo configuraciones: " + e.getMessage());
@@ -109,15 +111,15 @@ public  class BalanzaService implements Serializable {
             return clase;
         }
        public Boolean getTiene485(){
-           return Reflextion_Interface.getFieldValueBool(clase , String.valueOf(EnumManager.Dispositivos.puede485.nombre));
+           return Reflextion_Interface.getFieldValueBool(clase , String.valueOf(EnumReflexion.Dispositivos.puede485.nombre));
        }
         public ArrayList<String> getConfiguraciones() {
             try {
                 ArrayList<String> list= new ArrayList<>();
-                list.add(Reflextion_Interface.getFieldValueStr(clase , String.valueOf(EnumManager.Configuracion_Puerto.BAUD.nombre)));
-                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.STOP.nombre)));
-                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.DATA.nombre)));
-                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.PARITY.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase , String.valueOf(EnumReflexion.Configuracion_Puerto.BAUD.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.STOP.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.DATA.nombre)));
+                list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.PARITY.nombre)));
                 return list;
             } catch (Exception e) {
                 System.err.println("Error obteniendo configuraciones: " + e.getMessage());
@@ -135,7 +137,7 @@ public  class BalanzaService implements Serializable {
             }
         public Boolean getTienePorDemanda(){
             System.out.println("Clase cargada: " + clase);
-            return Reflextion_Interface.getFieldValueBool(clase , String.valueOf(EnumManager.Balanzas.puede485.nombre));
+            return Reflextion_Interface.getFieldValueBool(clase , String.valueOf(EnumReflexion.Balanzas.puede485.nombre));
         }
         public boolean compararInstancia(int nbza) {
             try {
@@ -150,7 +152,7 @@ public  class BalanzaService implements Serializable {
            }
            public int GetnumMultiBzas() {
                try {
-                   return Reflextion_Interface.getFieldValueInt(clase , String.valueOf(EnumManager.Balanzas.nBalanzas.nombre));
+                   return Reflextion_Interface.getFieldValueInt(clase , String.valueOf(EnumReflexion.Balanzas.nBalanzas.nombre));
                } catch (Exception e) {
                    System.err.println("Error obteniendo numeromultiplebalanza: " + e.getMessage());
                    return 1; // Devuelve una lista vacía en caso de error
@@ -159,7 +161,7 @@ public  class BalanzaService implements Serializable {
             //aaaaaaaaaaaaaaaaaaaaaaOOOOOOOOO
         public boolean getTieneCal() {
             try {
-                return  Reflextion_Interface.getFieldValueBool(clase , String.valueOf(EnumManager.Balanzas.TieneCal.nombre));
+                return  Reflextion_Interface.getFieldValueBool(clase , String.valueOf(EnumReflexion.Balanzas.TieneCal.nombre));
             } catch (Exception e) {
                 System.err.println("Error obteniendo TieneCal: " + e.getMessage());
                 return false;
@@ -168,10 +170,10 @@ public  class BalanzaService implements Serializable {
            public ArrayList<String> getConfiguraciones() {
                try {
                    ArrayList<String> list= new ArrayList<>();
-                           list.add(Reflextion_Interface.getFieldValueStr(clase , String.valueOf(EnumManager.Configuracion_Puerto.BAUD.nombre)));
-                           list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.STOP.nombre)));
-                           list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.DATA.nombre)));
-                           list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumManager.Configuracion_Puerto.PARITY.nombre)));
+                           list.add(Reflextion_Interface.getFieldValueStr(clase , String.valueOf(EnumReflexion.Configuracion_Puerto.BAUD.nombre)));
+                           list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.STOP.nombre)));
+                           list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.DATA.nombre)));
+                           list.add(Reflextion_Interface.getFieldValueStr(clase ,String.valueOf(EnumReflexion.Configuracion_Puerto.PARITY.nombre)));
                    return list;
                } catch (Exception e) {
                    System.err.println("Error obteniendo configuraciones: " + e.getMessage());
@@ -194,44 +196,11 @@ public  class BalanzaService implements Serializable {
         if(Service==null){
             if(isDeviceRooted()){
                 runAsRoot("su -c 'iptables -t nat -A PREROUTING -p tcp --dport 502 -j REDIRECT --to-port 1502'");
-           /* runAsRoot("su -c 'iptables -P INPUT ACCEPT'");
-            runAsRoot("su -c 'iptables -P OUTPUT ACCEPT'");
-            runAsRoot(" su -c 'chmod 777 /dev/socket'");
-            runAsRoot("su -c iptables-restore < /etc/iptables.rules");
-            runAsRoot("su -c 'iptables -D INPUT -j bw_INPUT'");
-            runAsRoot("su -c 'iptables -D OUTPUT -j bw_OUTPUT'");
-            runAsRoot("su -c 'iptables -X bw_INPUT'");
-            runAsRoot("su -c 'iptables -X bw_OUTPUT'");
-           runAsRoot(" su -c 'iptables -D INPUT -p tcp --dport 502 -j ACCEPT'");
-            runAsRoot("su -c 'iptables -D OUTPUT -p tcp --sport 502 -j ACCEPT'");
-            runAsRoot("su -c 'iptables -D INPUT -p tcp --dport 502 -j REJECT'");
-            runAsRoot("su -c 'iptables -D OUTPUT -p tcp --sport 502 -j REJECT'");
-            runAsRoot("su -c 'iptables -D INPUT -p tcp --dport 502 -j DROP'");
-            runAsRoot("su -c 'iptables -D OUTPUT -p tcp --sport 502 -j DROP'");
-            runAsRoot("su -c 'iptables -A INPUT -p tcp --dport 502 -j ACCEPT'");
-            runAsRoot("su -c 'iptables -A OUTPUT -p tcp --sport 502 -j ACCEPT'");
-            runAsRoot("su -c 'iptables-save > /etc/iptables.rules'");
-            runAsRoot("su -c 'stop netd && start netd'");
-            runAsRoot("su -c 'setenforce 0'");
-            runAsRoot("su -c 'sepolicy-inject -s init -t net_bind_service -c tcp_socket -p bind'");
-            NO USAR A MENOS QUE FALLE TODO DE TODO
-            runAsRoot("su -c 'cat /sys/fs/selinux/policy > /sdcard/sepolicy'\n")
-            runAsRoot("su -c 'mount -o remount,rw /system'");
-            runAsRoot("su -c 'cp /sdcard/sepolicy /system/etc/selinux/'");
-            runAsRoot("su -c 'reboot'");
-            runAsRoot("su -c ' iptables -D INPUT -p tcp --dport 502 -j DROP' ");
-            runAsRoot(" su -c 'iptables -D INPUT -p tcp --dport 502 -j REJECT' ");
-            runAsRoot("su -c 'iptables -A INPUT -p tcp --dport 502 -j ACCEPT'");
-            runAsRoot("su -c 'iptables -A OUTPUT -p tcp --sport 502 -j ACCEPT'");
-          //  runAsRoot("su -c 'iptables -t nat -A PREROUTING -p tcp --dport 502 -j REDIRECT --to-port 1502'");
-            runAsRoot("su -c 'app_process -Djava.security.manager /system/bin com/jws/jwsapi'");
-            runAsRoot("su -c 'app_process -Djava.security.manager /system/bin com/service/Comunicacion/Modbus/modbus4And/ip/tcp/TcpSlave'");*/
-
             }else{
-                Utils.Mensaje("Habilitar Acceso ROOT",R.layout.item_customtoasterror,activity);
+                Mensaje("Habilitar Acceso ROOT",R.layout.item_customtoasterror,activity);
             }
             Service= new BalanzaService();
-            ComService = com.service.ComService.init(activity,fragmentChangeListener);
+            ComService = com.service.utilsPackage.ComService.init(activity,fragmentChangeListener);
 
             Service.init(false);
         }
@@ -307,8 +276,8 @@ public  class BalanzaService implements Serializable {
     protected void init(Boolean reset) {
     CountDownLatch latch = new CountDownLatch(1);
         if(reset != null && reset){
-            Puertos.ModbusMRA =null;Puertos.ModbusMRB =null;Puertos.ModbusMRC =null;
-            Puertos.serialPortB=null;Puertos.serialPortA=null;Puertos.serialPortC=null;
+            Puertos.Reset();
+
             int i=1;
             for (BalanzaBase Balanza : balanzasInstancia.balanzas.values()) {
                 Balanza.stop(i);
@@ -317,13 +286,16 @@ public  class BalanzaService implements Serializable {
             balanzasInstancia.balanzas.clear();
             balanzasInstancia.balanzas= new HashMap<>();
             GestorRecursos.getinstance().reiniciar();
+            DispositivosInstancia.stop();
+            DispositivosInstancia=null;
+            Dispositivos=null;
         }
        //Utils.clearCache(ComService.activity.getApplicationContext());
         SettingsDef();
         ArrayList<classDevice> Devicelist = PreferencesDevicesManager.get_listPorTipo(PreferencesDevicesManager.obtenerIndiceTipo("Dispositivo"),ComService.activity);
+           System.out.println( "DEBUGGEO "+!Devicelist.isEmpty()+" "+ String.valueOf(Devicelist.get(0).getSeteo())+" "+ String.valueOf(DispositivosInstancia==null));
             if(!Devicelist.isEmpty() && Devicelist.get(0).getSeteo() && DispositivosInstancia==null){
                 try {
-                    DispositivosInstancia.stop();
                 } catch (Exception e) {
                 } finally {
                     DispositivosInstancia = new InternalDispositivos();
@@ -331,7 +303,6 @@ public  class BalanzaService implements Serializable {
                     Dispositivos = DispositivosInstancia;
                 }
             }
-
         balanzasInstancia = new Balanzas(); // Tipo concreto
         Balanzas = balanzasInstancia;
             ArrayList<classDevice> balanzasList = PreferencesDevicesManager.get_listPorTipo(PreferencesDevicesManager.obtenerIndiceTipo("Balanza"),ComService.activity);
@@ -359,7 +330,6 @@ public  class BalanzaService implements Serializable {
         //usbTeclado.readAsyncFromDevice();
     }
     private class Impresoras implements Printer {
-
         /**
          * Envía una etiqueta para imprimir a la impresora configurada en el índice proporcionado.
          *
@@ -508,7 +478,7 @@ public  class BalanzaService implements Serializable {
             };
         }
         public  void InitializateDevices(ArrayList<classDevice> Devicelist) {
-             CountDownLatch latch = new CountDownLatch(Devicelist.size()-1);
+             CountDownLatch latch = new CountDownLatch(Devicelist.size());
             System.out.println("size nDevice"+Devicelist.size());
 
             for (classDevice Device : Devicelist) {
@@ -573,8 +543,12 @@ public  class BalanzaService implements Serializable {
         @Override
         public void stop() {
             for (Map.Entry<Integer, dispositivoBase> entry : dispositivosMap.entrySet()) {
-                dispositivoBase valor = entry.getValue();
-                valor.stop();
+                try {
+                    dispositivoBase valor = entry.getValue();
+                    valor.stop();
+                } catch (Exception e) {
+
+                }
             }
         }
     }
@@ -851,14 +825,6 @@ public  class BalanzaService implements Serializable {
             }
             return null;
 
-        }
-
-
-
-        public void stop(int numBza) {
-            for (int i = 0; i < balanzas.size(); i++) {
-                balanzas.get(i).stop(0);
-            }
         }
 
         public void openCalibracion(int numBza) {

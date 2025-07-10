@@ -1,6 +1,4 @@
-package com.service;
-
-import android.view.View;
+package com.service.utilsPackage;
 
 import java.util.HashMap;
 import java.util.Map;

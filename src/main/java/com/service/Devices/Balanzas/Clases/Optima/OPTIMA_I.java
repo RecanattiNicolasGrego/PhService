@@ -1,7 +1,6 @@
 package com.service.Devices.Balanzas.Clases.Optima;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.HandlerThread;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +10,8 @@ import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Interfaz.Balanza;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,7 +19,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class OPTIMA_I extends BalanzaBase implements Balanza.Optima_Image ,Serializable {

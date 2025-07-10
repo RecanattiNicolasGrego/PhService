@@ -1,12 +1,13 @@
 package com.service.Devices.Expansiones.Clases;
 
 import com.service.Interfaz.Expansion;
+import com.service.Interfaz.ListenerIntermediario;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExpansionManager implements Expansion,ListenerIntermediario.Intermediario{
+public class ExpansionManager implements Expansion, ListenerIntermediario.Intermediario{
         ArrayList<Integer> Estados = new ArrayList<>();
         Integer  Salidas=0;
         Integer  Entradas=0;

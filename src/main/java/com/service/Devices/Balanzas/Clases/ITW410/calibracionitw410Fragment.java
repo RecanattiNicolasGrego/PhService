@@ -1,7 +1,7 @@
 package com.service.Devices.Balanzas.Clases.ITW410;
 
 
-import static com.service.Utils.Mensaje;
+import static com.service.utilsPackage.Utils.Mensaje;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -33,13 +33,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.service.BalanzaService;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.ButtonProvider;
 import com.service.Comunicacion.ButtonProviderSingleton;
 import com.service.Comunicacion.GestorRecursos;
 import com.service.Interfaz.OnFragmentChangeListener;
 import com.service.R;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

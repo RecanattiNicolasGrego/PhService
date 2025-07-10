@@ -321,4 +321,12 @@ public class GestorPuertoSerie {
                 return Modbus;
             }
         }
+        public void Reset(){
+
+        ModbusMRA =null;ModbusMRB =null;ModbusMRC =null;
+            serialPortB=null;serialPortA=null;serialPortC=null;
+            //ModbusSTA=null;
+            ModbusSRA=null;ModbusSRB=null;ModbusSRC=null;
+
+        }
     }

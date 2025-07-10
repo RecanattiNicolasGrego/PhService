@@ -2,12 +2,9 @@ package com.service.Comunicacion;
 
 
 import com.service.BalanzaService;
-import com.service.ComService;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
-import com.service.Interfaz.Balanza;
-import com.service.PreferencesDevicesManager;
-import com.service.estructuras.classDevice;
+import com.service.utilsPackage.PreferencesDevicesManager;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -15,7 +12,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class GestorRecursos {
-    ArrayList<Thread> hilo = new ArrayList<Thread>() ;
+    ArrayList<Thread> hilos = new ArrayList<Thread>() ;
 
     ArrayList<Integer> Puerto1= new ArrayList<>();
     ArrayList<Integer> Puerto2= new ArrayList<>();
@@ -129,22 +126,22 @@ private int Lockeartodos(ArrayList<Integer> x,int id) {
                 }
             };
 
-            System.out.println("SIZE: "+hilo.size()+" id:"+id);
-            Thread hiloExistente = hilo.get(id);
+            System.out.println("SIZE: "+ hilos.size()+" id:"+id);
+            Thread hiloExistente = hilos.get(id);
 
             if (hiloExistente != null && hiloExistente.isAlive()) {
                 hiloExistente.interrupt();
             }
             Thread nuevoHilo = new Thread(runnable);
-            hilo.set(id, nuevoHilo);
+            hilos.set(id, nuevoHilo);
             nuevoHilo.start();
         }
     }
     public void shutdown(int id){
         System.out.println("shutdown "+id);
-        if(hilo.get(id-1)!=null) {
-            if (hilo.get(id-1).isAlive()) {
-                hilo.get(id-1).interrupt();
+        if(hilos.get(id-1)!=null) {
+            if (hilos.get(id-1).isAlive()) {
+                hilos.get(id-1).interrupt();
                 isrunning[id-1]=false;
             }
         }
@@ -170,7 +167,7 @@ private int Lockeartodos(ArrayList<Integer> x,int id) {
 
     }
     public void stop(){
-        for(Thread hilo:hilo){
+        for(Thread hilo: hilos){
            int  id=0;
             if(hilo!=null) {
                 if (hilo.isAlive()) {
@@ -184,8 +181,8 @@ private int Lockeartodos(ArrayList<Integer> x,int id) {
     }
     public void init(){
        // isrunning=true;
-        while (hilo.size() < 3) {
-            hilo.add(null);
+        while (hilos.size() < 3) {
+            hilos.add(null);
         }
         iniciarRecursos();
 
@@ -194,7 +191,7 @@ private int Lockeartodos(ArrayList<Integer> x,int id) {
     }
     public void reiniciar() {
         stop();
-        hilo.clear();
+        hilos.clear();
       //  init();
     }
 }

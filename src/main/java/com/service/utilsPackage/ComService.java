@@ -1,10 +1,12 @@
-package com.service;
+package com.service.utilsPackage;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.service.BalanzaService;
 import com.service.Interfaz.OnFragmentChangeListener;
+import com.service.ServiceFragment;
 
 public class ComService {
     public static final String ServiceVersion = "1.050";

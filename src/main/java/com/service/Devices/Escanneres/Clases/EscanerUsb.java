@@ -10,6 +10,8 @@ import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.hardware.usb.UsbRequest;
 
+import com.service.Interfaz.EscanerListener;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,11 +55,19 @@ public class EscanerUsb {
     private final UsbManager usbManager;
     private UsbDeviceConnection connection;
     private EscanerListener listener;
+    private Boolean isrunning = false;
     public EscanerUsb(Context context, EscanerListener listener) {
         usbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
         this.listener = listener;
     }
 
+    public void stop(){
+        isrunning=false;
+        if (connection != null) {
+            connection.close();
+            connection = null;
+        }
+    }
     public void setListener(EscanerListener listener) {
         this.listener = listener;
     }
@@ -84,7 +94,7 @@ public class EscanerUsb {
         UsbRequest request = new UsbRequest();
         request.initialize(connection, inEndpoint);
 
-
+        isrunning=true;
         new Thread(() -> {
             byte[] buffer = new byte[8];
             StringBuilder scannedText = new StringBuilder();

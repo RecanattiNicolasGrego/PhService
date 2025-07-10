@@ -3,25 +3,19 @@ package com.service.Devices.Balanzas.Clases.ITW410;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.BalanzaService;
-import com.service.ComService;
+import com.service.utilsPackage.ComService;
 import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
 import com.service.Devices.Balanzas.Clases.BalanzaBase;
-import com.service.Interfaz.Balanza;
 import com.service.Interfaz.OnFragmentChangeListener;
-import com.service.Utils;
+import com.service.utilsPackage.Utils;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -161,7 +155,11 @@ public class ITW4102Bzas extends BalanzaBase implements Serializable {
         if(serialport!=null){
         }
         Estado=M_MODO_CALIBRACION;
-        handlerThread.quit();
+        try {
+            handlerThread.quit();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

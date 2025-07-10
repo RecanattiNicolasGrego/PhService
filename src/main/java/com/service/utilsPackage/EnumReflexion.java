@@ -1,6 +1,6 @@
-package com.service.Interfaz;
+package com.service.utilsPackage;
 
- public class EnumManager{
+ public class EnumReflexion {
     public  enum Balanzas{
         puede485("TienePorDemanda"),
         nBalanzas("nBalanzas"),
@@ -21,6 +21,16 @@ package com.service.Interfaz;
         public final String nombre;
 
         Dispositivos(String nombre) {
+            this.nombre = nombre;
+        }
+    }
+    public enum Expansiones {
+        Salidas("Salidas"),
+        Entradas("Entradas");
+
+        public final String nombre;
+
+        Expansiones(String nombre) {
             this.nombre = nombre;
         }
     }

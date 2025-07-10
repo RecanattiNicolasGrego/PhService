@@ -1,25 +1,12 @@
 package com.service.Devices.Balanzas.Clases;
 
-import android.os.Bundle;
-import android.os.HandlerThread;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.service.Comunicacion.GestorPuertoSerie;
 import com.service.Comunicacion.PuertosSerie.PuertosSerie;
-import com.service.Devices.Balanzas.Clases.Optima.CalibracionOptimaFragment;
 import com.service.Interfaz.Balanza;
 import com.service.Interfaz.OnFragmentChangeListener;
-import com.service.PreferencesDevicesManager;
-import com.service.Utils;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class NuevaBalanza extends BalanzaBase implements Balanza , Serializable {
     PuertosSerie.PuertosSerieListener receiver = null;

@@ -115,6 +115,6 @@
     El Nombre es el nombre visible del protocolo, la interfaz visual se actualiza con este. mientras que el nombreclase es 
     el protocolo de dicha balanza.
     Este protocolo va a tener que extender de BalanzaBase como asi tener valores estaticos con el nombre exacto
-    tal cual aparece en EnumManager. debe tener todos los de Configuracion_Puertos y Balanzas. En caso de no tenerlo tomara un valor default escrito en Balanza Base
+    tal cual aparece en EnumReflexion. debe tener todos los de Configuracion_Puertos y Balanzas. En caso de no tenerlo tomara un valor default escrito en Balanza Base
     Ademas debera tener el constructor igual a balanzabase y otros protocolos, en caso de necesitar un cambio hay que realizarlo en todos los protocolos
     y en initializateBalanzas ( donde se define el contructor de inicializacion ). Hay un ejemplo en NuevaBalanza().

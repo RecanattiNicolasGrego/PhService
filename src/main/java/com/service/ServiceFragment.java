@@ -2,7 +2,7 @@ package com.service;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static com.service.Utils.getIPAddress;
+import static com.service.utilsPackage.Utils.getIPAddress;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -61,6 +61,9 @@ import com.service.Recyclers.MyRecyclerViewAdapter;
 import com.service.Devices.Impresora.ImprimirEstandar;
 import com.service.Recyclers.RecyclerDeviceLimpio;
 import com.service.Recyclers.RecyclerSearcher;
+import com.service.utilsPackage.ComService;
+import com.service.utilsPackage.PreferencesDevicesManager;
+import com.service.utilsPackage.Utils;
 import com.zebra.sdk.comm.BluetoothConnection;
 import com.zebra.sdk.comm.Connection;
 import com.zebra.sdk.comm.ConnectionException;
@@ -653,7 +656,7 @@ public class ServiceFragment extends Fragment {
             /*
             Process: com.jws.jwsapi, PID: 22355
                                                                                                     java.lang.ArrayIndexOutOfBoundsException: length=11; index=-1
-                                                                                                    	at com.service.PreferencesDevicesManager.getBalanzas(PreferencesDevicesManager.java:179)
+                                                                                                    	at com.service.utilsPackage.PreferencesDevicesManager.getBalanzas(PreferencesDevicesManager.java:179)
                                                                                                     	at com.service.ServiceFragment.lambda$Lagregarinit$9$com-service-ServiceFragment(ServiceFragment.java:652)
                                                                                                     	at com.service.ServiceFragment$$ExternalSyntheticLambda15.onClick(Unknown Source:2)
                                                                                                     	at android.view.View.performClick(View.java:6597)
@@ -766,7 +769,7 @@ public class ServiceFragment extends Fragment {
         sp_Modelo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(!sp_Modelo.getSelectedItem().equals(BalanzaService.ModelosClasesDispositivos.Dispositivo.name())){
+                if(!sp_Modelo.getSelectedItem().equals(BalanzaService.ModelosClasesDispositivos.ASCII.name())){
                     ID.setVisibility(VISIBLE);
                     Lid.setVisibility(VISIBLE);
                 }else{
@@ -868,12 +871,11 @@ public class ServiceFragment extends Fragment {
                             int Slave = Integer.parseInt(ID.getText().toString());
                             newDevice.setID(Slave);
                         }else{
-                            if(!sp_Modelo.getSelectedItem().equals(BalanzaService.ModelosClasesDispositivos.Dispositivo.name())){
+                            if(!sp_Modelo.getSelectedItem().equals(BalanzaService.ModelosClasesDispositivos.ASCII.name())){
                                 newDevice.setID(1);
                             }else{
                                 newDevice.setID(0);
                             }}
-                        System.out.println("DIOS QUE PASA DIOS MATENME POR FAVOR "+newDevice.getID());
                         if(sp_Modelo.getVisibility()==View.VISIBLE ) {
                             value= sp_Modelo.getSelectedItem().toString();
                         }else{
@@ -1256,7 +1258,6 @@ public class ServiceFragment extends Fragment {
                                         setpair(activity,finalAddress, Pin.getText().toString(),dialog); // probar
                                     break;
                         }
-
                     }
                     if(sp_Modelo.getVisibility()==View.VISIBLE && Lsp_Modelo.getVisibility()==View.VISIBLE) {
                         x.setModelo(sp_Modelo.getSelectedItem().toString());
@@ -1746,22 +1747,23 @@ public class ServiceFragment extends Fragment {
     }
     public ProgressBar progressBar;
     private void buscarBalanzas(TextView tvbaud, int type) {
-        ListaScanner.clear();
-        try{
-            multizebra.interruptDiscovery();
-           // multizebra.stopDiscovery();
-        }catch (Exception e){
+        try {
+            ListaScanner.clear();
+            try{
+                multizebra.interruptDiscovery();
+               // multizebra.stopDiscovery();
+            }catch (Exception e){
 
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(actividad);
-        View view = actividad.getLayoutInflater().inflate(R.layout.dialogolistaimpresoras, null);
-        EditText Search= view.findViewById(R.id.Search);
-        RecyclerView ListaBalanzas = view.findViewById(R.id.lista);
-        AppCompatButton btBack = view.findViewById(R.id.bt_back);
-        progressBar = view.findViewById(R.id.progressBar);
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(actividad);
+            View view = actividad.getLayoutInflater().inflate(R.layout.dialogolistaimpresoras, null);
+            EditText Search= view.findViewById(R.id.Search);
+            RecyclerView ListaBalanzas = view.findViewById(R.id.lista);
+            AppCompatButton btBack = view.findViewById(R.id.bt_back);
+            progressBar = view.findViewById(R.id.progressBar);
 
-        ImageView btSearch= view.findViewById(R.id.btSearch);
-        ListaBalanzas.setLayoutManager(new LinearLayoutManager(requireContext()));
+            ImageView btSearch= view.findViewById(R.id.btSearch);
+            ListaBalanzas.setLayoutManager(new LinearLayoutManager(requireContext()));
           /*
              Process: com.jws.jwsapi, PID: 30091
                                                                                                     java.lang.IllegalStateException: Fragment ServiceFragment{933e7de} (18f1122e-563b-4f02-bd6b-6f4f72076508) not attached to a context.
@@ -1782,198 +1784,204 @@ public class ServiceFragment extends Fragment {
                                                                                                     	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:858)
 
             * */
-        adapterimpresora = new RecyclerSearcher(requireContext(), ListaScanner);
+            adapterimpresora = new RecyclerSearcher(requireContext(), ListaScanner);
 
-        LinearLayout lsearch = view.findViewById(R.id.lsearch);
-        //lsearch.setVisibility(GONE);
-        Search.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return true;
-            }
-        });
-
-        ListaBalanzas.setAdapter(adapterimpresora);
-        btSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ocultarTeclado(Search);
-            }
-        });
-        GenericDiscovery = new GenericDiscovery(this,progressBar,type);
-        GenericDiscovery.execute();
-
-        builder.setView(view);
-        AlertDialog dialog2 = builder.create();
-
-        adapterimpresora.setClickListener((v, position) -> {
-            String mac = "";
-            try {
-                if(adapterimpresora.getname(position).equals("WFO")){
-                    configurarRed();
-                }else {
-                    mac = adapterimpresora.getAddress(position);
+            LinearLayout lsearch = view.findViewById(R.id.lsearch);
+            //lsearch.setVisibility(GONE);
+            Search.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return true;
                 }
-            } catch (Exception e) {
-                mac = "";
-            }
+            });
 
-            if (!mac.isEmpty()) {
-                isReceiverRegistered = true;
-                tvbaud.setText(mac);
-                //dialogPin(mac);
-            } else {
-                Utils.Mensaje("Reinténtelo, ocurrió un error", R.layout.item_customtoasterror,activity);
-            }
-            listmac.clear();
-            ListaScanner.clear();
-            adapterimpresora.removeall();
-            GenericDiscovery.interruptDiscovery();
-            dialog2.cancel();
-        });
-        Search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            ListaBalanzas.setAdapter(adapterimpresora);
+            btSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ocultarTeclado(Search);
+                }
+            });
+            GenericDiscovery = new GenericDiscovery(this,progressBar,type);
+            GenericDiscovery.execute();
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ZebraStruct> listaFiltrada = new ArrayList<>();
-                if (s.toString().isEmpty()) {
-                    adapterimpresora.filterList((ListaScanner));
+            builder.setView(view);
+            AlertDialog dialog2 = builder.create();
+
+            adapterimpresora.setClickListener((v, position) -> {
+                String mac = "";
+                try {
+                    if(adapterimpresora.getname(position).equals("WFO")){
+                        configurarRed();
+                    }else {
+                        mac = adapterimpresora.getAddress(position);
+                    }
+                } catch (Exception e) {
+                    mac = "";
+                }
+
+                if (!mac.isEmpty()) {
+                    isReceiverRegistered = true;
+                    tvbaud.setText(mac);
+                    //dialogPin(mac);
                 } else {
-                    for (ZebraStruct imp : adapterimpresora.getlist()) {
-                        if(imp.getname()!=null) {
-                            if (!imp.getname().isEmpty() && imp.getname().toLowerCase().contains(s.toString().toLowerCase())) {
-                                listaFiltrada.add(imp);
+                    Utils.Mensaje("Reinténtelo, ocurrió un error", R.layout.item_customtoasterror,activity);
+                }
+                listmac.clear();
+                ListaScanner.clear();
+                adapterimpresora.removeall();
+                GenericDiscovery.interruptDiscovery();
+                dialog2.cancel();
+            });
+            Search.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    List<ZebraStruct> listaFiltrada = new ArrayList<>();
+                    if (s.toString().isEmpty()) {
+                        adapterimpresora.filterList((ListaScanner));
+                    } else {
+                        for (ZebraStruct imp : adapterimpresora.getlist()) {
+                            if(imp.getname()!=null) {
+                                if (!imp.getname().isEmpty() && imp.getname().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    listaFiltrada.add(imp);
+                                }
                             }
                         }
+                        adapterimpresora.filterList(listaFiltrada);
                     }
-                    adapterimpresora.filterList(listaFiltrada);
                 }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        btBack.setAlpha(0.4f);
-        btBack.setEnabled(false);
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+            btBack.setAlpha(0.4f);
+            btBack.setEnabled(false);
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            btBack.setAlpha(1f);
-            btBack.setEnabled(true);
-        }, 9000);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                btBack.setAlpha(1f);
+                btBack.setEnabled(true);
+            }, 9000);
 
-        btBack.setOnClickListener(v -> {
-            GenericDiscovery.interruptDiscovery();
-            dialog2.cancel();
-        });
+            btBack.setOnClickListener(v -> {
+                GenericDiscovery.interruptDiscovery();
+                dialog2.cancel();
+            });
 
-        dialog2.show();
-        Utils.configureDialogSize(dialog2,getContext());
+            dialog2.show();
+            Utils.configureDialogSize(dialog2,getContext());
+        } catch (Exception e) {
+
+        }
     }
 
     private void buscarImpresoras(TextView tvbaud, int type) {
-        ListaScanner.clear();
-        try{
-            GenericDiscovery.interruptDiscovery();
-          //  GenericDiscovery.stopDiscovery();
-        }catch (Exception e){
-
-        }
-        AlertDialog.Builder builder = new AlertDialog.Builder(actividad);
-        View view = actividad.getLayoutInflater().inflate(R.layout.dialogolistaimpresoras, null);
-        EditText Search= view.findViewById(R.id.Search);
-        RecyclerView listImpresora = view.findViewById(R.id.lista);
-        AppCompatButton btBack = view.findViewById(R.id.bt_back);
-        progressBar = view.findViewById(R.id.progressBar);
-
-        ImageView btSearch= view.findViewById(R.id.btSearch);
-        listImpresora.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapterimpresora = new RecyclerSearcher(requireContext(), ListaScanner);
-
-        LinearLayout lsearch = view.findViewById(R.id.lsearch);
-        //lsearch.setVisibility(GONE);
-        Search.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                return true;
-            }
-        });
-        listImpresora.setAdapter(adapterimpresora);
-        btSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ocultarTeclado(Search);
-            }
-        });
-        multizebra = new PrinterDiscovery(this,progressBar,type);
-        multizebra.execute();
-
-        builder.setView(view);
-        AlertDialog dialog2 = builder.create();
-
-        adapterimpresora.setClickListener((v, position) -> {
-            String mac = "";
-            try {
-                mac = adapterimpresora.getAddress(position);
-            } catch (Exception e) {
-                mac = "";
-            }
-
-            if (!mac.isEmpty()) {
-                isReceiverRegistered = true;
-                tvbaud.setText(mac);
-                //dialogPin(mac);
-            } else {
-                Utils.Mensaje("Reinténtelo, ocurrió un error", R.layout.item_customtoasterror,activity);
-            }
-            listmac.clear();
+        try {
             ListaScanner.clear();
-            adapterimpresora.removeall();
-            multizebra.interruptDiscovery();
-            dialog2.cancel();
-        });
-        Search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            try{
+                GenericDiscovery.interruptDiscovery();
+              //  GenericDiscovery.stopDiscovery();
+            }catch (Exception e){
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                List<ZebraStruct> listaFiltrada = new ArrayList<>();
-                if (s.toString().isEmpty()) {
-                    adapterimpresora.filterList((ListaScanner));
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(actividad);
+            View view = actividad.getLayoutInflater().inflate(R.layout.dialogolistaimpresoras, null);
+            EditText Search= view.findViewById(R.id.Search);
+            RecyclerView listImpresora = view.findViewById(R.id.lista);
+            AppCompatButton btBack = view.findViewById(R.id.bt_back);
+            progressBar = view.findViewById(R.id.progressBar);
+
+            ImageView btSearch= view.findViewById(R.id.btSearch);
+            listImpresora.setLayoutManager(new LinearLayoutManager(requireContext()));
+            adapterimpresora = new RecyclerSearcher(requireContext(), ListaScanner);
+
+            LinearLayout lsearch = view.findViewById(R.id.lsearch);
+            //lsearch.setVisibility(GONE);
+            Search.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    return true;
+                }
+            });
+            listImpresora.setAdapter(adapterimpresora);
+            btSearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ocultarTeclado(Search);
+                }
+            });
+            multizebra = new PrinterDiscovery(this,progressBar,type);
+            multizebra.execute();
+
+            builder.setView(view);
+            AlertDialog dialog2 = builder.create();
+
+            adapterimpresora.setClickListener((v, position) -> {
+                String mac = "";
+                try {
+                    mac = adapterimpresora.getAddress(position);
+                } catch (Exception e) {
+                    mac = "";
+                }
+
+                if (!mac.isEmpty()) {
+                    isReceiverRegistered = true;
+                    tvbaud.setText(mac);
+                    //dialogPin(mac);
                 } else {
-                    for (ZebraStruct imp : adapterimpresora.getlist()) {
-                        if(imp.getname()!=null) {
-                            if (!imp.getname().isEmpty() && imp.getname().toLowerCase().contains(s.toString().toLowerCase())) {
-                                listaFiltrada.add(imp);
+                    Utils.Mensaje("Reinténtelo, ocurrió un error", R.layout.item_customtoasterror,activity);
+                }
+                listmac.clear();
+                ListaScanner.clear();
+                adapterimpresora.removeall();
+                multizebra.interruptDiscovery();
+                dialog2.cancel();
+            });
+            Search.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    List<ZebraStruct> listaFiltrada = new ArrayList<>();
+                    if (s.toString().isEmpty()) {
+                        adapterimpresora.filterList((ListaScanner));
+                    } else {
+                        for (ZebraStruct imp : adapterimpresora.getlist()) {
+                            if(imp.getname()!=null) {
+                                if (!imp.getname().isEmpty() && imp.getname().toLowerCase().contains(s.toString().toLowerCase())) {
+                                    listaFiltrada.add(imp);
+                                }
                             }
                         }
+                        adapterimpresora.filterList(listaFiltrada);
                     }
-                    adapterimpresora.filterList(listaFiltrada);
                 }
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        btBack.setAlpha(0.4f);
-        btBack.setEnabled(false);
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+            btBack.setAlpha(0.4f);
+            btBack.setEnabled(false);
 
-        Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            btBack.setAlpha(1f);
-            btBack.setEnabled(true);
-        }, 9000);
+            Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                btBack.setAlpha(1f);
+                btBack.setEnabled(true);
+            }, 9000);
 
-        btBack.setOnClickListener(v -> {
-            multizebra.interruptDiscovery();
-            dialog2.cancel();
-        });
+            btBack.setOnClickListener(v -> {
+                multizebra.interruptDiscovery();
+                dialog2.cancel();
+            });
 
-        dialog2.show();
-        Utils.configureDialogSize(dialog2,getContext());
+            dialog2.show();
+            Utils.configureDialogSize(dialog2,getContext());
+        } catch (Exception e) {
+        }
     }
     public boolean isBluetoothAddressValid(String address) {
         String pattern = "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$";

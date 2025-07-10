@@ -84,7 +84,6 @@ public class ModbusReqTCPslave {
                 }
             });
         } catch (Exception e) {
-            System.out.println("ERROR MODBUS Init no entiendo nada :/   "+e.getMessage());
             mModbusSlave.stop();
             isInit = false;
             Log.d(TAG, "Modbus4Android init failed " + e);
